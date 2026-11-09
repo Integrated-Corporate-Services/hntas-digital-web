@@ -4000,13 +4000,17 @@ components:
     BoilerPlant:
       example:
         maximumHeatOutput: 2
-        fuel: 6
+        id: id
+        fuelId: 6
       properties:
+        id:
+          nullable: true
+          type: string
         maximumHeatOutput:
           format: int32
           nullable: true
           type: integer
-        fuel:
+        fuelId:
           format: int32
           nullable: true
           type: integer
@@ -4402,9 +4406,10 @@ components:
     CombinedHeatAndPowerSystem:
       example:
         maximumHeatOutput: 9
-        fuel: 6
+        id: id
         percentageOfElectricityExported: 8
         maximumElectricOutput: 6
+        fuelId: 6
       properties:
         maximumElectricOutput:
           format: int32
@@ -4414,11 +4419,14 @@ components:
           format: int32
           nullable: true
           type: integer
+        id:
+          nullable: true
+          type: string
         maximumHeatOutput:
           format: int32
           nullable: true
           type: integer
-        fuel:
+        fuelId:
           format: int32
           nullable: true
           type: integer
@@ -4576,28 +4584,36 @@ components:
           heatRecoverySources:
           - heatSource: heatSource
             maximumHeatOutput: 1
+            id: id
           - heatSource: heatSource
             maximumHeatOutput: 1
+            id: id
           energyCentreStatus: null
           boilerPlants:
           - maximumHeatOutput: 2
-            fuel: 6
+            id: id
+            fuelId: 6
           - maximumHeatOutput: 2
-            fuel: 6
+            id: id
+            fuelId: 6
           heatPumpSystems:
           - maximumHeatOutput: 3
-            fuel: 6
+            id: id
+            fuelId: 6
           - maximumHeatOutput: 3
-            fuel: 6
+            id: id
+            fuelId: 6
           combinedHeatAndPowerSystems:
           - maximumHeatOutput: 9
-            fuel: 6
+            id: id
             percentageOfElectricityExported: 8
             maximumElectricOutput: 6
+            fuelId: 6
           - maximumHeatOutput: 9
-            fuel: 6
+            id: id
             percentageOfElectricityExported: 8
             maximumElectricOutput: 6
+            fuelId: 6
       properties:
         hnId:
           nullable: true
@@ -4622,28 +4638,36 @@ components:
           heatRecoverySources:
           - heatSource: heatSource
             maximumHeatOutput: 1
+            id: id
           - heatSource: heatSource
             maximumHeatOutput: 1
+            id: id
           energyCentreStatus: null
           boilerPlants:
           - maximumHeatOutput: 2
-            fuel: 6
+            id: id
+            fuelId: 6
           - maximumHeatOutput: 2
-            fuel: 6
+            id: id
+            fuelId: 6
           heatPumpSystems:
           - maximumHeatOutput: 3
-            fuel: 6
+            id: id
+            fuelId: 6
           - maximumHeatOutput: 3
-            fuel: 6
+            id: id
+            fuelId: 6
           combinedHeatAndPowerSystems:
           - maximumHeatOutput: 9
-            fuel: 6
+            id: id
             percentageOfElectricityExported: 8
             maximumElectricOutput: 6
+            fuelId: 6
           - maximumHeatOutput: 9
-            fuel: 6
+            id: id
             percentageOfElectricityExported: 8
             maximumElectricOutput: 6
+            fuelId: 6
         elementName: elementName
       properties:
         elementId:
@@ -5241,28 +5265,36 @@ components:
         heatRecoverySources:
         - heatSource: heatSource
           maximumHeatOutput: 1
+          id: id
         - heatSource: heatSource
           maximumHeatOutput: 1
+          id: id
         energyCentreStatus: null
         boilerPlants:
         - maximumHeatOutput: 2
-          fuel: 6
+          id: id
+          fuelId: 6
         - maximumHeatOutput: 2
-          fuel: 6
+          id: id
+          fuelId: 6
         heatPumpSystems:
         - maximumHeatOutput: 3
-          fuel: 6
+          id: id
+          fuelId: 6
         - maximumHeatOutput: 3
-          fuel: 6
+          id: id
+          fuelId: 6
         combinedHeatAndPowerSystems:
         - maximumHeatOutput: 9
-          fuel: 6
+          id: id
           percentageOfElectricityExported: 8
           maximumElectricOutput: 6
+          fuelId: 6
         - maximumHeatOutput: 9
-          fuel: 6
+          id: id
           percentageOfElectricityExported: 8
           maximumElectricOutput: 6
+          fuelId: 6
       nullable: true
       properties:
         energyCentreStatus:
@@ -5442,28 +5474,36 @@ components:
                 heatRecoverySources:
                 - heatSource: heatSource
                   maximumHeatOutput: 1
+                  id: id
                 - heatSource: heatSource
                   maximumHeatOutput: 1
+                  id: id
                 energyCentreStatus: null
                 boilerPlants:
                 - maximumHeatOutput: 2
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 - maximumHeatOutput: 2
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 heatPumpSystems:
                 - maximumHeatOutput: 3
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 - maximumHeatOutput: 3
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 combinedHeatAndPowerSystems:
                 - maximumHeatOutput: 9
-                  fuel: 6
+                  id: id
                   percentageOfElectricityExported: 8
                   maximumElectricOutput: 6
+                  fuelId: 6
                 - maximumHeatOutput: 9
-                  fuel: 6
+                  id: id
                   percentageOfElectricityExported: 8
                   maximumElectricOutput: 6
+                  fuelId: 6
               elementName: elementName
             - elementId: elementId
               soaMilestones:
@@ -5477,28 +5517,36 @@ components:
                 heatRecoverySources:
                 - heatSource: heatSource
                   maximumHeatOutput: 1
+                  id: id
                 - heatSource: heatSource
                   maximumHeatOutput: 1
+                  id: id
                 energyCentreStatus: null
                 boilerPlants:
                 - maximumHeatOutput: 2
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 - maximumHeatOutput: 2
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 heatPumpSystems:
                 - maximumHeatOutput: 3
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 - maximumHeatOutput: 3
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 combinedHeatAndPowerSystems:
                 - maximumHeatOutput: 9
-                  fuel: 6
+                  id: id
                   percentageOfElectricityExported: 8
                   maximumElectricOutput: 6
+                  fuelId: 6
                 - maximumHeatOutput: 9
-                  fuel: 6
+                  id: id
                   percentageOfElectricityExported: 8
                   maximumElectricOutput: 6
+                  fuelId: 6
               elementName: elementName
             elementsGroup:
             - soaMilestones:
@@ -5875,28 +5923,36 @@ components:
                 heatRecoverySources:
                 - heatSource: heatSource
                   maximumHeatOutput: 1
+                  id: id
                 - heatSource: heatSource
                   maximumHeatOutput: 1
+                  id: id
                 energyCentreStatus: null
                 boilerPlants:
                 - maximumHeatOutput: 2
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 - maximumHeatOutput: 2
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 heatPumpSystems:
                 - maximumHeatOutput: 3
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 - maximumHeatOutput: 3
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 combinedHeatAndPowerSystems:
                 - maximumHeatOutput: 9
-                  fuel: 6
+                  id: id
                   percentageOfElectricityExported: 8
                   maximumElectricOutput: 6
+                  fuelId: 6
                 - maximumHeatOutput: 9
-                  fuel: 6
+                  id: id
                   percentageOfElectricityExported: 8
                   maximumElectricOutput: 6
+                  fuelId: 6
               elementName: elementName
             - elementId: elementId
               soaMilestones:
@@ -5910,28 +5966,36 @@ components:
                 heatRecoverySources:
                 - heatSource: heatSource
                   maximumHeatOutput: 1
+                  id: id
                 - heatSource: heatSource
                   maximumHeatOutput: 1
+                  id: id
                 energyCentreStatus: null
                 boilerPlants:
                 - maximumHeatOutput: 2
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 - maximumHeatOutput: 2
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 heatPumpSystems:
                 - maximumHeatOutput: 3
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 - maximumHeatOutput: 3
-                  fuel: 6
+                  id: id
+                  fuelId: 6
                 combinedHeatAndPowerSystems:
                 - maximumHeatOutput: 9
-                  fuel: 6
+                  id: id
                   percentageOfElectricityExported: 8
                   maximumElectricOutput: 6
+                  fuelId: 6
                 - maximumHeatOutput: 9
-                  fuel: 6
+                  id: id
                   percentageOfElectricityExported: 8
                   maximumElectricOutput: 6
+                  fuelId: 6
               elementName: elementName
             elementsGroup:
             - soaMilestones:
@@ -6317,28 +6381,36 @@ components:
               heatRecoverySources:
               - heatSource: heatSource
                 maximumHeatOutput: 1
+                id: id
               - heatSource: heatSource
                 maximumHeatOutput: 1
+                id: id
               energyCentreStatus: null
               boilerPlants:
               - maximumHeatOutput: 2
-                fuel: 6
+                id: id
+                fuelId: 6
               - maximumHeatOutput: 2
-                fuel: 6
+                id: id
+                fuelId: 6
               heatPumpSystems:
               - maximumHeatOutput: 3
-                fuel: 6
+                id: id
+                fuelId: 6
               - maximumHeatOutput: 3
-                fuel: 6
+                id: id
+                fuelId: 6
               combinedHeatAndPowerSystems:
               - maximumHeatOutput: 9
-                fuel: 6
+                id: id
                 percentageOfElectricityExported: 8
                 maximumElectricOutput: 6
+                fuelId: 6
               - maximumHeatOutput: 9
-                fuel: 6
+                id: id
                 percentageOfElectricityExported: 8
                 maximumElectricOutput: 6
+                fuelId: 6
             elementName: elementName
           - elementId: elementId
             soaMilestones:
@@ -6352,28 +6424,36 @@ components:
               heatRecoverySources:
               - heatSource: heatSource
                 maximumHeatOutput: 1
+                id: id
               - heatSource: heatSource
                 maximumHeatOutput: 1
+                id: id
               energyCentreStatus: null
               boilerPlants:
               - maximumHeatOutput: 2
-                fuel: 6
+                id: id
+                fuelId: 6
               - maximumHeatOutput: 2
-                fuel: 6
+                id: id
+                fuelId: 6
               heatPumpSystems:
               - maximumHeatOutput: 3
-                fuel: 6
+                id: id
+                fuelId: 6
               - maximumHeatOutput: 3
-                fuel: 6
+                id: id
+                fuelId: 6
               combinedHeatAndPowerSystems:
               - maximumHeatOutput: 9
-                fuel: 6
+                id: id
                 percentageOfElectricityExported: 8
                 maximumElectricOutput: 6
+                fuelId: 6
               - maximumHeatOutput: 9
-                fuel: 6
+                id: id
                 percentageOfElectricityExported: 8
                 maximumElectricOutput: 6
+                fuelId: 6
             elementName: elementName
           elementsGroup:
           - soaMilestones:
@@ -7218,28 +7298,36 @@ components:
               heatRecoverySources:
               - heatSource: heatSource
                 maximumHeatOutput: 1
+                id: id
               - heatSource: heatSource
                 maximumHeatOutput: 1
+                id: id
               energyCentreStatus: null
               boilerPlants:
               - maximumHeatOutput: 2
-                fuel: 6
+                id: id
+                fuelId: 6
               - maximumHeatOutput: 2
-                fuel: 6
+                id: id
+                fuelId: 6
               heatPumpSystems:
               - maximumHeatOutput: 3
-                fuel: 6
+                id: id
+                fuelId: 6
               - maximumHeatOutput: 3
-                fuel: 6
+                id: id
+                fuelId: 6
               combinedHeatAndPowerSystems:
               - maximumHeatOutput: 9
-                fuel: 6
+                id: id
                 percentageOfElectricityExported: 8
                 maximumElectricOutput: 6
+                fuelId: 6
               - maximumHeatOutput: 9
-                fuel: 6
+                id: id
                 percentageOfElectricityExported: 8
                 maximumElectricOutput: 6
+                fuelId: 6
             elementName: elementName
           - elementId: elementId
             soaMilestones:
@@ -7253,28 +7341,36 @@ components:
               heatRecoverySources:
               - heatSource: heatSource
                 maximumHeatOutput: 1
+                id: id
               - heatSource: heatSource
                 maximumHeatOutput: 1
+                id: id
               energyCentreStatus: null
               boilerPlants:
               - maximumHeatOutput: 2
-                fuel: 6
+                id: id
+                fuelId: 6
               - maximumHeatOutput: 2
-                fuel: 6
+                id: id
+                fuelId: 6
               heatPumpSystems:
               - maximumHeatOutput: 3
-                fuel: 6
+                id: id
+                fuelId: 6
               - maximumHeatOutput: 3
-                fuel: 6
+                id: id
+                fuelId: 6
               combinedHeatAndPowerSystems:
               - maximumHeatOutput: 9
-                fuel: 6
+                id: id
                 percentageOfElectricityExported: 8
                 maximumElectricOutput: 6
+                fuelId: 6
               - maximumHeatOutput: 9
-                fuel: 6
+                id: id
                 percentageOfElectricityExported: 8
                 maximumElectricOutput: 6
+                fuelId: 6
             elementName: elementName
           elementsGroup:
           - soaMilestones:
@@ -7720,13 +7816,17 @@ components:
     HeatPumpSystem:
       example:
         maximumHeatOutput: 3
-        fuel: 6
+        id: id
+        fuelId: 6
       properties:
+        id:
+          nullable: true
+          type: string
         maximumHeatOutput:
           format: int32
           nullable: true
           type: integer
-        fuel:
+        fuelId:
           format: int32
           nullable: true
           type: integer
@@ -7753,7 +7853,11 @@ components:
       example:
         heatSource: heatSource
         maximumHeatOutput: 1
+        id: id
       properties:
+        id:
+          nullable: true
+          type: string
         maximumHeatOutput:
           format: int32
           nullable: true
@@ -8778,28 +8882,36 @@ components:
             heatRecoverySources:
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             energyCentreStatus: null
             boilerPlants:
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             heatPumpSystems:
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             combinedHeatAndPowerSystems:
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
           elementName: elementName
         - elementId: elementId
           soaMilestones:
@@ -8813,28 +8925,36 @@ components:
             heatRecoverySources:
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             energyCentreStatus: null
             boilerPlants:
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             heatPumpSystems:
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             combinedHeatAndPowerSystems:
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
           elementName: elementName
         elementsGroup:
         - soaMilestones:
@@ -9073,28 +9193,36 @@ components:
             heatRecoverySources:
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             energyCentreStatus: null
             boilerPlants:
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             heatPumpSystems:
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             combinedHeatAndPowerSystems:
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
           elementName: elementName
         - elementId: elementId
           soaMilestones:
@@ -9108,28 +9236,36 @@ components:
             heatRecoverySources:
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             energyCentreStatus: null
             boilerPlants:
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             heatPumpSystems:
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             combinedHeatAndPowerSystems:
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
           elementName: elementName
         elementsGroup:
         - soaMilestones:
@@ -9367,28 +9503,36 @@ components:
             heatRecoverySources:
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             energyCentreStatus: null
             boilerPlants:
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             heatPumpSystems:
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             combinedHeatAndPowerSystems:
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
           elementName: elementName
         - elementId: elementId
           soaMilestones:
@@ -9402,28 +9546,36 @@ components:
             heatRecoverySources:
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             - heatSource: heatSource
               maximumHeatOutput: 1
+              id: id
             energyCentreStatus: null
             boilerPlants:
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 2
-              fuel: 6
+              id: id
+              fuelId: 6
             heatPumpSystems:
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             - maximumHeatOutput: 3
-              fuel: 6
+              id: id
+              fuelId: 6
             combinedHeatAndPowerSystems:
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
             - maximumHeatOutput: 9
-              fuel: 6
+              id: id
               percentageOfElectricityExported: 8
               maximumElectricOutput: 6
+              fuelId: 6
           elementName: elementName
         elementsGroup:
         - soaMilestones:

@@ -33,17 +33,32 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="HeatRecoverySource" /> class.
         /// </summary>
+        /// <param name="id">id</param>
         /// <param name="maximumHeatOutput">maximumHeatOutput</param>
         /// <param name="heatSource">heatSource</param>
         [JsonConstructor]
-        public HeatRecoverySource(Option<int?> maximumHeatOutput = default, Option<string?> heatSource = default)
+        public HeatRecoverySource(Option<string?> id = default, Option<int?> maximumHeatOutput = default, Option<string?> heatSource = default)
         {
+            IdOption = id;
             MaximumHeatOutputOption = maximumHeatOutput;
             HeatSourceOption = heatSource;
             OnCreated();
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of Id
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> IdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [JsonPropertyName("id")]
+        public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of MaximumHeatOutput
@@ -79,6 +94,7 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class HeatRecoverySource {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  MaximumHeatOutput: ").Append(MaximumHeatOutput).Append("\n");
             sb.Append("  HeatSource: ").Append(HeatSource).Append("\n");
             sb.Append("}\n");
@@ -118,6 +134,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
+            Option<string?> id = default;
             Option<int?> maximumHeatOutput = default;
             Option<string?> heatSource = default;
 
@@ -136,6 +153,9 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
+                        case "id":
+                            id = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "maximumHeatOutput":
                             maximumHeatOutput = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
@@ -148,7 +168,7 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            return new HeatRecoverySource(maximumHeatOutput, heatSource);
+            return new HeatRecoverySource(id, maximumHeatOutput, heatSource);
         }
 
         /// <summary>
@@ -175,6 +195,12 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, HeatRecoverySource heatRecoverySource, JsonSerializerOptions jsonSerializerOptions)
         {
+            if (heatRecoverySource.IdOption.IsSet)
+                if (heatRecoverySource.IdOption.Value != null)
+                    writer.WriteString("id", heatRecoverySource.Id);
+                else
+                    writer.WriteNull("id");
+
             if (heatRecoverySource.MaximumHeatOutputOption.IsSet)
                 if (heatRecoverySource.MaximumHeatOutputOption.Value != null)
                     writer.WriteNumber("maximumHeatOutput", heatRecoverySource.MaximumHeatOutputOption.Value!.Value);

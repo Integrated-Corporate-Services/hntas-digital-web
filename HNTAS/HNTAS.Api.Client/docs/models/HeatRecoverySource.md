@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Id** | **string** |  | [optional] 
 **MaximumHeatOutput** | **int** |  | [optional] 
 **HeatSource** | **string** |  | [optional] 
 

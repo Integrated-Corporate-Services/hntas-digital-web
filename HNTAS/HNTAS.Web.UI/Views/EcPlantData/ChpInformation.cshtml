@@ -16,7 +16,7 @@
                 var hasNumberOfMaximumHeatOutputError = ViewData.ModelState[$"chpinformationlist[{i}].maximumheatoutput"]?.Errors.Count > 0;
                 var hasNumberOfMaximumElectricOutputError = ViewData.ModelState[$"chpinformationlist[{i}].maximumelectricoutput"]?.Errors.Count > 0;
                 var hasFuelOrHeatSourceError = ViewData.ModelState[$"chpinformationlist[{i}].fuelorheatsource"]?.Errors.Count > 0;
-                var hasOperationalModeError = ViewData.ModelState[$"chpinformationlist[{i}].operationalmode"]?.Errors.Count > 0;
+                var hasPercentageOfElectricityExportedError = ViewData.ModelState[$"chpinformationlist[{i}].percentageofelectricityexported"]?.Errors.Count > 0;
 
                 var chpInfo = Model.ChpInformationList[i];
                 <div class="govuk-!-margin-top-6">
@@ -73,43 +73,21 @@
                                     }
                                 </select>
                             </div>
-                        </div>
+                        </div>                        
 
                         <div class="govuk-grid-column-one-quarter">
                             <div class="govuk-form-group">
                                 <label class="govuk-label" asp-for="ChpInformationList[i].PercentageOfElectricityExported">
-                                    Operational mode
+                                    Percentage of electricity exported
                                 </label>
-                                @if (hasOperationalModeError)
+                                @if (hasNumberOfMaximumElectricOutputError)
                                 {
-                                    <p id="operationalmode-error" class="govuk-error-message">
+                                    <p id="percentageofelectricityexported-error" class="govuk-error-message">
                                         <span class="govuk-visually-hidden">Error:</span>
                                         @Html.ValidationMessageFor(m => m.ChpInformationList[i].PercentageOfElectricityExported)
                                     </p>
                                 }
-                                <select class="govuk-select @(hasOperationalModeError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].operationalmode")" asp-for="ChpInformationList[i].PercentageOfElectricityExported">
-                                    <option value="" selected="">Select a mode</option>
-                                    @foreach (var operationalMode in ViewBag.OperationalModes)
-                                    {
-                                        <option value="@operationalMode.Ident">@operationalMode.OperationalMode</option>
-                                    }
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="govuk-grid-column-one-quarter">
-                            <div class="govuk-form-group">
-                                <label class="govuk-label" asp-for="ChpInformationList[i].MaximumElectricOutput">
-                                    Maximum electric output (kWe)
-                                </label>
-                                @if (hasNumberOfMaximumElectricOutputError)
-                                {
-                                    <p id="maximumelectricoutput-error" class="govuk-error-message">
-                                        <span class="govuk-visually-hidden">Error:</span>
-                                        @Html.ValidationMessageFor(m => m.ChpInformationList[i].MaximumElectricOutput)
-                                    </p>
-                                }
-                                <input class="govuk-input govuk-input--width-5 @(hasNumberOfMaximumElectricOutputError ? "govuk-input--error" : "")" id="@($"chpinformationlist[{i}].maximumelectricoutput")" asp-for="ChpInformationList[i].MaximumElectricOutput" type="number">
+                                <input class="govuk-input govuk-input--width-5 @(hasNumberOfMaximumElectricOutputError ? "govuk-input--error" : "")" id="@($"chpinformationlist[{i}].percentageofelectricityexported")" asp-for="ChpInformationList[i].PercentageOfElectricityExported" type="number">
                             </div>
                         </div>
                     </div>

@@ -35,15 +35,17 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         /// <param name="maximumElectricOutput">maximumElectricOutput</param>
         /// <param name="percentageOfElectricityExported">percentageOfElectricityExported</param>
+        /// <param name="id">id</param>
         /// <param name="maximumHeatOutput">maximumHeatOutput</param>
-        /// <param name="fuel">fuel</param>
+        /// <param name="fuelId">fuelId</param>
         [JsonConstructor]
-        public CombinedHeatAndPowerSystem(Option<int?> maximumElectricOutput = default, Option<int?> percentageOfElectricityExported = default, Option<int?> maximumHeatOutput = default, Option<int?> fuel = default)
+        public CombinedHeatAndPowerSystem(Option<int?> maximumElectricOutput = default, Option<int?> percentageOfElectricityExported = default, Option<string?> id = default, Option<int?> maximumHeatOutput = default, Option<int?> fuelId = default)
         {
             MaximumElectricOutputOption = maximumElectricOutput;
             PercentageOfElectricityExportedOption = percentageOfElectricityExported;
+            IdOption = id;
             MaximumHeatOutputOption = maximumHeatOutput;
-            FuelOption = fuel;
+            FuelIdOption = fuelId;
             OnCreated();
         }
 
@@ -76,6 +78,19 @@ namespace HNTAS.Api.Client.Model
         public int? PercentageOfElectricityExported { get { return this.PercentageOfElectricityExportedOption; } set { this.PercentageOfElectricityExportedOption = new(value); } }
 
         /// <summary>
+        /// Used to track the state of Id
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> IdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [JsonPropertyName("id")]
+        public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
+
+        /// <summary>
         /// Used to track the state of MaximumHeatOutput
         /// </summary>
         [JsonIgnore]
@@ -89,17 +104,17 @@ namespace HNTAS.Api.Client.Model
         public int? MaximumHeatOutput { get { return this.MaximumHeatOutputOption; } set { this.MaximumHeatOutputOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of Fuel
+        /// Used to track the state of FuelId
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<int?> FuelOption { get; private set; }
+        public Option<int?> FuelIdOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets Fuel
+        /// Gets or Sets FuelId
         /// </summary>
-        [JsonPropertyName("fuel")]
-        public int? Fuel { get { return this.FuelOption; } set { this.FuelOption = new(value); } }
+        [JsonPropertyName("fuelId")]
+        public int? FuelId { get { return this.FuelIdOption; } set { this.FuelIdOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -111,8 +126,9 @@ namespace HNTAS.Api.Client.Model
             sb.Append("class CombinedHeatAndPowerSystem {\n");
             sb.Append("  MaximumElectricOutput: ").Append(MaximumElectricOutput).Append("\n");
             sb.Append("  PercentageOfElectricityExported: ").Append(PercentageOfElectricityExported).Append("\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  MaximumHeatOutput: ").Append(MaximumHeatOutput).Append("\n");
-            sb.Append("  Fuel: ").Append(Fuel).Append("\n");
+            sb.Append("  FuelId: ").Append(FuelId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -152,8 +168,9 @@ namespace HNTAS.Api.Client.Model
 
             Option<int?> maximumElectricOutput = default;
             Option<int?> percentageOfElectricityExported = default;
+            Option<string?> id = default;
             Option<int?> maximumHeatOutput = default;
-            Option<int?> fuel = default;
+            Option<int?> fuelId = default;
 
             while (utf8JsonReader.Read())
             {
@@ -176,11 +193,14 @@ namespace HNTAS.Api.Client.Model
                         case "percentageOfElectricityExported":
                             percentageOfElectricityExported = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
+                        case "id":
+                            id = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "maximumHeatOutput":
                             maximumHeatOutput = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
-                        case "fuel":
-                            fuel = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
+                        case "fuelId":
+                            fuelId = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
                         default:
                             break;
@@ -188,7 +208,7 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            return new CombinedHeatAndPowerSystem(maximumElectricOutput, percentageOfElectricityExported, maximumHeatOutput, fuel);
+            return new CombinedHeatAndPowerSystem(maximumElectricOutput, percentageOfElectricityExported, id, maximumHeatOutput, fuelId);
         }
 
         /// <summary>
@@ -227,17 +247,23 @@ namespace HNTAS.Api.Client.Model
                 else
                     writer.WriteNull("percentageOfElectricityExported");
 
+            if (combinedHeatAndPowerSystem.IdOption.IsSet)
+                if (combinedHeatAndPowerSystem.IdOption.Value != null)
+                    writer.WriteString("id", combinedHeatAndPowerSystem.Id);
+                else
+                    writer.WriteNull("id");
+
             if (combinedHeatAndPowerSystem.MaximumHeatOutputOption.IsSet)
                 if (combinedHeatAndPowerSystem.MaximumHeatOutputOption.Value != null)
                     writer.WriteNumber("maximumHeatOutput", combinedHeatAndPowerSystem.MaximumHeatOutputOption.Value!.Value);
                 else
                     writer.WriteNull("maximumHeatOutput");
 
-            if (combinedHeatAndPowerSystem.FuelOption.IsSet)
-                if (combinedHeatAndPowerSystem.FuelOption.Value != null)
-                    writer.WriteNumber("fuel", combinedHeatAndPowerSystem.FuelOption.Value!.Value);
+            if (combinedHeatAndPowerSystem.FuelIdOption.IsSet)
+                if (combinedHeatAndPowerSystem.FuelIdOption.Value != null)
+                    writer.WriteNumber("fuelId", combinedHeatAndPowerSystem.FuelIdOption.Value!.Value);
                 else
-                    writer.WriteNull("fuel");
+                    writer.WriteNull("fuelId");
         }
     }
 }

@@ -11,7 +11,7 @@
     public class ChpInformationSummary
     {
         public string? MaximumElectricOutput { get; set; }
-        public string? OperationalModeValue { get; set; }
+        public string? PercentageOfElectricityExportedValue { get; set; }
         public string? MaximumHeatOutput { get; set; }
         public string? FuelOrHeatSourceValue { get; set; }
     }
