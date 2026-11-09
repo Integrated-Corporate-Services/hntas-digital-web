@@ -9706,6 +9706,15 @@
     margin-bottom: 0;
     padding: 22px 0 8px;
   }
+  .hntas-fields-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .hntas-fields-row > [class*=govuk-grid-column] {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
 }
 .govuk-header__navigation {
   display: flex;

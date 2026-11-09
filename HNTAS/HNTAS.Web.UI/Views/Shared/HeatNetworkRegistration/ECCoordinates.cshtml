@@ -17,6 +17,10 @@
                  and right click the location of your energy centre. The coordinates will be the first option in the list. Click the coordinates to copy.
             </p>
 
+            <p class="govuk-body">
+                Leave blank if not yet known.
+            </p>
+
             <form asp-controller="@ViewBag.ControllerName" asp-action="ECCoordinates" method="post" novalidate>
                 @Html.AntiForgeryToken()
 

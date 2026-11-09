@@ -1,0 +1,243 @@
+﻿@using HNTAS.Web.UI.Models.Components
+@using HNTAS.Web.UI.Models.NetworkElements
+@model NetworkElementSummaryViewModel
+@{
+    ViewData["Title"] = "Heat network element summary";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+        <h1 class="govuk-heading-l">Heat network element summary</h1>
+        <div class="govuk-hint">
+            You have told us you have the following elements on your network:
+        </div>
+        <form asp-action="NetworkElementSummary" method="post" novalidate>
+            @if(Model.ExistingNetworkElements != null && Model.ExistingNetworkElements.Count > 0)
+                    {
+        <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title">
+                    Elements
+                </h2>
+                <ul class="govuk-summary-card__actions">
+                    <li class="govuk-summary-card__action">
+                            <a class="govuk-link" href="@Url.Action("NetworkElementsList", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                    </li>                    
+                </ul>
+            </div>
+            
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Existing
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <ul>
+                                        @foreach (var existingEl in Model.ExistingNetworkElements!)
+                                        {
+                                            <li>@existingEl</li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                   
+                    
+        </div>
+            }
+        <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title">
+                    Elements
+                </h2>
+                <ul class="govuk-summary-card__actions">
+                    <li class="govuk-summary-card__action">
+                            <a class="govuk-link" href="@Url.Action("NetworkElementsList", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="govuk-summary-card__content">
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            New
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul>
+                                @foreach (var newEl in Model.NewNetworkElements!)
+                                {
+                                    <li>@newEl</li>
+                                }
+                            </ul>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+        @if (Model.ExistingNetworkEcNames != null && Model.ExistingNetworkEcNames.Count > 0)
+                    {
+        <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title">
+                    Energy centre names
+                </h2>
+                <ul class="govuk-summary-card__actions">
+                    <li class="govuk-summary-card__action">
+                            <a class="govuk-link" href="@Url.Action("NetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                    </li>
+                </ul>
+            </div>
+
+                
+                        <div class="govuk-summary-card__content">
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Existing
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul>
+                                @foreach (var existingName in Model.ExistingNetworkEcNames!)
+                                {
+                                    <li>@existingName</li>
+                                }
+                            </ul>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+                    
+                    
+        </div>
+            }
+        <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title">
+                    Energy centre names
+                </h2>
+                <ul class="govuk-summary-card__actions">
+                    <li class="govuk-summary-card__action">
+                            <a class="govuk-link" href="@Url.Action("NetworkEnergyCentreName", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="govuk-summary-card__content">
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            New
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            <ul>
+                                @foreach (var newName in Model.NewNetworkEcNames!)
+                                {
+                                    <li>@newName</li>
+                                }
+                            </ul>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+            @if (ViewBag.SupplyToNewBuildings == true)
+                {
+                <div class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            Existing energy centre supplying new buildings
+                        </h2>
+                        <ul class="govuk-summary-card__actions">
+                            <li class="govuk-summary-card__action">
+                                <a class="govuk-link" href="@Url.Action("EnergyCentresSupply", "NetworkElements")">Change<span class="govuk-visually-hidden"> (University of Gloucestershire)</span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    Existing
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <ul>
+                                        @foreach (var existingEcSupplying in Model.ExistingEcSupplyingNewBuilding!)
+                                        {
+                                            <li>@existingEcSupplying</li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+                }
+                
+
+            @if (Model.ExistingNetworkElements != null)
+            {
+                for (var i = 0; i < Model.ExistingNetworkElements.Count; i++)
+                {
+                    <input type="hidden" asp-for="ExistingNetworkElements[i]" />
+                }
+            }
+
+            @if (Model.NewNetworkElements != null)
+            {
+                for (var i = 0; i < Model.NewNetworkElements.Count; i++)
+                {
+                    <input type="hidden" asp-for="NewNetworkElements[i]" />
+                }
+            }
+
+            @if (Model.ExistingNetworkEcNames != null)
+            {
+                for (var i = 0; i < Model.ExistingNetworkEcNames.Count; i++)
+                {
+                    <input type="hidden" asp-for="ExistingNetworkEcNames[i]" />
+                }
+            }
+
+            @if (Model.NewNetworkEcNames != null)
+            {
+                for (var i = 0; i < Model.NewNetworkEcNames.Count; i++)
+                {
+                    <input type="hidden" asp-for="NewNetworkEcNames[i]" />
+                }
+            }
+
+            @if (Model.ExistingEcSupplyingNewBuilding != null)
+            {
+                for (var i = 0; i < Model.ExistingEcSupplyingNewBuilding.Count; i++)
+                {
+                    <input type="hidden" asp-for="ExistingEcSupplyingNewBuilding[i]" />
+                }
+            }
+
+
+        @{
+            var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+            var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
+            {
+                Id = nameof(Model.ConfirmedDeclaration),
+                Name = nameof(Model.ConfirmedDeclaration).ToLower(),
+                Label = $"I confirm that the summary above is correct for HNName, desc",
+                HasError = hasDeclarationErrors,
+                ErrorMessage = hasDeclarationErrors ? ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors[0].ErrorMessage : null,
+                Value = Model.ConfirmedDeclaration
+            };
+
+            @await Html.PartialAsync("Components/_ConfirmDeclaration", confirmDeclarationComponentData)
+
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Confirm
+            </button>
+        }
+        </form>
+    </div>
+</div>
+
+

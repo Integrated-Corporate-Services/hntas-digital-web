@@ -1,0 +1,74 @@
+﻿@using HNTAS.Web.UI.Models.EcPlantData
+@model HeatPumpInformationViewModel
+@{
+    ViewData["Title"] = "Provide the heat pump information";
+    var heatPumpInformationListCount = Model.HeatPumpInformationList?.Count ?? 0;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <form class="form" asp-action="HeatPumpInformation" method="post" novalidate>
+            <span class="govuk-caption-l">@ViewBag.HnId , @ViewBag.HnName</span>
+            <h1 class="govuk-heading-l">Provide the heat pump information</h1>
+
+            @for (int i = 0; i < heatPumpInformationListCount; i++)
+            {
+                var hasNumberOfMaximumHeatOutputError = ViewData.ModelState[$"heatpumpinformationlist[{i}].maximumheatoutput"]?.Errors.Count > 0;
+                var hasFuelOrHeatSourceError = ViewData.ModelState[$"heatpumpinformationlist[{i}].fuelorheatsource"]?.Errors.Count > 0;
+
+                var heatPumpInfo = Model.HeatPumpInformationList[i];
+                <div class="govuk-!-margin-top-6">
+                    <h2 class="govuk-heading-m">Heat pump system @(i + 1)</h2>
+                    <div class="govuk-grid-row hntas-fields-row">
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" asp-for="HeatPumpInformationList[i].MaximumHeatOutput">
+                                    Maximum heat output (kWth)
+                                </label>
+                                @if (hasNumberOfMaximumHeatOutputError)
+                                {
+                                    <p id="maximumheatoutput-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Html.ValidationMessageFor(m => m.HeatPumpInformationList[i].MaximumHeatOutput)
+                                    </p>
+                                }
+                                <input class="govuk-input govuk-input--width-5 @(hasNumberOfMaximumHeatOutputError ? "govuk-input--error" : "")" id="@($"heatpumpinformationlist[{i}].maximumheatoutput")" asp-for="HeatPumpInformationList[i].MaximumHeatOutput" type="number">
+                            </div>
+                        </div>
+                        <div class="govuk-grid-column-one-half">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" asp-for="HeatPumpInformationList[i].FuelOrHeatSource">
+                                    Fuel or heat source
+                                </label>
+                                @if (hasFuelOrHeatSourceError)
+                                {
+                                    <p id="fuelorheatsource-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span>
+                                        @Html.ValidationMessageFor(m => m.HeatPumpInformationList[i].FuelOrHeatSource)
+                                    </p>
+                                }
+                                <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"heatpumpinformationlist[{i}].fuelorheatsource")" asp-for="HeatPumpInformationList[i].FuelOrHeatSource">
+                                    <option value="" selected="">Select a source</option>
+                                    @foreach (var fuelType in ViewBag.FuelTypes)
+                                    {
+                                        <option value="@fuelType.FuelId">@fuelType.Type</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                @if (heatPumpInformationListCount > 1 && i < heatPumpInformationListCount - 1)
+                {
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+                }
+            }
+
+            <div class="govuk-!-margin-top-6">
+                <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+                    Continue
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

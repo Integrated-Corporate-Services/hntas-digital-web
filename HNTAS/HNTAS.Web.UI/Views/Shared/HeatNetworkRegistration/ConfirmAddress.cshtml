@@ -1,24 +1,20 @@
 ﻿@model HNTAS.Web.UI.Models.Address.AddressByStreetOrTownModel
 @{
     ViewData["Title"] = "Confirm this is the right address";
-    var Address = $@"
-{Model.StreetAddress},
-{Model.TownOrCity},
-{Model.Postalcode}";
     string controllerName = Convert.ToString(ViewBag.ControllerName) ?? string.Empty;
 }
 
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
+        <span class="govuk-caption-l">Add a heat network</span>
         <h1 class="govuk-heading-l">
-            Is this the correct address?
+            Confirm this this right address?
         </h1>
         <div class="govuk-body govuk-!-margin-bottom-6">
-            <pre class="govuk-body">
-                @Address
-            </pre>
+            @Model.StreetAddress<br />
+            @Model.TownOrCity<br />
+            @Model.Postalcode
         </div>  
         <p class="govuk-body">
             <a href="@Url.Action("DoesHNHaveAPostcode", controllerName)" class="govuk-link govuk-link--no-visited-state">Change</a>

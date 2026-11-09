@@ -16,6 +16,8 @@
 
             public const string CanUpdatePersonalDetail = "CanUpdatePersonalDetail";
             public const string CanAssignAssessor = "CanAssignAssessor";
+            public const string CanAddNetworkElements = "CanAddNetworkElements";
+            public const string CanAddEnergyCentrePlantData = "CanAddEnergyCentrePlantData";
         }
     }
 }

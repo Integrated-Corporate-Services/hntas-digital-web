@@ -26,7 +26,7 @@ namespace HNTAS.Web.UI.Models
             set => _heatNetworkName = value?.Trim();
         }
 
-        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Additional description must not include < or >")]
+        [RegularExpression(@"^[^<>]*$", ErrorMessage = "Enter an additional description that does not include < or >")]
         public string? AdditionalDescription
         {
             get => _additionalDescription;
@@ -43,8 +43,7 @@ namespace HNTAS.Web.UI.Models
 
     public class ECDetailsModel
     {
-        [Required(ErrorMessage = "Enter the latitude and longitude")]
-        public string LatitudeLongitude { get; set; }
+        public string? LatitudeLongitude { get; set; }
         public AddressByLatLongModel ECAddressByLatLong { get; set; } = new AddressByLatLongModel();
     }
 
@@ -66,6 +65,11 @@ namespace HNTAS.Web.UI.Models
         public string? HeatNetworkType { get; set; }
         public string? HasOwnEnergyCenter { get; set; }
         public string? ECSuppliesOneCommunalBuilding { get; set; }
+        public string CurrentState { get; set; } = null!;
+        public string EnergyCentreOptionText { get; set; } = null!;
+        public string EnergyCentreOptionValue { get; set; } = null!;
+        public int NewCommunalBuildingResponsibility { get; set; }
+        public int NewDistrictBuildingResponsibility { get; set; }
         public HeatNetworkConnectionsViewModel? HeatNetworkConnectionsModel { get; set; }
         public NetworkStatusModel? NetworkStatusModel { get; set; }
         public NetworkConnectionsViewModel? NetworkConnectionsModel { get; set; }

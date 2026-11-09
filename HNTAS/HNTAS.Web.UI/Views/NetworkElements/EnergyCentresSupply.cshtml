@@ -1,0 +1,57 @@
+﻿@using HNTAS.Web.UI.Models.NetworkElements
+@model EnergyCentresSupplyViewModel
+
+@{
+    var hasExistingCountError = ViewData.ModelState[$"existingenergycentressupply[0].ischecked"]?.Errors.Count > 0;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form class="form" asp-action="EnergyCentresSupply" method="post">
+            <div class="govuk-form-group @(hasExistingCountError ? "govuk-form-group--error" : "")">
+          <fieldset class="govuk-fieldset" aria-describedby="existing-ec-selection-hint">  
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">  
+            <h1 class="govuk-fieldset__heading">
+              Which existing energy centres supply the new buildings?
+            </h1>  
+          </legend>  
+
+          <div class="govuk-hint">
+            Select all that apply
+          </div>
+          
+                        
+                        @if (hasExistingCountError)
+                        {
+                            <span class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[$"existingenergycentressupply[0].ischecked"]?.Errors.FirstOrDefault()?.ErrorMessage
+                            </span>
+                        }
+          
+
+                    
+
+          <div class="govuk-checkboxes" data-module="govuk-checkboxes" data-govuk-checkboxes-init="">           
+       @for (int i = 0; i < Model.ExistingEnergyCentresSupply.Count; i++)
+        {
+            var ec = Model.ExistingEnergyCentresSupply[i];
+                            var isChecked = ec.IsChecked == true ? "checked" : "";
+                            <input type="hidden" name="@($"ExistingEnergyCentresSupply[{i}].EcName")" value="@ec.EcName" />
+            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="@($"existingenergycentressupply[{i}].ischecked")" name="@($"ExistingEnergyCentresSupply[{i}].IsChecked")" type="checkbox" value="true" @isChecked>
+                                
+                                <label class="govuk-label govuk-checkboxes__label" for="@($"existingenergycentressupply[{i}].ischecked")">
+                    @ec.EcName
+                </label>
+            </div>
+        }                
+    
+          </div>
+        </fieldset>
+        </div>
+        <button type="submit" class="govuk-button" data-module="govuk-button" data-govuk-button-init="">
+          Continue
+        </button>
+      </form>
+    </div>
+  </div>

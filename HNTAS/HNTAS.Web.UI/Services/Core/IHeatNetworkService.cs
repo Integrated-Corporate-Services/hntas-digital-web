@@ -8,6 +8,7 @@ namespace HNTAS.Web.UI.Services.Core
         Task<HeatNetworkResponse> AddHeatNetwork(HeatNetwork heatNetwork);
         Task<List<HeatNetworkResponse>> GetAllHeatNetworks();
         Task<HeatNetworkResponse> UpdateNetworkElements(string hnId, NetworkElements2 request);
+        Task<HeatNetworkResponse> UpdateEnergyCentrePlantData(EcPlantDataRequest request);
         Task<ExistingNetworkResponse> GetExistingNetworkByUserId(ExistingNetworkRequest request);
         Task<HeatNetworkResponse> RegisterOfgemNetwork(HeatNetwork heatNetwork);
 

@@ -125,6 +125,8 @@ namespace HNTAS.Api.Client.Client
                 return InvitationStatusValueConverter.ToJsonValue(invitationStatus);
             if (obj is Milestone milestone)
                 return MilestoneValueConverter.ToJsonValue(milestone);
+            if (obj is NetworkBuildStatus networkBuildStatus)
+                return NetworkBuildStatusValueConverter.ToJsonValue(networkBuildStatus);
             if (obj is NetworkDetailsStatus networkDetailsStatus)
                 return NetworkDetailsStatusValueConverter.ToJsonValue(networkDetailsStatus);
             if (obj is NullableOfEnergyCentreType nullableOfEnergyCentreType)
@@ -135,6 +137,8 @@ namespace HNTAS.Api.Client.Client
                 return NullableOfMilestoneValueConverter.ToJsonValue(nullableOfMilestone);
             if (obj is NullableOfNetworkBuildStatus nullableOfNetworkBuildStatus)
                 return NullableOfNetworkBuildStatusValueConverter.ToJsonValue(nullableOfNetworkBuildStatus);
+            if (obj is NullableOfNetworkDetailsStatus nullableOfNetworkDetailsStatus)
+                return NullableOfNetworkDetailsStatusValueConverter.ToJsonValue(nullableOfNetworkDetailsStatus);
             if (obj is NullableOfPreferredContactType nullableOfPreferredContactType)
                 return NullableOfPreferredContactTypeValueConverter.ToJsonValue(nullableOfPreferredContactType);
             if (obj is NullableOfSoaStage nullableOfSoaStage)

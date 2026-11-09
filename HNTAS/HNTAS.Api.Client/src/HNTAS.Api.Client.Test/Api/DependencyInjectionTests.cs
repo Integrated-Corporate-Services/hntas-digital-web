@@ -91,14 +91,23 @@ namespace HNTAS.Api.Client.Test.Api
             var carbonCalculatorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
+            var chpOperationalModesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IChpOperationalModesApi>();
+            Assert.True(chpOperationalModesApi.HttpClient.BaseAddress != null);
+
             var countriesAndTerritoriesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
             var feedbackApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IFeedbackApi>();
             Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
+            var fuelTypesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IFuelTypesApi>();
+            Assert.True(fuelTypesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
+            var heatRecoverySourcesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IHeatRecoverySourcesApi>();
+            Assert.True(heatRecoverySourcesApi.HttpClient.BaseAddress != null);
 
             var importApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IImportApi>();
             Assert.True(importApi.HttpClient.BaseAddress != null);
@@ -152,14 +161,23 @@ namespace HNTAS.Api.Client.Test.Api
             var carbonCalculatorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
+            var chpOperationalModesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IChpOperationalModesApi>();
+            Assert.True(chpOperationalModesApi.HttpClient.BaseAddress != null);
+
             var countriesAndTerritoriesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
             var feedbackApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IFeedbackApi>();
             Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
+            var fuelTypesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IFuelTypesApi>();
+            Assert.True(fuelTypesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
+            var heatRecoverySourcesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IHeatRecoverySourcesApi>();
+            Assert.True(heatRecoverySourcesApi.HttpClient.BaseAddress != null);
 
             var importApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IImportApi>();
             Assert.True(importApi.HttpClient.BaseAddress != null);
@@ -213,14 +231,23 @@ namespace HNTAS.Api.Client.Test.Api
             var carbonCalculatorApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
             
+            var chpOperationalModesApi = _hostUsingAddWithAClient.Services.GetRequiredService<IChpOperationalModesApi>();
+            Assert.True(chpOperationalModesApi.HttpClient.BaseAddress != null);
+            
             var countriesAndTerritoriesApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
             
             var feedbackApi = _hostUsingAddWithAClient.Services.GetRequiredService<IFeedbackApi>();
             Assert.True(feedbackApi.HttpClient.BaseAddress != null);
             
+            var fuelTypesApi = _hostUsingAddWithAClient.Services.GetRequiredService<IFuelTypesApi>();
+            Assert.True(fuelTypesApi.HttpClient.BaseAddress != null);
+            
             var heatNetworksApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+            
+            var heatRecoverySourcesApi = _hostUsingAddWithAClient.Services.GetRequiredService<IHeatRecoverySourcesApi>();
+            Assert.True(heatRecoverySourcesApi.HttpClient.BaseAddress != null);
             
             var importApi = _hostUsingAddWithAClient.Services.GetRequiredService<IImportApi>();
             Assert.True(importApi.HttpClient.BaseAddress != null);
@@ -274,14 +301,23 @@ namespace HNTAS.Api.Client.Test.Api
             var carbonCalculatorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
+            var chpOperationalModesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IChpOperationalModesApi>();
+            Assert.True(chpOperationalModesApi.HttpClient.BaseAddress != null);
+
             var countriesAndTerritoriesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
             var feedbackApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IFeedbackApi>();
             Assert.True(feedbackApi.HttpClient.BaseAddress != null);
 
+            var fuelTypesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IFuelTypesApi>();
+            Assert.True(fuelTypesApi.HttpClient.BaseAddress != null);
+
             var heatNetworksApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatNetworksApi>();
             Assert.True(heatNetworksApi.HttpClient.BaseAddress != null);
+
+            var heatRecoverySourcesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IHeatRecoverySourcesApi>();
+            Assert.True(heatRecoverySourcesApi.HttpClient.BaseAddress != null);
 
             var importApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IImportApi>();
             Assert.True(importApi.HttpClient.BaseAddress != null);
