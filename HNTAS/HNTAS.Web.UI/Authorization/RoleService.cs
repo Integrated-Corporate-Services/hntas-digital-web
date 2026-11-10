@@ -19,26 +19,26 @@ namespace HNTAS.Web.UI.Authorization
 
         public async Task<List<UserRole>> GetRolesAsync(string oneloginId)
         {
-            //string cacheKey = $"roles_{oneloginId}";
+            string cacheKey = $"roles_{oneloginId}";
 
-            //if (!_cache.TryGetValue(cacheKey, out List<UserRole> roles))
-            //{
+            if (!_cache.TryGetValue(cacheKey, out List<UserRole> roles))
+            {
                 var response = await _userService.GetUserByOneLoginId(oneloginId);                
-                var roles = response.Roles ?? new List<UserRole>();
+                roles = response.Roles ?? new List<UserRole>();
                 if (!roles.Contains(UserRole.ResponsibleParty) && response.InvitedRole.HasValue)
                 {
                     roles = new List<UserRole> { (UserRole)response.InvitedRole };                    
                 }
 
                 // Read from appsettings, default to 30 if not found
-                // var durationMinutes = _configuration.GetValue<int>("CacheSettings:RoleCacheDurationMinutes", 30);
+                var durationMinutes = _configuration.GetValue<int>("CacheSettings:RoleCacheDurationMinutes", 30);
 
                 // Set the cache to expire strictly in 30 minutes
-                //var cacheOptions = new MemoryCacheEntryOptions()
-                //    .SetAbsoluteExpiration(TimeSpan.FromMinutes(durationMinutes));
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(durationMinutes));
 
-                //_cache.Set(cacheKey, roles, cacheOptions);
-            //}
+                _cache.Set(cacheKey, roles, cacheOptions);
+            }
             return roles;
         }
 

@@ -1,4 +1,7 @@
-﻿using HNTAS.Api.Client.Model;
+﻿using Amazon.Runtime.Internal.Util;
+using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
+using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.CompaniesHouse;
@@ -20,8 +23,9 @@ namespace HNTAS.Web.UI.Controllers
         private readonly IOrganisationService _organisationService;
         private readonly ISessionHelper _sessionHelper;
         private readonly IConfiguration _configuration;
+        private readonly IRoleService _roleService;
 
-        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworkService heatNetworkService, IOrganisationService organisationService, ISessionHelper sessionHelper, IConfiguration configuration)
+        public DashboardController(ILogger<DashboardController> logger, IUserService userService, IHeatNetworkService heatNetworkService, IOrganisationService organisationService, ISessionHelper sessionHelper, IConfiguration configuration, IRoleService roleService)
         {
             _logger = logger;
             _userService = userService;
@@ -29,6 +33,7 @@ namespace HNTAS.Web.UI.Controllers
             _organisationService = organisationService;
             _sessionHelper = sessionHelper;
             _configuration = configuration;
+            _roleService = roleService;
         }
 
         public async Task<UserDetailsResponse> RetrieveUserDetails(string userId)
@@ -213,7 +218,10 @@ namespace HNTAS.Web.UI.Controllers
                 var selectedOrg = orgs.Organisations.FirstOrDefault(o => o.OrgId == model.SelectedOrganisation);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationName, selectedOrg?.OrgName);
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.OrganisationId, selectedOrg?.OrgId);
-                
+
+                var oneloginId = User.GetOneLoginId(_logger);
+                _roleService.ClearRoleCache(oneloginId!);
+
                 return RedirectToAction("OrganisationDetails", "Dashboard");
             }
             catch
