@@ -543,26 +543,58 @@ namespace HNTAS.Web.UI.Controllers
             return RedirectToAction("NewContributorHeatNetwork");
         }
 
-        private async Task<List<SelectItemOption>> GetListOfHeatNetworks()
+        private async Task<List<SelectItemOption>?> GetListOfHeatNetworks()
         {
-            //get heat networks from the database or service
             _logger.LogInformation("Retrieving heat networks for the user.");
 
-            var userId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey);
-            var orgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId);
-            var response = await _userService.GetUserHeatNetworks(userId);
+            var userId = _sessionHelper.GetFromSession<string>(
+                HttpContext,
+                SessionKeys.UserModel_Id_SessionKey);
 
-            //filter ddh role only so, it won't list the user contibution networks
-            var respectiveNetworks = response?.Where(w => w.OrgId == orgId && w.Role != UserRole.Contributor.ToString()).ToList();
-            var heatNetworks = await Utility.GetHeatNetworkSelectListAsync(respectiveNetworks!);
+            var orgId = _sessionHelper.GetFromSession<string>(
+                HttpContext,
+                SessionKeys.OrganisationId);
 
-            if (heatNetworks == null)
+            var userNetworks = await _userService.GetUserHeatNetworks(userId);
+
+            // Only include networks for the current organisation and exclude contributor roles
+            var heatNetworkMappings = userNetworks?
+                .Where(x => x.OrgId == orgId &&
+                            !string.Equals(x.Role, UserRole.Contributor.ToString(), StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (heatNetworkMappings == null || !heatNetworkMappings.Any())
             {
-                _logger.LogError("No heat networks found in API for the UserId : {UserId}", userId);
+                _logger.LogError("No heat networks found for UserId: {UserId}", userId);
                 TempData["ErrorMessage"] = "Unable to retrieve heat network information. Please try again later";
                 return null;
             }
-            return heatNetworks;
+
+            var existingContributor = _sessionHelper.GetFromSession<ExistingContributorsListViewModel>(
+                HttpContext,
+                SessionKeys.ExistingContributorsListViewModelSessionKey);
+
+            var newContributor = _sessionHelper.GetFromSession<NewContributorEmail>(
+                HttpContext,
+                SessionKeys.NewContributorEmailViewModelSessionKey);
+
+            var emailAddress = existingContributor?.SelectedEmailAddress
+                               ?? newContributor?.EmailAddress;
+
+            if (!string.IsNullOrWhiteSpace(emailAddress))
+            {
+                var invitedUser = await _userService.GetUserByEmailIdAsync(emailAddress);
+
+                if (invitedUser?.HnRoleMappings?.Any() == true)
+                {
+                    heatNetworkMappings = heatNetworkMappings
+                        .Where(network =>
+                            !invitedUser.HnRoleMappings.Any(mapping => mapping.HnId == network.HnId))
+                        .ToList();
+                }
+            }
+
+            return await Utility.GetHeatNetworkSelectListAsync(heatNetworkMappings);
         }
 
         [HttpGet]
