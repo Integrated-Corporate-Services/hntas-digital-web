@@ -236,6 +236,7 @@ namespace HNTAS.Web.UI.Helpers
                     new() { Id = HeatNetworkElementType.Substation, Label = "Substations", Hint = "For example, a communal distribution network pressure break" },
                     new() { Id = HeatNetworkElementType.NonDomesticConsumerConnection, Label = "Non-domestic consumer connections", Hint = "The connection between a district network and a single consumer heat system"},
                     new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal distribution networks", Hint = "The communal distribution network supplies dwellings or units within one communal building."},
+                    new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer connections", Hint = "The connection between a communal distribution network and a single consumer heat system" },
                 };
             }
         }
