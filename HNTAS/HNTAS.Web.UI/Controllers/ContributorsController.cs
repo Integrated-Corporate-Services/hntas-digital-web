@@ -644,6 +644,7 @@ namespace HNTAS.Web.UI.Controllers
                 }
 
                 model = _sessionHelper.GetFromSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey);
+                model.HeatNetworks = await GetListOfHeatNetworks();
                 return View(model);
             }
             _sessionHelper.SaveToSession<NewContributorHeatNetworkViewModel>(HttpContext, SessionKeys.NewContributorHeatNetworkViewModelSessionKey, model);
