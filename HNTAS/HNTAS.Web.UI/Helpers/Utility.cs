@@ -27,7 +27,7 @@ namespace HNTAS.Web.UI.Helpers
         public static void ShowBackButton(this Controller controller, string action, string controllerName, string fragement)
         {
             controller.ViewBag.ShowBackButton = true;
-            controller.ViewBag.BackLinkUrl = controller.Url.Action(action, controllerName, "", "", "", fragement);
+            controller.ViewBag.BackLinkUrl = controller.Url.Action(action, controllerName, null, "", "", fragement);
         }
 
         public static string CapitalizeCommaSeparated(string input)
