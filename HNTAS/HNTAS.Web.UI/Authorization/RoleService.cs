@@ -7,6 +7,8 @@ namespace HNTAS.Web.UI.Authorization
 {
     public class RoleService : IRoleService
     {
+        private readonly record struct CacheKeys(string Roles, string HnRoleMapping);
+
         private readonly IMemoryCache _cache;
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
@@ -29,12 +31,11 @@ namespace HNTAS.Web.UI.Authorization
 
         public async Task<List<UserRole>> GetRolesAsync(string oneloginId, bool isNetworkRole = false)
         {
-            string cacheKey = $"roles_{oneloginId}";
-            string cacheHnRoleMappingKey = $"hnRoleMapping_{oneloginId}";
+            var cacheKeys = GetCacheKeys(oneloginId);
             List<UserRole> userRoles;
             List<HnRoleMapping> hnRoleMappings;
 
-            if (!_cache.TryGetValue(cacheKey, out List<UserRole> roles))
+            if (!_cache.TryGetValue(cacheKeys.Roles, out List<UserRole> roles))
             {
                 // Read from appsettings, default to 30 if not found
                 var durationMinutes = _configuration.GetValue<int>("CacheSettings:RoleCacheDurationMinutes", 30);
@@ -50,13 +51,13 @@ namespace HNTAS.Web.UI.Authorization
                     roles = new List<UserRole> { MapContributorRoleToUserRole((ContributorRole)response.InvitedRole).Value };
                 }
 
-                _cache.Set(cacheHnRoleMappingKey, response.HnRoleMappings, cacheOptions);
-                _cache.Set(cacheKey, roles, cacheOptions);
+                _cache.Set(cacheKeys.HnRoleMapping, response.HnRoleMappings, cacheOptions);
+                _cache.Set(cacheKeys.Roles, roles, cacheOptions);
             }
 
             if (isNetworkRole)
             {
-                hnRoleMappings = _cache.Get<List<HnRoleMapping>>(cacheHnRoleMappingKey);
+                hnRoleMappings = _cache.Get<List<HnRoleMapping>>(cacheKeys.HnRoleMapping);
                 var httpContext = _httpContextAccessor.HttpContext;
                 var hnId = httpContext is null
                     ? null
@@ -78,8 +79,14 @@ namespace HNTAS.Web.UI.Authorization
 
         public void ClearRoleCache(string oneloginId)
         {
-            _cache.Remove($"roles_{oneloginId}");
-            _cache.Remove($"hnRoleMapping_{oneloginId}");
+            var cacheKeys = GetCacheKeys(oneloginId);
+            _cache.Remove(cacheKeys.Roles);
+            _cache.Remove(cacheKeys.HnRoleMapping);
+        }
+
+        private static CacheKeys GetCacheKeys(string oneloginId)
+        {
+            return new CacheKeys($"roles_{oneloginId}", $"hnRoleMapping_{oneloginId}");
         }
 
         private static UserRole? MapContributorRoleToUserRole(ContributorRole? contributorRole)
