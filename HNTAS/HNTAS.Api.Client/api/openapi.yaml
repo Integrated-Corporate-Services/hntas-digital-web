@@ -3403,8 +3403,8 @@ components:
         invitedOrgName: invitedOrgName
         emailAddress: emailAddress
         contributorRoles:
-        - DesignatedDutyHolder
-        - DesignatedDutyHolder
+        - ResponsibleParty
+        - ResponsibleParty
         rolesToReplace:
         - null
         - null
@@ -4468,12 +4468,12 @@ components:
       type: object
     ContributorRole:
       enum:
+      - ResponsibleParty
+      - NetworkManager
       - DesignatedDutyHolder
       - Contributor
       - Assessor
       - Certifier
-      - NetworkManager
-      - ResponsibleParty
       type: string
     CountryAndTerritory:
       example:
@@ -7869,7 +7869,7 @@ components:
     HnRoleMapping:
       example:
         hnId: hnId
-        role: DesignatedDutyHolder
+        role: ResponsibleParty
       properties:
         hnId:
           type: string
@@ -7985,8 +7985,8 @@ components:
         invitedOrgName: invitedOrgName
         inviterUserId: inviterUserId
         invitedRoles:
-        - DesignatedDutyHolder
-        - DesignatedDutyHolder
+        - ResponsibleParty
+        - ResponsibleParty
         jobTitle: jobTitle
         invitedHnId: invitedHnId
         invitedEmail: invitedEmail
@@ -8092,8 +8092,8 @@ components:
         invitedOrgName: invitedOrgName
         inviterUserId: inviterUserId
         roles:
-        - DesignatedDutyHolder
-        - DesignatedDutyHolder
+        - ResponsibleParty
+        - ResponsibleParty
         fullName: fullName
         invitedHnId: invitedHnId
         firstName: firstName
@@ -11222,9 +11222,9 @@ components:
         lastName: lastName
         hnRoleMappings:
         - hnId: hnId
-          role: DesignatedDutyHolder
+          role: ResponsibleParty
         - hnId: hnId
-          role: DesignatedDutyHolder
+          role: ResponsibleParty
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -11350,8 +11350,8 @@ components:
             name: name
             orgId: orgId
         invitedRoles:
-        - DesignatedDutyHolder
-        - DesignatedDutyHolder
+        - ResponsibleParty
+        - ResponsibleParty
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle
@@ -11505,9 +11505,9 @@ components:
         lastName: lastName
         hnRoleMappings:
         - hnId: hnId
-          role: DesignatedDutyHolder
+          role: ResponsibleParty
         - hnId: hnId
-          role: DesignatedDutyHolder
+          role: ResponsibleParty
         preferredContactType: Landline
         mobileNumber: mobileNumber
         jobTitle: jobTitle

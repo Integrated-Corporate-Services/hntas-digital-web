@@ -31,34 +31,34 @@ namespace HNTAS.Api.Client.Model
     public enum ContributorRole
     {
         /// <summary>
-        /// Enum DesignatedDutyHolder for value: DesignatedDutyHolder
+        /// Enum ResponsibleParty for value: ResponsibleParty
         /// </summary>
-        DesignatedDutyHolder = 1,
-
-        /// <summary>
-        /// Enum Contributor for value: Contributor
-        /// </summary>
-        Contributor = 2,
-
-        /// <summary>
-        /// Enum Assessor for value: Assessor
-        /// </summary>
-        Assessor = 3,
-
-        /// <summary>
-        /// Enum Certifier for value: Certifier
-        /// </summary>
-        Certifier = 4,
+        ResponsibleParty = 1,
 
         /// <summary>
         /// Enum NetworkManager for value: NetworkManager
         /// </summary>
-        NetworkManager = 5,
+        NetworkManager = 2,
 
         /// <summary>
-        /// Enum ResponsibleParty for value: ResponsibleParty
+        /// Enum DesignatedDutyHolder for value: DesignatedDutyHolder
         /// </summary>
-        ResponsibleParty = 6
+        DesignatedDutyHolder = 3,
+
+        /// <summary>
+        /// Enum Contributor for value: Contributor
+        /// </summary>
+        Contributor = 4,
+
+        /// <summary>
+        /// Enum Assessor for value: Assessor
+        /// </summary>
+        Assessor = 5,
+
+        /// <summary>
+        /// Enum Certifier for value: Certifier
+        /// </summary>
+        Certifier = 6
     }
 
     /// <summary>
@@ -73,6 +73,12 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static ContributorRole FromString(string value)
         {
+            if (value.Equals("ResponsibleParty"))
+                return ContributorRole.ResponsibleParty;
+
+            if (value.Equals("NetworkManager"))
+                return ContributorRole.NetworkManager;
+
             if (value.Equals("DesignatedDutyHolder"))
                 return ContributorRole.DesignatedDutyHolder;
 
@@ -84,12 +90,6 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("Certifier"))
                 return ContributorRole.Certifier;
-
-            if (value.Equals("NetworkManager"))
-                return ContributorRole.NetworkManager;
-
-            if (value.Equals("ResponsibleParty"))
-                return ContributorRole.ResponsibleParty;
 
             throw new NotImplementedException($"Could not convert value to type ContributorRole: '{value}'");
         }
@@ -101,6 +101,12 @@ namespace HNTAS.Api.Client.Model
         /// <returns></returns>
         public static ContributorRole? FromStringOrDefault(string value)
         {
+            if (value.Equals("ResponsibleParty"))
+                return ContributorRole.ResponsibleParty;
+
+            if (value.Equals("NetworkManager"))
+                return ContributorRole.NetworkManager;
+
             if (value.Equals("DesignatedDutyHolder"))
                 return ContributorRole.DesignatedDutyHolder;
 
@@ -112,12 +118,6 @@ namespace HNTAS.Api.Client.Model
 
             if (value.Equals("Certifier"))
                 return ContributorRole.Certifier;
-
-            if (value.Equals("NetworkManager"))
-                return ContributorRole.NetworkManager;
-
-            if (value.Equals("ResponsibleParty"))
-                return ContributorRole.ResponsibleParty;
 
             return null;
         }
@@ -130,6 +130,12 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public static string ToJsonValue(ContributorRole value)
         {
+            if (value == ContributorRole.ResponsibleParty)
+                return "ResponsibleParty";
+
+            if (value == ContributorRole.NetworkManager)
+                return "NetworkManager";
+
             if (value == ContributorRole.DesignatedDutyHolder)
                 return "DesignatedDutyHolder";
 
@@ -141,12 +147,6 @@ namespace HNTAS.Api.Client.Model
 
             if (value == ContributorRole.Certifier)
                 return "Certifier";
-
-            if (value == ContributorRole.NetworkManager)
-                return "NetworkManager";
-
-            if (value == ContributorRole.ResponsibleParty)
-                return "ResponsibleParty";
 
             throw new NotImplementedException($"Value could not be handled: '{value}'");
         }
