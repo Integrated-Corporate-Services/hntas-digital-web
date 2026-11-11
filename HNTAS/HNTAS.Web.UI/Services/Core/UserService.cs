@@ -71,6 +71,32 @@ namespace HNTAS.Web.UI.Services.Core
             }
         }
 
+        public async Task<UserResponse?> GetUserCurrentRole(string oneLoginId)
+        {
+            _logger.LogInformation("Retrieving user current role");
+
+            try
+            {
+                var userResponse = await _usersApi.GetUserCurrentRoleAsync(oneLoginId);
+
+                if (userResponse.IsOk)
+                {
+                    return userResponse.Ok();
+                }
+                else if (userResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+
+                throw new Exception($"Failed to retrieve user current role with status code: {userResponse.StatusCode}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving user current role");
+                throw;
+            }
+        }
+
         public async Task<UserResponse?> GetUserByEmailIdAsync(string emailId)
         {
             _logger.LogInformation("Retrieving user by email ID");

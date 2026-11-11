@@ -23,8 +23,10 @@ namespace HNTAS.Web.UI.Authorization
 
             if (oneloginId == null) return;
 
+            var isNetworkRole = requirement.IsNetworkRole;
+
             // Get roles from your "Single Source of Truth" (the DB)
-            var userRoles = await _roleService.GetRolesAsync(oneloginId);
+            var userRoles = await _roleService.GetRolesAsync(oneloginId, isNetworkRole);
 
             // LOGIC:
             // 1. If AllowedRoles is empty, we just care that the user exists in our system.
