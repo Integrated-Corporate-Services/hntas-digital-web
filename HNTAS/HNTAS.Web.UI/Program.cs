@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
@@ -546,6 +547,46 @@ else
 
 // Custom authorization logic for role-based access control, policies, and handlers
 builder.Services.AddApplicationAuthorization();
+
+// Configure Redis cache
+var redisHost = Environment.GetEnvironmentVariable("REDIS_HOST");
+var redisPort = Environment.GetEnvironmentVariable("REDIS_PORT");
+var redisUsername = Environment.GetEnvironmentVariable("REDIS_USERNAME");
+var redisPassword = Environment.GetEnvironmentVariable("REDIS_PASSWORD");
+var redisTls = Environment.GetEnvironmentVariable("REDIS_TLS");
+
+if (string.IsNullOrWhiteSpace(redisHost))
+{
+    throw new InvalidOperationException("REDIS_HOST environment variable is not configured.");
+}
+
+if (string.IsNullOrWhiteSpace(redisPort))
+{
+    throw new InvalidOperationException("REDIS_PORT environment variable is not configured.");
+}
+
+var redisOptions = new ConfigurationOptions
+{
+    EndPoints = { $"{redisHost}:{redisPort}" },
+    AbortOnConnectFail = false,
+    Ssl = bool.TryParse(redisTls, out var useTls) && useTls
+};
+
+if (!string.IsNullOrWhiteSpace(redisUsername))
+{
+    redisOptions.User = redisUsername;
+}
+
+if (!string.IsNullOrWhiteSpace(redisPassword))
+{
+    redisOptions.Password = redisPassword;
+}
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.ConfigurationOptions = redisOptions;
+    options.InstanceName = "HNTAS:Cache:";
+});
 
 builder.Services.AddSession(options =>
 {
