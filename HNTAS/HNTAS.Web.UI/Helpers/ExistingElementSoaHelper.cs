@@ -61,29 +61,6 @@ namespace HNTAS.Web.UI.Helpers
             };
         }        
 
-        public static string GetSoaElementContent(HeatNetworkElementType? elementType)
-        {
-            return elementType switch
-            {
-                HeatNetworkElementType.EnergyCentre => (
-                    "What is the status of the statement of applicability for the Energy Centre?"
-                ),
-                HeatNetworkElementType.ConsumerConnection => (
-                    "What is the status of the statement of applicability for the Consumer Connection?"
-                ),
-                HeatNetworkElementType.DistrictDistribution => (
-                    "What is the status of the statement of applicability for the District Distribution Network?"
-                ),
-                HeatNetworkElementType.Substation => (
-                    "What is the status of the statement of applicability for the Substation?"
-                ),
-                HeatNetworkElementType.CommunalDistribution => (
-                    "What is the status of the statement of applicability for the Communal Distribution Network?"
-                ),                
-                _ => (string.Empty)
-            };
-        }
-
         public static int GetMilestoneIndex(Milestone milestone)
         {
             return milestone switch
@@ -97,81 +74,6 @@ namespace HNTAS.Web.UI.Helpers
             };
         }
         
-        public static List<SoaStatusOption> GetSoaStatuses()
-        {
-            return new List<SoaStatusOption>()
-            {
-                new() { Id = SoaStatus.NotStarted },
-                new() { Id = SoaStatus.InProgress },
-                new() { Id = SoaStatus.SoACompleted },
-                new() { Id = SoaStatus.SoAAgreed },
-                new() { Id = SoaStatus.BeingAssessed }
-            };
-        }
-
-        public static List<SoaStatusWithCount> GetSoaStatuses(List<SoaStatusWithCount> soaStatuses)
-        {
-            var allStatuses = new List<SoaStatusWithCount>
-            {
-                new SoaStatusWithCount { SoaStatus = SoaStatus.NotStarted, Count = 0 },
-                new SoaStatusWithCount { SoaStatus = SoaStatus.InProgress, Count = 0 },
-                new SoaStatusWithCount { SoaStatus = SoaStatus.SoACompleted, Count = 0 },
-                new SoaStatusWithCount { SoaStatus = SoaStatus.SoAAgreed, Count = 0 },
-                new SoaStatusWithCount { SoaStatus = SoaStatus.BeingAssessed, Count = 0 }
-            };
-            if (soaStatuses == null || !soaStatuses.Any())
-            {
-                return allStatuses;
-            }
-            foreach (var status in allStatuses)
-            {
-                var matchingStatus = soaStatuses.FirstOrDefault(s => s.SoaStatus == status.SoaStatus);
-                if (matchingStatus != null)
-                {
-                    status.Count = matchingStatus.Count;
-                }
-            }
-            return allStatuses;
-        }
-
-        public static List<AssessmentOption> GetAssessmentOptions()
-        {
-            return new List<AssessmentOption>
-            {
-                new AssessmentOption
-                {
-                    Label = AssessmentConstants.Execute,
-                    Hint = "Carry out the initial assessment and review the evidence provided"
-                },
-                new AssessmentOption
-                {
-                    Label = AssessmentConstants.Review,
-                    Hint = "Check that the initial assessment was completed correctly"
-                },
-                new AssessmentOption
-                {
-                    Label = AssessmentConstants.Decision,
-                    Hint = "Make the final decision on the outcome of the assessment"
-                },
-                new AssessmentOption
-                {
-                    Label = AssessmentConstants.ReviewAndDecision,
-                    Hint = ""
-                },
-            };
-        }
-
-        public static string GetStageFromPhase(string phase)
-        {
-            return phase switch
-            {
-                "Feasibility" => "Concept design",
-                "Design" => "Developed design, technical design",
-                "Construction" => "Construction design, installation, commissioning",
-                "Operational" => "Operation, maintenance, ongoing monitoring",
-                _ => "NA"
-            };
-        }
         private static List<SoaElementsViewExistingNetwork> GetElementsForStage(List<ElementGroup>? elements, Milestone milestone, HeatNetworkType? networkType = null, bool hasOwnEc = false)
         {
             var soaElements = new List<SoaElementsViewExistingNetwork>();
