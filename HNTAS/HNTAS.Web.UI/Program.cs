@@ -549,7 +549,7 @@ else
 // Custom authorization logic for role-based access control, policies, and handlers
 builder.Services.AddApplicationAuthorization();
 
-if (builder.Configuration.GetValue<bool>("EnableRedisCache"))
+if (builder.Configuration.GetValue<bool>("RedisCache:EnableRedisCache"))
 { 
     Console.WriteLine("Redis cache is enabled. Configuring Redis cache...");
     // Configure Redis cache
