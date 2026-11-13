@@ -6,6 +6,11 @@ namespace HNTAS.Web.UI.Authorization
     public class RolesRequirement : IAuthorizationRequirement
     {
         public UserRole[] AllowedRoles { get; }
-        public RolesRequirement(params UserRole[] roles) => AllowedRoles = roles;
+        public bool IsNetworkRole { get; }
+        public RolesRequirement(bool isNetworkRole, params UserRole[] roles) 
+        {
+            AllowedRoles = roles;
+            IsNetworkRole = isNetworkRole;
+        }
     }
 }

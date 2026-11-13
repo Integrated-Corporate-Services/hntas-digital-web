@@ -63,7 +63,6 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var phase = heatNetworkData?.Phase;
             var networkType = heatNetworkData?.HeatNetworkType;
-
             var networkElements = heatNetworkData?.NetworkElements?.ElementsGroup;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;

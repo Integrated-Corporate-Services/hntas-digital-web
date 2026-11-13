@@ -51,8 +51,9 @@ namespace HNTAS.Api.Client.Model
         /// <param name="hnRoleMappings">hnRoleMappings</param>
         /// <param name="contributingOrganisations">contributingOrganisations</param>
         /// <param name="activeContributingOrgId">activeContributingOrgId</param>
+        /// <param name="invitedRole">invitedRole</param>
         [JsonConstructor]
-        public UserResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<string?> orgId = default, Option<string?> workingOrgName = default, Option<List<UserRole>?> roles = default, Option<UserStatus?> status = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default)
+        public UserResponse(Option<string?> id = default, Option<string?> oneLoginId = default, Option<string?> emailId = default, Option<string?> firstName = default, Option<string?> lastName = default, Option<string?> fullName = default, Option<string?> jobTitle = default, Option<NullableOfPreferredContactType?> preferredContactType = default, Option<string?> landlineNumber = default, Option<string?> mobileNumber = default, Option<string?> contactNumberExtension = default, Option<string?> orgId = default, Option<string?> workingOrgName = default, Option<List<UserRole>?> roles = default, Option<UserStatus?> status = default, Option<List<HnRoleMapping>?> hnRoleMappings = default, Option<List<string>?> contributingOrganisations = default, Option<string?> activeContributingOrgId = default, Option<NullableOfContributorRole?> invitedRole = default)
         {
             IdOption = id;
             OneLoginIdOption = oneLoginId;
@@ -72,6 +73,7 @@ namespace HNTAS.Api.Client.Model
             HnRoleMappingsOption = hnRoleMappings;
             ContributingOrganisationsOption = contributingOrganisations;
             ActiveContributingOrgIdOption = activeContributingOrgId;
+            InvitedRoleOption = invitedRole;
             OnCreated();
         }
 
@@ -102,6 +104,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("status")]
         public UserStatus? Status { get { return this.StatusOption; } set { this.StatusOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of InvitedRole
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NullableOfContributorRole?> InvitedRoleOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets InvitedRole
+        /// </summary>
+        [JsonPropertyName("invitedRole")]
+        public NullableOfContributorRole? InvitedRole { get { return this.InvitedRoleOption; } set { this.InvitedRoleOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of Id
@@ -337,6 +352,7 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  HnRoleMappings: ").Append(HnRoleMappings).Append("\n");
             sb.Append("  ContributingOrganisations: ").Append(ContributingOrganisations).Append("\n");
             sb.Append("  ActiveContributingOrgId: ").Append(ActiveContributingOrgId).Append("\n");
+            sb.Append("  InvitedRole: ").Append(InvitedRole).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -392,6 +408,7 @@ namespace HNTAS.Api.Client.Model
             Option<List<HnRoleMapping>?> hnRoleMappings = default;
             Option<List<string>?> contributingOrganisations = default;
             Option<string?> activeContributingOrgId = default;
+            Option<NullableOfContributorRole?> invitedRole = default;
 
             while (utf8JsonReader.Read())
             {
@@ -466,6 +483,11 @@ namespace HNTAS.Api.Client.Model
                         case "activeContributingOrgId":
                             activeContributingOrgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
+                        case "invitedRole":
+                            string? invitedRoleRawValue = utf8JsonReader.GetString();
+                            if (invitedRoleRawValue != null)
+                                invitedRole = new Option<NullableOfContributorRole?>(NullableOfContributorRoleValueConverter.FromStringOrDefault(invitedRoleRawValue));
+                            break;
                         default:
                             break;
                     }
@@ -484,7 +506,7 @@ namespace HNTAS.Api.Client.Model
             if (status.IsSet && status.Value == null)
                 throw new ArgumentNullException(nameof(status), "Property is not nullable for class UserResponse.");
 
-            return new UserResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, orgId, workingOrgName, roles, status, hnRoleMappings, contributingOrganisations, activeContributingOrgId);
+            return new UserResponse(id, oneLoginId, emailId, firstName, lastName, fullName, jobTitle, preferredContactType, landlineNumber, mobileNumber, contactNumberExtension, orgId, workingOrgName, roles, status, hnRoleMappings, contributingOrganisations, activeContributingOrgId, invitedRole);
         }
 
         /// <summary>
@@ -625,6 +647,15 @@ namespace HNTAS.Api.Client.Model
                     writer.WriteString("activeContributingOrgId", userResponse.ActiveContributingOrgId);
                 else
                     writer.WriteNull("activeContributingOrgId");
+
+            if (userResponse.InvitedRoleOption.IsSet)
+                if (userResponse.InvitedRoleOption!.Value != null)
+                {
+                    var invitedRoleRawValue = NullableOfContributorRoleValueConverter.ToJsonValue(userResponse.InvitedRoleOption.Value!.Value);
+                    writer.WriteString("invitedRole", invitedRoleRawValue);
+                }
+                else
+                    writer.WriteNull("invitedRole");
         }
     }
 }

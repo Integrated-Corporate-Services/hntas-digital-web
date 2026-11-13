@@ -2765,6 +2765,48 @@ paths:
       - Bearer: []
       tags:
       - Users
+  /api/Users/userCurrentRole/{oneLoginId}:
+    get:
+      operationId: GetUserCurrentRole
+      parameters:
+      - explode: false
+        in: path
+        name: oneLoginId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+          description: OK
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Users
   /api/Users/initial-entry:
     post:
       requestBody:
@@ -9974,6 +10016,17 @@ components:
           format: date-time
           type: string
       type: object
+    NullableOfContributorRole:
+      enum:
+      - ResponsibleParty
+      - NetworkManager
+      - DesignatedDutyHolder
+      - Contributor
+      - Assessor
+      - Certifier
+      - null
+      nullable: true
+      type: string
     NullableOfEnergyCentreType:
       enum:
       - SuppliesMultipleBuildings
@@ -11514,6 +11567,7 @@ components:
         roles:
         - ResponsibleParty
         - ResponsibleParty
+        invitedRole: ResponsibleParty
         oneLoginId: oneLoginId
         fullName: fullName
         emailId: emailId
@@ -11584,6 +11638,8 @@ components:
         activeContributingOrgId:
           nullable: true
           type: string
+        invitedRole:
+          $ref: "#/components/schemas/NullableOfContributorRole"
       type: object
     UserRole:
       enum:

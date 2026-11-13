@@ -1,5 +1,6 @@
 using HNTAS.Api.Client.Api;
 using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Authorization;
 using HNTAS.Web.UI.Controllers;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
@@ -23,7 +24,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         private readonly Mock<IHeatNetworkService> _heatNetworksApiMock;
         private readonly Mock<IOrganisationService> _organisationServiceMock;
         private readonly Mock<ISessionHelper> _sessionHelperMock;
-        private readonly Mock<IConfiguration> _configurationMock;
+        private readonly Mock<IConfiguration> _configurationMock;        
 
         private readonly DashboardController _controller;
 
@@ -34,7 +35,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             _heatNetworksApiMock = new Mock<IHeatNetworkService>();
             _organisationServiceMock = new Mock<IOrganisationService>();
             _sessionHelperMock = new Mock<ISessionHelper>();
-            _configurationMock = new Mock<IConfiguration>();
+            _configurationMock = new Mock<IConfiguration>();            
             _controller = CreateController();
         }
 
@@ -46,7 +47,8 @@ namespace HNTAS.Web.UI.Tests.Controllers
                 _heatNetworksApiMock.Object,
                 _organisationServiceMock.Object,
                 _sessionHelperMock.Object,
-                _configurationMock.Object
+                _configurationMock.Object,
+                null
             );
             controller.ControllerContext = new ControllerContext
             {

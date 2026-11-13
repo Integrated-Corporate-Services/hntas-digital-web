@@ -129,6 +129,8 @@ namespace HNTAS.Api.Client.Client
                 return NetworkBuildStatusValueConverter.ToJsonValue(networkBuildStatus);
             if (obj is NetworkDetailsStatus networkDetailsStatus)
                 return NetworkDetailsStatusValueConverter.ToJsonValue(networkDetailsStatus);
+            if (obj is NullableOfContributorRole nullableOfContributorRole)
+                return NullableOfContributorRoleValueConverter.ToJsonValue(nullableOfContributorRole);
             if (obj is NullableOfEnergyCentreType nullableOfEnergyCentreType)
                 return NullableOfEnergyCentreTypeValueConverter.ToJsonValue(nullableOfEnergyCentreType);
             if (obj is NullableOfHeatNetworkType nullableOfHeatNetworkType)
