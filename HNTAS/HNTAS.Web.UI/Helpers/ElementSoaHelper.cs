@@ -75,7 +75,7 @@ namespace HNTAS.Web.UI.Helpers
 
                 }
             };
-        }        
+        }
 
         public static string GetSoaElementContent(ElementTypeInShort? elementType)
         {
@@ -117,7 +117,7 @@ namespace HNTAS.Web.UI.Helpers
                 _ => 0
             };
         }
-        
+
         public static List<SoaStatusOption> GetSoaStatuses()
         {
             return new List<SoaStatusOption>()

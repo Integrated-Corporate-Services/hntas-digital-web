@@ -63,11 +63,10 @@ namespace HNTAS.Web.UI.Controllers
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var phase = heatNetworkData?.Phase;
             var networkType = heatNetworkData?.HeatNetworkType;
-            
             var networkElements = heatNetworkData?.NetworkElements?.ElementsGroup;
             var eligibleIndex = phase == "Design" ? 1 : phase == "Construction" ? 2 : 0;
             var currentStageIndex = _sessionHelper.GetFromSession<int?>(HttpContext, SessionKeys.CurrentStageIndexSessionKey) ?? 0;
-            
+
             HeatNetworkType? heatNetworkType = networkType.HasValue ? (HeatNetworkType?)networkType.Value : null;
             var model = ElementSoaHelper.GetElementSoaViewModel(eligibleIndex, currentStageIndex, networkElements, heatNetworkType);
 
@@ -204,7 +203,7 @@ namespace HNTAS.Web.UI.Controllers
 
             return View(model);
         }
-        
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -419,7 +418,7 @@ namespace HNTAS.Web.UI.Controllers
             if (selectedNetworkElements != null)
             {
                 foreach (var item in selectedNetworkElements.ElementsGroup!)
-                {                    
+                {
                     model.ElementOptions?.Add(new AssessorSelectElementsOption
                     {
                         Label = NetworkElementHelper.GetNetworkTypeLabelForNetworkType(item.ElementDisplayType),
@@ -476,7 +475,7 @@ namespace HNTAS.Web.UI.Controllers
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
         public IActionResult AssessmentSelectionEcAsync()
-        {            
+        {
             var selectedElements = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             var backRoutingAction = GetBackRouteAction(selectedElements!.SelectedElementIds!, ElementTypeInShort.EC);
 
@@ -507,7 +506,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            ViewBag.HnName = hnName;            
+            ViewBag.HnName = hnName;
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
@@ -524,7 +523,7 @@ namespace HNTAS.Web.UI.Controllers
                 if (modelFromSession != null)
                 {
                     modelFromSession.SelectedAssessmentOption = model.SelectedAssessmentOption;
-                }                
+                }
                 return View("AssessmentSelection", modelFromSession);
             }
 
@@ -565,7 +564,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
-            ViewBag.HnName = hnName;            
+            ViewBag.HnName = hnName;
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
@@ -590,7 +589,7 @@ namespace HNTAS.Web.UI.Controllers
 
             var nextRouteAction = GetNextRouteAction(selectedElements!.SelectedElementIds!, model.ElementType);
             return RedirectToAction(nextRouteAction, "ElementSoa");
-        }        
+        }
 
         [Authorize(Policy = SecurityConstants.Policies.CanAssignAssessor)]
         [HttpGet]
@@ -1010,7 +1009,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             var model = _sessionHelper.GetFromSession<AssessorAssessmentSelectionViewModel>(HttpContext, sessionKey) ?? new AssessorAssessmentSelectionViewModel();
             model.ElementType = elementType;
-            model.AssessmentOptions = ElementSoaHelper.GetAssessmentOptions();        
+            model.AssessmentOptions = ElementSoaHelper.GetAssessmentOptions();
 
             return model;
         }
@@ -1092,7 +1091,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.CurrentStageIndexSessionKey);
             _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ElementSoaStatusUpdateModelSessionKey);
-        }        
+        }
 
         private void ClearSoaAssessorSpecificSession()
         {
