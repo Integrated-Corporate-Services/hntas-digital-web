@@ -205,6 +205,7 @@ namespace HNTAS.Web.UI.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SoaUpdateStatus(ElementSoaUpdateStatusViewModel model)
