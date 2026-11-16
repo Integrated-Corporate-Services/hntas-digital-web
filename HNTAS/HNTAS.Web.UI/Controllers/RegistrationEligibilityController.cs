@@ -133,13 +133,13 @@ namespace HNTAS.Web.UI.Controllers
         public IActionResult HowManyDwellingsIncluded()
         {
             this.ShowBackButton("IsHNLocatedInEnglandScotlandWales");
-            var model = _sessionHelper.GetFromSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey) ?? new HowManyDwellingsIncludedModel();
+            var model = _sessionHelper.GetFromSession<EligibilityHowManyDwellingsIncludedModel>(HttpContext, SessionKeys.EligibilityHowManyDwellingsIncludedModelKey) ?? new EligibilityHowManyDwellingsIncludedModel();
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult HowManyDwellingsIncluded(HowManyDwellingsIncludedModel model)
+        public IActionResult HowManyDwellingsIncluded(EligibilityHowManyDwellingsIncludedModel model)
         {
             this.ShowBackButton("IsHNLocatedInEnglandScotlandWales");
             if (!ModelState.IsValid)
@@ -149,10 +149,10 @@ namespace HNTAS.Web.UI.Controllers
             switch (model.HowManyDwellingsIncluded)
             {
                 case "yes":
-                    _sessionHelper.SaveToSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
+                    _sessionHelper.SaveToSession<EligibilityHowManyDwellingsIncludedModel>(HttpContext, SessionKeys.EligibilityHowManyDwellingsIncludedModelKey, model);
                     return RedirectToAction("YouAreEligible");
                 case "no":
-                    _sessionHelper.SaveToSession<HowManyDwellingsIncludedModel>(HttpContext, SessionKeys.HowManyDwellingsIncludedModelKey, model);
+                    _sessionHelper.SaveToSession<EligibilityHowManyDwellingsIncludedModel>(HttpContext, SessionKeys.EligibilityHowManyDwellingsIncludedModelKey, model);
                     return RedirectToAction("LessThan6Dwellings");
                 default:
                     ModelState.AddModelError(nameof(model.HowManyDwellingsIncluded), "Select a valid option");

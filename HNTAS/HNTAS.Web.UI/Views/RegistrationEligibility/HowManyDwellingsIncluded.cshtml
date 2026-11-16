@@ -1,5 +1,5 @@
 ﻿@using HNTAS.Web.UI.Models
-@model HowManyDwellingsIncludedModel
+@model EligibilityHowManyDwellingsIncludedModel
 
 @{
     ViewData["Title"] = "Do any of your new heat networks have the equivalent of 6 or more dwellings? - Check your eligibility to register a heat network";
@@ -15,9 +15,10 @@
             new Question
             {
                 QId = elementId,
-                QText = "Do any of your new heat networks have or help supply 6 or more dwellings or units?",
+                QText = "Do any of your new heat networks have (or help supply) 6 or more dwellings or units?",
                 QDescText = @"
-                <p class='govuk-body'>This applies to residential, non-domestic and mixed-use buildings. Within HNTAS, 45kW is representative of a single unit. For example, an apartment or house with a heat interface unit (HIU) is one unit and a supermarket with a 135kW connection is equivalent to three units.</p>",
+                <p class='govuk-body'>This applies to residential, non-domestic and mixed-use buildings. Within HNTAS, 45kW is representative of a single unit. For example, an apartment or house with a heat interface unit (HIU) is one unit and a supermarket with a 135kW connection is equivalent to three units.</p>
+                <p class='govuk-body'>Choose yes, if your network is primarily a bulk supplier to multiple domestic and non-domestic buildings.</p>",
                 QHintText = null,
                 Options = new List<Option>
                 {
