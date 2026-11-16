@@ -16,10 +16,15 @@ namespace HNTAS.Web.UI.Models
     {
         [Required(ErrorMessage = "Select whether any of your new heat networks are in England, Scotland or Wales")]
         public string? IsHNLocatedInEnglandScotlandWales { get; set; }
-    }  
+    }
     public class  HowManyDwellingsIncludedModel
     {
         [Required(ErrorMessage = "Select whether the network has (or helps supply networks with) 6 or more dwellings or units")]
+        public string HowManyDwellingsIncluded { get; set; }
+    }
+    public class EligibilityHowManyDwellingsIncludedModel
+    {
+        [Required(ErrorMessage = "Select whether any of your new heat networks have (or help supply) 6 or more dwellings or units")]
         public string HowManyDwellingsIncluded { get; set; }
     }
 }
