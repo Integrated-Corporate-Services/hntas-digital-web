@@ -162,15 +162,12 @@ namespace HNTAS.Web.UI.Helpers
             var existingEcNameModel = new NetworkEcNameViewModel();
             for(int i = 0; i < elementOption.ExistingCount; i++)
             {                
-                existingEcNameModel.ExistingEcNameOptions.Add(new EcNameOption { Label = $"{i + 1}. Existing energy centre" });
+                existingEcNameModel.ExistingEcNameOptions.Add(new EcNameOption { Label = $"Existing energy centre {i + 1}" });
             }
 
             for(int i = 0; i < elementOption.NewCount; i++)
-            {
-                if (i == 0)
-                    existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { Label = $"{i + 1}. Main energy centre", IsMainEc = true });
-                else
-                    existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { Label = $"{i + 1}. New energy centre" });
+            {                
+                existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { Label = $"New energy centre {i + 1}" });
             }
 
             return existingEcNameModel;
