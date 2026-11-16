@@ -1,7 +1,7 @@
 ﻿@using HNTAS.Web.UI.Models.EcPlantData
 @model HighHeatRecoveryInformationViewModel
 @{
-    ViewData["Title"] = "Provide the number of high grade heat recovery sources";
+    ViewData["Title"] = "High-grade heat recovery sources";
     var highHeatRecoveryInformationListCount = Model.HighHeatRecoveryInformationList?.Count ?? 0;
 }
 
@@ -9,7 +9,7 @@
     <div class="govuk-grid-column-full">
         <form class="form" asp-action="HighHeatRecoveryInformation" method="post" novalidate>
             <span class="govuk-caption-l">@ViewBag.HnId , @ViewBag.HnName</span>
-            <h1 class="govuk-heading-l">Provide the number of high grade heat recovery sources</h1>
+            <h1 class="govuk-heading-l">High-grade heat recovery sources</h1>
 
             @for (int i = 0; i < highHeatRecoveryInformationListCount; i++)
             {
@@ -38,7 +38,7 @@
                         <div class="govuk-grid-column-one-half">
                             <div class="govuk-form-group">
                                 <label class="govuk-label" asp-for="HighHeatRecoveryInformationList[i].FuelOrHeatSource">
-                                    Fuel or heat source
+                                    Heat source
                                 </label>
                                 @if (hasFuelOrHeatSourceError)
                                 {
@@ -48,7 +48,7 @@
                                     </p>
                                 }
                                 <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"highheatrecoveryinformationlist[{i}].fuelorheatsource")" asp-for="HighHeatRecoveryInformationList[i].FuelOrHeatSource">
-                                    <option value="" selected="">Select a source</option>
+                                    <option value="" selected="">Select a heat source</option>
                                     @foreach (var heatRecoverySource in ViewBag.HeatRecoverySources)
                                     {
                                         <option value="@heatRecoverySource.Ident">@heatRecoverySource.HeatRecoverySource</option>

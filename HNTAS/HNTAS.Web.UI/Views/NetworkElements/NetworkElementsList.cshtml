@@ -12,7 +12,14 @@
             <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
 
             <h1 class="govuk-heading-l">Tell us about the heat network elements</h1>
-            <p class="govuk-hint">Enter the number of existing and new network elements. Enter 0 if none apply.</p>
+            @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())
+            {
+                <p class="govuk-hint">Enter the number of existing and new network elements. Enter 0 if none apply.</p>
+            }
+            else
+            {
+                <p class="govuk-hint">Enter the number of new network elements. Enter 0 if none apply.</p>
+            }                
 
             <table class="govuk-table">
                 <caption class="govuk-table__caption govuk-table__caption--m">
@@ -44,7 +51,7 @@
                         <tr class="govuk-table__row">
                             <th scope="row" class="govuk-table__header">
                                 @item.Label
-                                <p class="govuk-hint">@item.Hint</p>
+                                <p class="govuk-hint" style="margin-top: 0;">@item.Hint</p>
                             </th>
 
                             @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())

@@ -1,7 +1,7 @@
 ﻿@using HNTAS.Web.UI.Models.EcPlantData
 @model ChpInformationViewModel
 @{
-    ViewData["Title"] = "Provide the CHP information";
+    ViewData["Title"] = "Combined heat and power units";
     var chpInformationListCount = Model.ChpInformationList?.Count ?? 0;
 }
 
@@ -9,18 +9,18 @@
     <div class="govuk-grid-column-full">
         <form class="form" asp-action="ChpInformation" method="post" novalidate>
             <span class="govuk-caption-l">@ViewBag.HnId , @ViewBag.HnName</span>
-            <h1 class="govuk-heading-l">Provide the CHP information</h1>
+            <h1 class="govuk-heading-l">Combined heat and power units</h1>
             
             @for (int i = 0; i < chpInformationListCount; i++)
                 {
                 var hasNumberOfMaximumHeatOutputError = ViewData.ModelState[$"chpinformationlist[{i}].maximumheatoutput"]?.Errors.Count > 0;
                 var hasNumberOfMaximumElectricOutputError = ViewData.ModelState[$"chpinformationlist[{i}].maximumelectricoutput"]?.Errors.Count > 0;
                 var hasFuelOrHeatSourceError = ViewData.ModelState[$"chpinformationlist[{i}].fuelorheatsource"]?.Errors.Count > 0;
-                var hasOperationalModeError = ViewData.ModelState[$"chpinformationlist[{i}].operationalmode"]?.Errors.Count > 0;
+                var hasPercentageOfElectricityExportedError = ViewData.ModelState[$"chpinformationlist[{i}].percentageofelectricityexported"]?.Errors.Count > 0;
 
                 var chpInfo = Model.ChpInformationList[i];
                 <div class="govuk-!-margin-top-6">
-                    <h2 class="govuk-heading-m">Combined heat and power system @(i + 1)</h2>
+                    <h2 class="govuk-heading-m">Combined heat and power unit @(i + 1)</h2>
                     <div class="govuk-grid-row hntas-fields-row">
                         <div class="govuk-grid-column-one-quarter">
                             <div class="govuk-form-group">
@@ -56,7 +56,7 @@
                         <div class="govuk-grid-column-one-quarter">
                             <div class="govuk-form-group">
                                 <label class="govuk-label" asp-for="ChpInformationList[i].FuelOrHeatSource">
-                                    Fuel or heat source
+                                    Fuel
                                 </label>
                                 @if (hasFuelOrHeatSourceError)
                                 {
@@ -66,34 +66,28 @@
                                     </p>
                                 }
                                 <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].fuelorheatsource")" asp-for="ChpInformationList[i].FuelOrHeatSource">
-                                    <option value="" selected="">Select a source</option>
+                                    <option value="" selected="">Select a fuel</option>
                                     @foreach (var fuelType in ViewBag.FuelTypes!)
                                     {
                                         <option value="@fuelType.FuelId">@fuelType.Type</option>
                                     }
                                 </select>
                             </div>
-                        </div>
+                        </div>                        
 
                         <div class="govuk-grid-column-one-quarter">
                             <div class="govuk-form-group">
-                                <label class="govuk-label" asp-for="ChpInformationList[i].OperationalMode">
-                                    Operational mode
+                                <label class="govuk-label" asp-for="ChpInformationList[i].PercentageOfElectricityExported">
+                                    Percentage of electricity exported
                                 </label>
-                                @if (hasOperationalModeError)
+                                @if (hasNumberOfMaximumElectricOutputError)
                                 {
-                                    <p id="operationalmode-error" class="govuk-error-message">
+                                    <p id="percentageofelectricityexported-error" class="govuk-error-message">
                                         <span class="govuk-visually-hidden">Error:</span>
-                                        @Html.ValidationMessageFor(m => m.ChpInformationList[i].OperationalMode)
+                                        @Html.ValidationMessageFor(m => m.ChpInformationList[i].PercentageOfElectricityExported)
                                     </p>
                                 }
-                                <select class="govuk-select @(hasOperationalModeError ? "govuk-select--error" : "")" id="@($"chpinformationlist[{i}].operationalmode")" asp-for="ChpInformationList[i].OperationalMode">
-                                    <option value="" selected="">Select a mode</option>
-                                    @foreach (var operationalMode in ViewBag.OperationalModes)
-                                    {
-                                        <option value="@operationalMode.Ident">@operationalMode.OperationalMode</option>
-                                    }
-                                </select>
+                                <input class="govuk-input govuk-input--width-5 @(hasNumberOfMaximumElectricOutputError ? "govuk-input--error" : "")" id="@($"chpinformationlist[{i}].percentageofelectricityexported")" asp-for="ChpInformationList[i].PercentageOfElectricityExported" type="number">
                             </div>
                         </div>
                     </div>

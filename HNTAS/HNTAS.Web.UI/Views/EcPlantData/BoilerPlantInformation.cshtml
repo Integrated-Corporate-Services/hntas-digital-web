@@ -1,7 +1,7 @@
 ﻿@using HNTAS.Web.UI.Models.EcPlantData
 @model BoilerPlantInformationViewModel
 @{
-    ViewData["Title"] = "Provide the boiler plant information";
+    ViewData["Title"] = "Boilers";
     var boilerPlantInformationListCount = Model.BoilerPlantInformationList?.Count ?? 0;
 }
 
@@ -9,7 +9,7 @@
     <div class="govuk-grid-column-full">
         <form class="form" asp-action="BoilerPlantInformation" method="post" novalidate>
             <span class="govuk-caption-l">@ViewBag.HnId , @ViewBag.HnName</span>
-            <h1 class="govuk-heading-l">Provide the boiler plant information</h1>
+            <h1 class="govuk-heading-l">Boilers</h1>
 
             @for (int i = 0; i < boilerPlantInformationListCount; i++)
             {
@@ -18,7 +18,7 @@
 
                 var boilerPlantInfo = Model.BoilerPlantInformationList[i];
                 <div class="govuk-!-margin-top-6">
-                    <h2 class="govuk-heading-m">Boiler plant @(i + 1)</h2>
+                    <h2 class="govuk-heading-m">Boiler @(i + 1)</h2>
                     <div class="govuk-grid-row hntas-fields-row">
                         <div class="govuk-grid-column-one-half">
                             <div class="govuk-form-group">
@@ -38,7 +38,7 @@
                         <div class="govuk-grid-column-one-half">
                             <div class="govuk-form-group">
                                 <label class="govuk-label" asp-for="BoilerPlantInformationList[i].FuelOrHeatSource">
-                                    Fuel or heat source
+                                    Fuel
                                 </label>
                                 @if (hasFuelOrHeatSourceError)
                                 {
@@ -48,7 +48,7 @@
                                     </p>
                                 }
                                 <select class="govuk-select @(hasFuelOrHeatSourceError ? "govuk-select--error" : "")" id="@($"boilerplantinformationlist[{i}].fuelorheatsource")" asp-for="BoilerPlantInformationList[i].FuelOrHeatSource">
-                                    <option value="" selected="">Select a source</option>
+                                    <option value="" selected="">Select a fuel</option>
                                     @foreach (var fuelType in ViewBag.FuelTypes)
                                     {
                                         <option value="@fuelType.FuelId">@fuelType.Type</option>
