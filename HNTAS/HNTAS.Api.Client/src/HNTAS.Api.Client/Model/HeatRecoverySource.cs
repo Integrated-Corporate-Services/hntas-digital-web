@@ -33,17 +33,32 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="HeatRecoverySource" /> class.
         /// </summary>
+        /// <param name="id">id</param>
         /// <param name="maximumHeatOutput">maximumHeatOutput</param>
-        /// <param name="fuelOrHeatSource">fuelOrHeatSource</param>
+        /// <param name="heatSource">heatSource</param>
         [JsonConstructor]
-        public HeatRecoverySource(Option<int?> maximumHeatOutput = default, Option<string?> fuelOrHeatSource = default)
+        public HeatRecoverySource(Option<string?> id = default, Option<int?> maximumHeatOutput = default, Option<string?> heatSource = default)
         {
+            IdOption = id;
             MaximumHeatOutputOption = maximumHeatOutput;
-            FuelOrHeatSourceOption = fuelOrHeatSource;
+            HeatSourceOption = heatSource;
             OnCreated();
         }
 
         partial void OnCreated();
+
+        /// <summary>
+        /// Used to track the state of Id
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> IdOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [JsonPropertyName("id")]
+        public string? Id { get { return this.IdOption; } set { this.IdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of MaximumHeatOutput
@@ -59,17 +74,17 @@ namespace HNTAS.Api.Client.Model
         public int? MaximumHeatOutput { get { return this.MaximumHeatOutputOption; } set { this.MaximumHeatOutputOption = new(value); } }
 
         /// <summary>
-        /// Used to track the state of FuelOrHeatSource
+        /// Used to track the state of HeatSource
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> FuelOrHeatSourceOption { get; private set; }
+        public Option<string?> HeatSourceOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets FuelOrHeatSource
+        /// Gets or Sets HeatSource
         /// </summary>
-        [JsonPropertyName("fuelOrHeatSource")]
-        public string? FuelOrHeatSource { get { return this.FuelOrHeatSourceOption; } set { this.FuelOrHeatSourceOption = new(value); } }
+        [JsonPropertyName("heatSource")]
+        public string? HeatSource { get { return this.HeatSourceOption; } set { this.HeatSourceOption = new(value); } }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -79,8 +94,9 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class HeatRecoverySource {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  MaximumHeatOutput: ").Append(MaximumHeatOutput).Append("\n");
-            sb.Append("  FuelOrHeatSource: ").Append(FuelOrHeatSource).Append("\n");
+            sb.Append("  HeatSource: ").Append(HeatSource).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -118,8 +134,9 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
+            Option<string?> id = default;
             Option<int?> maximumHeatOutput = default;
-            Option<string?> fuelOrHeatSource = default;
+            Option<string?> heatSource = default;
 
             while (utf8JsonReader.Read())
             {
@@ -136,11 +153,14 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
+                        case "id":
+                            id = new Option<string?>(utf8JsonReader.GetString());
+                            break;
                         case "maximumHeatOutput":
                             maximumHeatOutput = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
                             break;
-                        case "fuelOrHeatSource":
-                            fuelOrHeatSource = new Option<string?>(utf8JsonReader.GetString());
+                        case "heatSource":
+                            heatSource = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         default:
                             break;
@@ -148,7 +168,7 @@ namespace HNTAS.Api.Client.Model
                 }
             }
 
-            return new HeatRecoverySource(maximumHeatOutput, fuelOrHeatSource);
+            return new HeatRecoverySource(id, maximumHeatOutput, heatSource);
         }
 
         /// <summary>
@@ -175,17 +195,23 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, HeatRecoverySource heatRecoverySource, JsonSerializerOptions jsonSerializerOptions)
         {
+            if (heatRecoverySource.IdOption.IsSet)
+                if (heatRecoverySource.IdOption.Value != null)
+                    writer.WriteString("id", heatRecoverySource.Id);
+                else
+                    writer.WriteNull("id");
+
             if (heatRecoverySource.MaximumHeatOutputOption.IsSet)
                 if (heatRecoverySource.MaximumHeatOutputOption.Value != null)
                     writer.WriteNumber("maximumHeatOutput", heatRecoverySource.MaximumHeatOutputOption.Value!.Value);
                 else
                     writer.WriteNull("maximumHeatOutput");
 
-            if (heatRecoverySource.FuelOrHeatSourceOption.IsSet)
-                if (heatRecoverySource.FuelOrHeatSourceOption.Value != null)
-                    writer.WriteString("fuelOrHeatSource", heatRecoverySource.FuelOrHeatSource);
+            if (heatRecoverySource.HeatSourceOption.IsSet)
+                if (heatRecoverySource.HeatSourceOption.Value != null)
+                    writer.WriteString("heatSource", heatRecoverySource.HeatSource);
                 else
-                    writer.WriteNull("fuelOrHeatSource");
+                    writer.WriteNull("heatSource");
         }
     }
 }

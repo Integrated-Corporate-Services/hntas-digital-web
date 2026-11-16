@@ -33,13 +33,13 @@ namespace HNTAS.Api.Client.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationStats" /> class.
         /// </summary>
-        /// <param name="notificationOrgId">notificationOrgId</param>
+        /// <param name="contributingOrgId">contributingOrgId</param>
         /// <param name="notificationHistoryCount">notificationHistoryCount</param>
         /// <param name="lastVisitedAt">lastVisitedAt</param>
         [JsonConstructor]
-        public NotificationStats(Option<string?> notificationOrgId = default, Option<int?> notificationHistoryCount = default, Option<DateTimeOffset?> lastVisitedAt = default)
+        public NotificationStats(Option<string?> contributingOrgId = default, Option<int?> notificationHistoryCount = default, Option<DateTimeOffset?> lastVisitedAt = default)
         {
-            NotificationOrgIdOption = notificationOrgId;
+            ContributingOrgIdOption = contributingOrgId;
             NotificationHistoryCountOption = notificationHistoryCount;
             LastVisitedAtOption = lastVisitedAt;
             OnCreated();
@@ -48,17 +48,17 @@ namespace HNTAS.Api.Client.Model
         partial void OnCreated();
 
         /// <summary>
-        /// Used to track the state of NotificationOrgId
+        /// Used to track the state of ContributingOrgId
         /// </summary>
         [JsonIgnore]
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Option<string?> NotificationOrgIdOption { get; private set; }
+        public Option<string?> ContributingOrgIdOption { get; private set; }
 
         /// <summary>
-        /// Gets or Sets NotificationOrgId
+        /// Gets or Sets ContributingOrgId
         /// </summary>
-        [JsonPropertyName("notificationOrgId")]
-        public string? NotificationOrgId { get { return this.NotificationOrgIdOption; } set { this.NotificationOrgIdOption = new(value); } }
+        [JsonPropertyName("contributingOrgId")]
+        public string? ContributingOrgId { get { return this.ContributingOrgIdOption; } set { this.ContributingOrgIdOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of NotificationHistoryCount
@@ -94,7 +94,7 @@ namespace HNTAS.Api.Client.Model
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("class NotificationStats {\n");
-            sb.Append("  NotificationOrgId: ").Append(NotificationOrgId).Append("\n");
+            sb.Append("  ContributingOrgId: ").Append(ContributingOrgId).Append("\n");
             sb.Append("  NotificationHistoryCount: ").Append(NotificationHistoryCount).Append("\n");
             sb.Append("  LastVisitedAt: ").Append(LastVisitedAt).Append("\n");
             sb.Append("}\n");
@@ -139,7 +139,7 @@ namespace HNTAS.Api.Client.Model
 
             JsonTokenType startingTokenType = utf8JsonReader.TokenType;
 
-            Option<string?> notificationOrgId = default;
+            Option<string?> contributingOrgId = default;
             Option<int?> notificationHistoryCount = default;
             Option<DateTimeOffset?> lastVisitedAt = default;
 
@@ -158,8 +158,8 @@ namespace HNTAS.Api.Client.Model
 
                     switch (localVarJsonPropertyName)
                     {
-                        case "notificationOrgId":
-                            notificationOrgId = new Option<string?>(utf8JsonReader.GetString());
+                        case "contributingOrgId":
+                            contributingOrgId = new Option<string?>(utf8JsonReader.GetString());
                             break;
                         case "notificationHistoryCount":
                             notificationHistoryCount = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
@@ -179,7 +179,7 @@ namespace HNTAS.Api.Client.Model
             if (lastVisitedAt.IsSet && lastVisitedAt.Value == null)
                 throw new ArgumentNullException(nameof(lastVisitedAt), "Property is not nullable for class NotificationStats.");
 
-            return new NotificationStats(notificationOrgId, notificationHistoryCount, lastVisitedAt);
+            return new NotificationStats(contributingOrgId, notificationHistoryCount, lastVisitedAt);
         }
 
         /// <summary>
@@ -206,11 +206,11 @@ namespace HNTAS.Api.Client.Model
         /// <exception cref="NotImplementedException"></exception>
         public void WriteProperties(Utf8JsonWriter writer, NotificationStats notificationStats, JsonSerializerOptions jsonSerializerOptions)
         {
-            if (notificationStats.NotificationOrgIdOption.IsSet)
-                if (notificationStats.NotificationOrgIdOption.Value != null)
-                    writer.WriteString("notificationOrgId", notificationStats.NotificationOrgId);
+            if (notificationStats.ContributingOrgIdOption.IsSet)
+                if (notificationStats.ContributingOrgIdOption.Value != null)
+                    writer.WriteString("contributingOrgId", notificationStats.ContributingOrgId);
                 else
-                    writer.WriteNull("notificationOrgId");
+                    writer.WriteNull("contributingOrgId");
 
             if (notificationStats.NotificationHistoryCountOption.IsSet)
                 writer.WriteNumber("notificationHistoryCount", notificationStats.NotificationHistoryCountOption.Value!.Value);

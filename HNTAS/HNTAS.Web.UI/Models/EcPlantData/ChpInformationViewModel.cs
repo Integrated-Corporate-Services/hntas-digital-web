@@ -11,6 +11,6 @@ namespace HNTAS.Web.UI.Models.EcPlantData
     public class ChpInformation : HeatAndFuelBaseViewModel
     {
         public int? MaximumElectricOutput { get; set; }
-        public string? OperationalMode { get; set; }        
+        public int? PercentageOfElectricityExported { get; set; }        
     }
 }
