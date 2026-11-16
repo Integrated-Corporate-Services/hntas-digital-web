@@ -67,88 +67,7 @@ namespace HNTAS.Web.UI.Helpers
                 "NonDomesticConsumerConnection" => ElementTypeInShort.NDCC,
                 _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element type value: {elementType}")
             };
-        }
-
-        //public static HeatNetworkElementType GetNetworkElementDisplayTypeById(ElementTypeInShort? elementId)
-        //{
-        //    return elementId switch
-        //    {
-        //        ElementTypeInShort.EC => HeatNetworkElementType.EnergyCentre,
-        //        ElementTypeInShort.SS => HeatNetworkElementType.Substation,
-        //        ElementTypeInShort.DDN => HeatNetworkElementType.DistrictDistribution,
-        //        ElementTypeInShort.CC => HeatNetworkElementType.ConsumerConnection,
-        //        ElementTypeInShort.CDN => HeatNetworkElementType.CommunalDistribution,
-        //        _ => throw new ArgumentOutOfRangeException(nameof(elementId), $"Not expected heat network element ID value: {elementId}")
-        //    };
-        //}
-
-        //public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(Api.Client.Model.HeatNetworkType? networkType = null, bool hasOwnEnergyCentre = false)
-        //{
-        //    if (networkType == Api.Client.Model.HeatNetworkType.Communal)
-        //    {
-        //        return new List<NetworkElementOption>
-        //        {
-        //            new() { Id = HeatNetworkElementType.Substation, Label = "Communal substation (within the communal building)", SubLabel = "Substations", Hint = "Helps supply a communal distribution network" },
-        //            new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network", SubLabel = "Communal Distribution Networks", Hint = "Pipework running inside a communal building to dwellings or units"},
-        //            new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "Connects the network to individual dwellings or units" },
-        //        };
-        //    }
-        //    else if (networkType == Api.Client.Model.HeatNetworkType.District && hasOwnEnergyCentre)
-        //    {
-        //        return new List<NetworkElementOption>
-        //        {
-        //            new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre (excluding the main energy centre)", SubLabel = "Energy Centres", Hint = "The plant room containing heat generation and connection equipment to an energy source" },
-        //            new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "The connection between a district or communal distribution network and a single consumer heat system"},
-        //        };
-        //    }
-        //    else if (networkType == Api.Client.Model.HeatNetworkType.District && !hasOwnEnergyCentre)
-        //    {
-        //        return new List<NetworkElementOption>
-        //        {
-        //            new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre (not including the supplying energy centre)", SubLabel = "Energy Centres", Hint = "The plant room containing heat generation and connection equipment to an energy source" },
-        //            new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection", SubLabel = "Consumer Connections", Hint = "The connection between a district or communal distribution network and a single consumer heat system"},
-        //        };
-        //    }
-        //    else
-        //    {
-        //        return new List<NetworkElementOption>
-        //        {
-        //            new() { Id = HeatNetworkElementType.CommunalDistribution, Label = "Communal Distribution Network"},
-        //            new() { Id = HeatNetworkElementType.ConsumerConnection, Label = "Consumer Connection" },
-        //            new() { Id = HeatNetworkElementType.EnergyCentre, Label = "Energy Centre", Hint = " (not including the supplying energy centre)" },
-        //            new() { Id = HeatNetworkElementType.DistrictDistribution, Label = "District Distribution Network"},
-        //            new() { Id = HeatNetworkElementType.Substation, Label = "Substation"},
-        //        };
-        //    }
-        //}
-
-        //public static string GetNetworkElementHeadingForNetworkType(Api.Client.Model.HeatNetworkType? networkType, bool hasOwnEc)
-        //{
-        //    if (networkType == Api.Client.Model.HeatNetworkType.Communal)
-        //    {
-        //        return "Communal network elements";
-        //    }
-        //    else if (networkType == Api.Client.Model.HeatNetworkType.District)
-        //    {
-        //        return "District network elements";
-        //    }
-
-        //    return "";
-        //}
-
-        //public static string GetNetworkTypeLabelForNetworkType(Api.Client.Model.HeatNetworkType? networkType, bool hasOwnEc)
-        //{
-        //    if (networkType == Api.Client.Model.HeatNetworkType.Communal && hasOwnEc)
-        //        return HeatNetworkTypeConstants.CommunalWithIntegralEC;
-        //    if (networkType == Api.Client.Model.HeatNetworkType.Communal && !hasOwnEc)
-        //        return HeatNetworkTypeConstants.CommunalWithSeparateUpstreamHN;
-        //    if (networkType == Api.Client.Model.HeatNetworkType.District && hasOwnEc)
-        //        return HeatNetworkTypeConstants.DistrictWithOwnEC;
-        //    if (networkType == Api.Client.Model.HeatNetworkType.District && !hasOwnEc)
-        //        return HeatNetworkTypeConstants.DistrictWithSeparateUpstreamHN;
-
-        //    throw new ArgumentOutOfRangeException(nameof(networkType), $"Not expected heat network type value: {networkType}");
-        //}
+        }        
 
         public static string GetNetworkTypeLabel(Api.Client.Model.HeatNetworkType? networkType)
         {
@@ -200,10 +119,7 @@ namespace HNTAS.Web.UI.Helpers
                 ElementTypeInShort.NDCC => HeatNetworkElementType.NonDomesticConsumerConnection,
                 _ => throw new ArgumentOutOfRangeException(nameof(elementId), $"Not expected heat network element ID value: {elementId}")
             };
-        }
-
-
-        // new changes
+        }       
 
         public static List<NetworkElementOption> GetNetworkElementOptionsForNetworkType(Api.Client.Model.HeatNetworkType? networkType = null, bool hasOwnEnergyCentre = false)
         {
@@ -246,32 +162,16 @@ namespace HNTAS.Web.UI.Helpers
             var existingEcNameModel = new NetworkEcNameViewModel();
             for(int i = 0; i < elementOption.ExistingCount; i++)
             {                
-                existingEcNameModel.ExistingEcNameOptions.Add(new EcNameOption { Label = $"{i + 1}. Existing energy centre" });
+                existingEcNameModel.ExistingEcNameOptions.Add(new EcNameOption { Label = $"Existing energy centre {i + 1}" });
             }
 
             for(int i = 0; i < elementOption.NewCount; i++)
-            {
-                if (i == 0)
-                    existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { Label = $"{i + 1}. Main energy centre", IsMainEc = true });
-                else
-                    existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { Label = $"{i + 1}. New energy centre" });
+            {                
+                existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { Label = $"New energy centre {i + 1}" });
             }
 
             return existingEcNameModel;
         }
-
-        public static string GetNetworkElementLabelByElementType(HeatNetworkElementType elementType)
-        {
-            return elementType switch
-            {
-                HeatNetworkElementType.EnergyCentre => "Energy Centre",
-                HeatNetworkElementType.Substation => "Substation",
-                HeatNetworkElementType.DistrictDistribution => "District Distribution Network",
-                HeatNetworkElementType.ConsumerConnection => "Consumer Connection",
-                HeatNetworkElementType.CommunalDistribution => "Communal Distribution Network",
-                HeatNetworkElementType.NonDomesticConsumerConnection => "Non-Domestic Consumer Connection",
-                _ => throw new ArgumentOutOfRangeException(nameof(elementType), $"Not expected heat network element ID value: {elementType}")
-            };
-        }
+        
     }
 }

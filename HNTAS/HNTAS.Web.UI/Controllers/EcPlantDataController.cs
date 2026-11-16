@@ -121,9 +121,24 @@ namespace HNTAS.Web.UI.Controllers
             }
 
             var savedModel = _sessionHelper.GetFromSession<EcPlantOptionsViewModel>(HttpContext, SessionKeys.EcPlantOptionsViewModelSessionKey);
-            if (savedModel != null && (savedModel.NumberOfChp != model.NumberOfChp || savedModel.NumberOfHeatPump != model.NumberOfHeatPump || savedModel.NumberOfHighHeatRecoverySources != model.NumberOfHighHeatRecoverySources || savedModel.NumberOfBoilerPlants != model.NumberOfBoilerPlants))
+            if (savedModel != null)
             {
-                ClearPlantDataSpecificSession();
+                if (savedModel.NumberOfChp != model.NumberOfChp)
+                {
+                    _sessionHelper.ClearFromSession(HttpContext, SessionKeys.ChpInformationViewModelSessionKey);                    
+                }
+                if (savedModel.NumberOfHeatPump != model.NumberOfHeatPump)
+                {
+                    _sessionHelper.ClearFromSession(HttpContext, SessionKeys.HeatPumpInformationViewModelSessionKey);                    
+                }
+                if (savedModel.NumberOfHighHeatRecoverySources != model.NumberOfHighHeatRecoverySources)
+                {
+                    _sessionHelper.ClearFromSession(HttpContext, SessionKeys.HighHeatRecoveryInformationViewModelSessionKey);                    
+                }
+                if (savedModel.NumberOfBoilerPlants != model.NumberOfBoilerPlants)
+                {
+                    _sessionHelper.ClearFromSession(HttpContext, SessionKeys.BoilerPlantInformationViewModelSessionKey);
+                }                
             }
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.EcPlantOptionsViewModelSessionKey, model);
             var nextAction = ActionList().FirstOrDefault();
