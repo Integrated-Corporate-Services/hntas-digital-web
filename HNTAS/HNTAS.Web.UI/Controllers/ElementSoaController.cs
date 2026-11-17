@@ -58,6 +58,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ClearSoaAssessorSpecificSession();
 
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
@@ -158,6 +159,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
             // Set element-specific ViewBag properties
@@ -217,6 +219,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             // Set element-specific ViewBag properties
             var content = ElementSoaHelper.GetSoaElementContent(model.ElementType);
             ViewBag.Heading = content;
@@ -309,6 +312,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedAssessor = selectedAssessorFullNameWithEmail;
             return View();
         }
@@ -404,6 +408,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             var model = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
             if (model != null)
@@ -451,6 +456,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var modelFromSession = _sessionHelper.GetFromSession<AssessorSelectElementsViewModel>(HttpContext, SessionKeys.AssessorSelectedElementSessionKey);
 
             foreach (var item in model.SelectedElementIds!)
@@ -486,6 +492,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             var model = GetAssessmentModel(ElementTypeInShort.EC, SessionKeys.AssessorAssessmentSelectionEcViewModelSessionKey);
 
@@ -508,6 +515,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
@@ -548,6 +556,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var model = GetAssessmentModel(ElementTypeInShort.SS, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionSsViewModelSessionKey, model);
@@ -566,6 +575,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
@@ -604,6 +614,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var model = GetAssessmentModel(ElementTypeInShort.CC, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCcViewModelSessionKey, model);
@@ -623,6 +634,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
@@ -662,6 +674,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var model = GetAssessmentModel(ElementTypeInShort.CDN, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionCdnViewModelSessionKey, model);
@@ -681,6 +694,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
@@ -721,6 +735,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var model = GetAssessmentModel(ElementTypeInShort.DDN, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey);
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.AssessorAssessmentSelectionDdnViewModelSessionKey, model);
@@ -740,6 +755,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             if (string.IsNullOrEmpty(model.SelectedAssessmentOption))
             {
@@ -781,6 +797,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
             var phase = heatNetworkData?.Phase;
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
@@ -856,6 +873,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.HnId = hnId;
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var assessorDetails = _sessionHelper.GetFromSession<AssessorDetails>(HttpContext, SessionKeys.AssessorDetailsSessionKey);
 
             var stage = _sessionHelper.GetFromSession<SoaStage?>(HttpContext, SessionKeys.SoaStageOfAssessorOnboarding);

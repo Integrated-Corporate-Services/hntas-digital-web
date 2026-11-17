@@ -35,6 +35,7 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             var heatNetworkData = await _heatNetworkService.GetAsync(hnId?.ToUpper()!);
 
@@ -93,6 +94,7 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
 
             return View(model);
         }
@@ -106,6 +108,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -153,6 +156,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -196,6 +200,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -253,6 +258,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -287,6 +293,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -323,6 +330,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -357,6 +365,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -393,6 +402,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -427,6 +437,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -464,6 +475,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
             
@@ -552,6 +564,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
@@ -638,6 +651,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
             

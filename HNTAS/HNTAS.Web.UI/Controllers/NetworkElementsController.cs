@@ -35,6 +35,7 @@ namespace HNTAS.Web.UI.Controllers
 
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var model = _sessionHelper.GetFromSession<NetworkElementViewModel>(HttpContext, SessionKeys.NetworkElementsViewModelSessionKey);
 
             if (model != null)
@@ -64,6 +65,7 @@ namespace HNTAS.Web.UI.Controllers
             var hnName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnName);
             ViewBag.HnId = hnId?.ToUpper();
             ViewBag.HnName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             var networkBuildStatus = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.NetworkBuildStatusSessionKey);
             ViewBag.NetworkBuildStatus = networkBuildStatus;
             foreach (var option in model.ElementOptions)
