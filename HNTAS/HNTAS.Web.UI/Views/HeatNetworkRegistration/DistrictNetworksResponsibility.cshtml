@@ -3,6 +3,8 @@
 
 @{
     ViewData["Title"] = "How many new connected district networks are you responsible for? - Add a heat network - GOV.UK";
+
+    var fieldName = nameof(Model.ResponsibleDistrictNetworks);
 }
 
 <div class="govuk-grid-row">
@@ -19,9 +21,9 @@
                         </label>
                     </h1>
 
-                    <div id="district-networks-hint" class="govuk-hint">
+                    <p class="govuk-body">
                         Within HNTAS, responsibility means you are designing, constructing or operating new district networks beyond the connection point from this network.
-                    </div>
+                    </p>
 
                     @* Field Validation Error Message *@
                     @if (ViewData.ModelState[nameof(Model.ResponsibleDistrictNetworks)]?.Errors.Count > 0)
@@ -37,8 +39,8 @@
                     </label>
 
                     <input class="govuk-input govuk-input--width-5 @(ViewData.ModelState[nameof(Model.ResponsibleDistrictNetworks)]?.Errors.Count > 0 ? "govuk-input--error" : "")"
-                           id="ResponsibleDistrictNetworks"
-                           asp-for="ResponsibleDistrictNetworks"
+                           id="@fieldName.ToLower()"
+                           name="@fieldName"
                            type="text"
                            inputmode="numeric"
                            aria-describedby="district-networks-hint @(ViewData.ModelState[nameof(Model.ResponsibleDistrictNetworks)]?.Errors.Count > 0 ? "ResponsibleDistrictNetworks-error" : "")" />

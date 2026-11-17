@@ -62,14 +62,15 @@
         <h1 class="govuk-heading-l">Tell us about the heat network connections</h1>
 
         <p class="govuk-body">
-            @if (Model.ShowExistingColumn && Model.ShowNewColumn)
-            {
-                @:Enter the number of existing and new network connections. Enter 0 if none apply.
-            }
-            else
-            {
-                @:Enter the number of new network connections. Enter 0 if none apply.
-            }
+            From your answers so far, you have indicated you have a district network. We want to know the total number of buildings you have connected to your district distribution network. We also want to know if you are supplying other. potentially third-party networks downstream from this network. We will ask you about consumer connections later.
+        </p>
+
+        <p class="govuk-body">
+            Provide the number of connections for each building type (and other networks if applicable).
+        </p>
+
+        <p class="govuk-body">
+            Enter 0 if none apply for each connection type.
         </p>
 
         <form asp-action="SaveHeatNetworkConnections" method="post" novalidate>

@@ -742,7 +742,7 @@ namespace HNTAS.Web.UI.Controllers
         [HttpGet]
         public IActionResult AddressManualEntry()
         {
-            this.ShowBackButton("HeatNetworkName", "HeatNetworkRegistration");
+            this.ShowBackButton("DoesHNHaveAPostcode", "HeatNetworkRegistration");
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
             var model = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey)?.HNAddressByStreet ?? new AddressByStreetOrTownModel { Country = "United Kingdom" };
@@ -753,7 +753,7 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddressManualEntry(AddressByStreetOrTownModel model)
         {
-            this.ShowBackButton("HeatNetworkName");
+            this.ShowBackButton("DoesHNHaveAPostcode");
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
             ViewBag.addressFor = _sessionHelper.GetFromSession<string>(HttpContext, "addressFor");
 
