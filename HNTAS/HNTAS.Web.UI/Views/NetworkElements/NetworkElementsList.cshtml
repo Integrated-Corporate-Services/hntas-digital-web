@@ -9,7 +9,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">        
         <form asp-action="NetworkElementsList" method="post" novalidate>        
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
 
             <h1 class="govuk-heading-l">Tell us about the heat network elements</h1>
             @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())

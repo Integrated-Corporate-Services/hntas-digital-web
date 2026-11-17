@@ -57,7 +57,7 @@
 </style>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
             <h1 class="govuk-heading-l">
                 Track statements of applicability (SOA)
             </h1>

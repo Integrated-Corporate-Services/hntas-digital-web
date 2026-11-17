@@ -7,7 +7,7 @@
 }
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName</span>
+        <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
             <h1 class="govuk-heading-l">
                 Network details
             </h1>

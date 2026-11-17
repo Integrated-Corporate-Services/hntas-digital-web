@@ -11,7 +11,7 @@
         <div class="govuk-grid-column-two-thirds-from-desktop">
             <form asp-action="AssessorElementSelectionOverviewConfirm" asp-controller="ElementSoa" method="post">
                 @Html.AntiForgeryToken()
-                <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
                 <h1 class="govuk-heading-l">
                     Check your answers
                 </h1>
