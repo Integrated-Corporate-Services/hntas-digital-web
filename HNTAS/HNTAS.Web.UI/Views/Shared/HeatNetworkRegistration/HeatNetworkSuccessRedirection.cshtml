@@ -9,6 +9,17 @@
     string controllerName = Convert.ToString(ViewBag.ControllerName) ?? string.Empty;
 
     QuestionWithRadiobuttonsModel pageData;
+
+    string notificationHtml = string.Empty;
+
+    if (!string.IsNullOrEmpty(ViewBag.NotificationMessage as string))
+    {
+        notificationHtml = $@"
+            <div class=""govuk-inset-text"">
+                {ViewBag.NotificationMessage}
+            </div>";
+    }
+
     if (ViewBag.RegistrationSource == RegistrationSource.OFGEM)
     {
         pageData = new QuestionWithRadiobuttonsModel
@@ -51,17 +62,6 @@
     }
     else
     {
-
-        string notificationHtml = string.Empty;
-
-        if (!string.IsNullOrEmpty(ViewBag.NotificationMessage as string))
-        {
-            notificationHtml = $@"
-            <div class=""govuk-inset-text"">
-                {ViewBag.NotificationMessage}
-            </div>";
-        }
-
         pageData = new QuestionWithRadiobuttonsModel
         {
             Controller = "HeatNetworkRegistration",
@@ -72,25 +72,17 @@
                 new Question
                 {
                     QId = elementId,
-                    QText = "Next steps",
-                    QDescText = $@"
-                        <p class='govuk-body'>You've successfully registered this heat network.</p>
-                        <p class='govuk-body'>You can now:</p>
-                        <ul class='govuk-list govuk-list--bullet'>
-                            <li>add details about its connections and elements</li>
-                            <li>register another heat network</li>
-                            <li>go to your dashboard to manage your heat networks and include others to support you</li>
-                        </ul>
-                        {notificationHtml}
-                        <h2 class='govuk-heading-m'>What you can do now</h2>",
-                        QHintText = null,
-                        Options = new List<Option>
-                        {
-                            new Option { OptId = $"{elementId}", OptValue = "HNDetails", OptText = "Resume with this heat network", OptHintText = null },
-                            new Option { OptId = $"{elementId}-2", OptValue = "AddHN", OptText = "Add another heat network", OptHintText = null },
-                            new Option { OptId = $"{elementId}-3", OptValue = "Dashboard", OptText = "Go to your dashboard", OptHintText = null }
-                        },
-                        SeletedOption = Model.NextAction
+                    QText = "What you can do now",
+                    QDescText = "",
+                    HeadingLevel = QuestionHeadingLevel.H2,
+                    QHintText = null,
+                    Options = new List<Option>
+                    {
+                        new Option { OptId = $"{elementId}", OptValue = "HNDetails", OptText = "Resume with this heat network", OptHintText = null },
+                        new Option { OptId = $"{elementId}-2", OptValue = "AddHN", OptText = "Add another heat network", OptHintText = null },
+                        new Option { OptId = $"{elementId}-3", OptValue = "Dashboard", OptText = "Go to your dashboard", OptHintText = null }
+                    },
+                    SeletedOption = Model.NextAction
                 }
             }
         };
@@ -98,10 +90,18 @@
     
 }
 
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName</span>
+        <h1 class="govuk-heading-l">Next steps</h1>
+            <p class='govuk-body'>You've successfully registered this heat network.</p>
+            <p class='govuk-body'>You can now:</p>
+            <ul class='govuk-list govuk-list--bullet'>
+                <li>add details about its connections and elements</li>
+                <li>register another heat network</li>
+                <li>go to your dashboard to manage your heat networks and include others to support you</li>
+            </ul>
+            @Html.Raw(notificationHtml)
             @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
         </div>
     </div>
