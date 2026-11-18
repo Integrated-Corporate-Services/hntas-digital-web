@@ -591,6 +591,10 @@ if (builder.Configuration.GetValue<bool>("RedisCache:EnableRedisCache"))
         options.InstanceName = "HNTAS:";
     });
 }
+else
+{
+    builder.Services.AddDistributedMemoryCache();
+}
 
 
 builder.Services.AddSession(options =>
