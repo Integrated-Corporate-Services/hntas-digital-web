@@ -588,7 +588,7 @@ if (builder.Configuration.GetValue<bool>("RedisCache:EnableRedisCache"))
     builder.Services.AddStackExchangeRedisCache(options =>
     {
         options.ConfigurationOptions = redisOptions;
-        options.InstanceName = "HNTAS:Cache:";
+        options.InstanceName = "HNTAS:";
     });
 }
 
