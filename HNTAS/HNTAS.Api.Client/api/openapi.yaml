@@ -5749,6 +5749,7 @@ components:
             status: InProgress
             updatedAt: 2000-01-23T04:56:07.000+00:00
           orgId: orgId
+          mainEnergyCentreName: mainEnergyCentreName
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
           additionalDescription: additionalDescription
@@ -5764,6 +5765,7 @@ components:
             updatedAt: 2000-01-23T04:56:07.000+00:00
           id: id
           phase: phase
+          mainEnergyCentreStatus: Existing
           ecDetails:
             latitude: 1.4658129805029452
             longitude: 5.962133916683182
@@ -6198,6 +6200,7 @@ components:
             status: InProgress
             updatedAt: 2000-01-23T04:56:07.000+00:00
           orgId: orgId
+          mainEnergyCentreName: mainEnergyCentreName
           createdAt: 2000-01-23T04:56:07.000+00:00
           ofgemUserEmailId: ofgemUserEmailId
           additionalDescription: additionalDescription
@@ -6213,6 +6216,7 @@ components:
             updatedAt: 2000-01-23T04:56:07.000+00:00
           id: id
           phase: phase
+          mainEnergyCentreStatus: Existing
           ecDetails:
             latitude: 1.4658129805029452
             longitude: 5.962133916683182
@@ -6656,6 +6660,7 @@ components:
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         orgId: orgId
+        mainEnergyCentreName: mainEnergyCentreName
         createdAt: 2000-01-23T04:56:07.000+00:00
         ofgemUserEmailId: ofgemUserEmailId
         energyCentreType: SuppliesMultipleBuildings
@@ -6671,6 +6676,7 @@ components:
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
         phase: phase
+        mainEnergyCentreStatus: Existing
         ecDetails:
           latitude: 1.4658129805029452
           longitude: 5.962133916683182
@@ -6741,6 +6747,11 @@ components:
           $ref: "#/components/schemas/NullableOfNetworkBuildStatus"
         energyCentreType:
           $ref: "#/components/schemas/NullableOfEnergyCentreType"
+        mainEnergyCentreName:
+          nullable: true
+          type: string
+        mainEnergyCentreStatus:
+          $ref: "#/components/schemas/NullableOfMainEnergyCentreStatus"
         name:
           type: string
         additionalDescription:
@@ -7573,6 +7584,7 @@ components:
           status: InProgress
           updatedAt: 2000-01-23T04:56:07.000+00:00
         orgId: orgId
+        mainEnergyCentreName: mainEnergyCentreName
         createdAt: 2000-01-23T04:56:07.000+00:00
         ofgemUserEmailId: ofgemUserEmailId
         additionalDescription: additionalDescription
@@ -7588,6 +7600,7 @@ components:
           updatedAt: 2000-01-23T04:56:07.000+00:00
         id: id
         phase: phase
+        mainEnergyCentreStatus: Existing
         ecDetails:
           latitude: 1.4658129805029452
           longitude: 5.962133916683182
@@ -7652,6 +7665,11 @@ components:
           type: boolean
         networkBuildStatus:
           $ref: "#/components/schemas/NullableOfNetworkBuildStatus"
+        mainEnergyCentreName:
+          nullable: true
+          type: string
+        mainEnergyCentreStatus:
+          $ref: "#/components/schemas/NullableOfMainEnergyCentreStatus"
         noOfResponsibleCommunalBuilding:
           format: int32
           nullable: true
@@ -9988,6 +10006,13 @@ components:
       - Unset
       - Communal
       - District
+      - null
+      nullable: true
+      type: string
+    NullableOfMainEnergyCentreStatus:
+      enum:
+      - Existing
+      - New
       - null
       nullable: true
       type: string

@@ -133,6 +133,8 @@ namespace HNTAS.Api.Client.Client
                 return NullableOfEnergyCentreTypeValueConverter.ToJsonValue(nullableOfEnergyCentreType);
             if (obj is NullableOfHeatNetworkType nullableOfHeatNetworkType)
                 return NullableOfHeatNetworkTypeValueConverter.ToJsonValue(nullableOfHeatNetworkType);
+            if (obj is NullableOfMainEnergyCentreStatus nullableOfMainEnergyCentreStatus)
+                return NullableOfMainEnergyCentreStatusValueConverter.ToJsonValue(nullableOfMainEnergyCentreStatus);
             if (obj is NullableOfMilestone nullableOfMilestone)
                 return NullableOfMilestoneValueConverter.ToJsonValue(nullableOfMilestone);
             if (obj is NullableOfNetworkBuildStatus nullableOfNetworkBuildStatus)
