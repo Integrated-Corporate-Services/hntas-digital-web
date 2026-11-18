@@ -30,9 +30,13 @@
                     </label>
                 </h1>
 
-                <div id="@(fieldName)-hint" class="govuk-hint">
-                    Enter the number of networks where your organization retains ongoing technical responsibility. Enter 0 if none apply.
-                </div>
+                <p class="govuk-body">
+                    Within HNTAS, building responsibility means you are designing, constructing or operating network elements within a communal building and not just the supply up to the building.
+                </p>
+
+                <label class="govuk-label" for="@fieldName">
+                    Number of new communal building networks
+                </label>
 
                 @if (hasError)
                 {
@@ -41,8 +45,9 @@
                     </p>
                 }
 
+
                 <input class="govuk-input govuk-input--width-4 @(hasError ? "govuk-input--error" : "")"
-                       id="@fieldName"
+                       id="@fieldName.ToLower()"
                        name="@fieldName"
                        type="number"
                        value="@Model.ResponsibleCommunalNetworks"

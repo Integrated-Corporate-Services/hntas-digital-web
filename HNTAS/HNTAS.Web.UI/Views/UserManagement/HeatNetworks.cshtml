@@ -94,7 +94,7 @@
                         </th>
                         <th scope="col" class="govuk-table__header" aria-sort="@GetAriaSort("Role")">
                             <a class="govuk-link govuk-link--no-visited-state" href="@GetSortUrl("Role")">
-                                Your Role @GetSortIcon("Role")
+                                Your role @GetSortIcon("Role")
                             </a>
                         </th>
                         <th scope="col" class="govuk-table__header">Action</th>
@@ -116,7 +116,7 @@
                                     @heatNetwork.Name<br />
                                     @if (!string.IsNullOrWhiteSpace(heatNetwork.HnDescription))
                                     {
-                                        <span class="govuk-hint govuk-!-margin-bottom-0">@heatNetwork.HnDescription</span>
+                                        <span class="govuk-!-margin-bottom-0">@heatNetwork.HnDescription</span>
                                     }
                                 </td>
                                 <td class="govuk-table__cell">@heatNetwork.Role</td>
