@@ -35,7 +35,13 @@ namespace HNTAS.Web.UI.Controllers
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(userId))
+                {
+                    throw new ArgumentException("User ID is required.", nameof(userId));
+                }
+
                 var user = await _userService.GetUserDetails(userId);
+
                 if (user == null)
                 {
                     throw new Exception("Unable to retrieve user information. Please try again later");
@@ -72,7 +78,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
+                TempData["ErrorMessage"] = "Your session has expired. Please start again";
                 return View(new DashboardModel());
             }
             
