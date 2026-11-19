@@ -35,6 +35,11 @@ namespace HNTAS.Web.UI.Controllers
         {
             try
             {
+                if(string.IsNullOrEmpty(userId))
+                {
+                    throw new ArgumentException("User ID cannot be null or empty.", nameof(userId));
+                }
+                
                 var user = await _userService.GetUserDetails(userId);
 
                 if (user == null)
@@ -136,12 +141,22 @@ namespace HNTAS.Web.UI.Controllers
             bool isUserAnRP;
             try
             {
-                user = await RetrieveUserDetails(_sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.UserModel_Id_SessionKey));
+                var userId = _sessionHelper.GetFromSession<string>(
+                    HttpContext,
+                    SessionKeys.UserModel_Id_SessionKey);
+                if(string.IsNullOrEmpty(userId))
+                {
+                    TempData["ErrorMessage"] = "Your session has expired. Please start again";
+                    return View(new OrganisationDetailsModel());
+                }
+
+                user = await RetrieveUserDetails(userId);
+
                 isUserAnRP = await _userService.IsRpUserAsync(user.EmailId) ?? false;
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
+                TempData["ErrorMessage"] = "Something went wrong. Please try again later";
                 return View(new OrganisationDetailsModel());
             }
             _sessionHelper.SaveToSession<string>(HttpContext, "IsUserAnRP", isUserAnRP.ToString());            
@@ -194,7 +209,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
+                TempData["ErrorMessage"] = "Something went wrong. Please try again later";
                 return View(new SwitchOrganisationModel());
             }            
         }
@@ -225,7 +240,7 @@ namespace HNTAS.Web.UI.Controllers
             }
             catch
             {
-                TempData["ErrorMessage"] = "An error occurred while switching organisations. Please try again later.";
+                TempData["ErrorMessage"] = "Something went wrong. Please try again later";
                 return View(model);
             }
         }
