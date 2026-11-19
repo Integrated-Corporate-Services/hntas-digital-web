@@ -46,7 +46,7 @@
 
                         <div class="govuk-radios__conditional @(Model.WorksForSameOrganisation == false ? "" : "govuk-radios__conditional--hidden")" id="conditional-organisation-name">
                             <div class="govuk-form-group @(hasOrgError ? "govuk-form-group--error" : "")">
-                                <label class="govuk-label" for="organisation-name-input">
+                                <label class="govuk-label" for="organisationname">
                                     Provide their organisation name
                                 </label>
 
@@ -58,7 +58,7 @@
                                 }
 
                                 <input class="govuk-input @(hasOrgError ? "govuk-input--error" : "")"
-                                       id="organisation-name-input"
+                                       id="organisationname"
                                        name="OrganisationName"
                                        type="text"
                                        value="@Model.OrganisationName"
