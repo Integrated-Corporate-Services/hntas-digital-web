@@ -1048,7 +1048,7 @@ namespace HNTAS.Web.UI.Controllers
 
             if (networkConnectionsViewModel == null)
             {
-                TempData["ErrorMessage"] = "Your session has expired. Please start again.";
+                TempData["ErrorMessage"] = "Your session has expired. Please start again";
                 return RedirectToAction("HeatNetworkConnections");
             }
 
