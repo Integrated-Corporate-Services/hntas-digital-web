@@ -852,7 +852,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         [Fact]
         public async Task DoesHNHaveAPostcode_Post_ValidPostcode_RedirectsToSearchResults()
         {
-            _addressLookupServiceMock.Setup(x => x.PostcodeLookupAsync(" sw1a 2aa "))
+            _addressLookupServiceMock.Setup(x => x.PostcodeLookupAsync("sw1a 2aa"))
                 .ReturnsAsync(new SearchAddressByPostcodeModel
                 {
                     Addresses = new[] { "10 Downing Street, London, SW1A 2AA" }
