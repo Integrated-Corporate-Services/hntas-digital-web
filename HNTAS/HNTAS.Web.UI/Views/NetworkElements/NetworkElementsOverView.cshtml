@@ -167,15 +167,17 @@
                                     <li>@element</li>
                                 }
                             </ul>
-                            }                            
-
-                        <h3 class="govuk-heading-s">New elements</h3>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var element in Model.NewNetworkElements!)
-                            {
-                                <li>@element</li>
                             }
-                        </ul>
+                        @if (Model.NewNetworkElements != null)
+                        {
+                            <h3 class="govuk-heading-s">New elements</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.NewNetworkElements!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
+                        }                            
                     </dd>
                 </div>
 
@@ -195,14 +197,17 @@
                             </ul>
                             }
                             
-
-                        <h3 class="govuk-heading-s">New EC</h3>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var element in Model.NewNetworkEcNames!)
-                            {
-                                <li>@element</li>
-                            }
-                        </ul>
+                        @if (Model.NewNetworkEcNames != null)
+                        {
+                            <h3 class="govuk-heading-s">New EC</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.NewNetworkEcNames!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
+                        }
+                            
                     </dd>
                 </div>
 

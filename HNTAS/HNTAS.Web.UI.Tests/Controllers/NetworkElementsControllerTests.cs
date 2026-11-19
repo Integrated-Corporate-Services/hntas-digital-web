@@ -396,7 +396,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             Assert.Equal("NetworkConfirmation", result.ActionName);
             _heatNetworkServiceMock.Verify(x => x.UpdateNetworkElements("HN-1", It.Is<NetworkElements2>(req =>
-                req.Elements.Count == 2 &&
+                req.Elements.Count == 3 &&
                 req.ElementsGroup.Count == 1 &&
                 req.IsExistingEnergyCentreSupplyNewBuildings == true &&
                 req.CreatedBy == "user-1")), Times.Once);
