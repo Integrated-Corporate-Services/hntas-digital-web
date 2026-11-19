@@ -159,17 +159,27 @@ namespace HNTAS.Web.UI.Tests.Controllers
         public async Task OrganisationDetails_ReturnsViewWithErrorMessage_WhenUserDetailsRetrievalFails()
         {
             // Arrange
-            _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object; // Assign mock to controller.Url
-            var errorMessage = "Something went wrong. Please try again later";
-            _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
-                             .Returns("user123");
-            _userServiceMock.Setup(s => s.GetUserDetails("user123"))
-                       .ThrowsAsync(new Exception(errorMessage));
+            _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object;
+
+            var exceptionMessage = "Internal API failure";
+            var userFacingMessage = "Something went wrong. Please try again later";
+
+            _sessionHelperMock
+                .Setup(s => s.GetFromSession<string>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.UserModel_Id_SessionKey))
+                .Returns("user123");
+
+            _userServiceMock
+                .Setup(s => s.GetUserDetails("user123"))
+                .ThrowsAsync(new Exception(exceptionMessage));
+
             // Act
             var result = await _controller.OrganisationDetails();
+
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal(errorMessage, _controller.TempData["ErrorMessage"]);
+            Assert.Equal(userFacingMessage, _controller.TempData["ErrorMessage"]);
             Assert.IsType<OrganisationDetailsModel>(viewResult.Model);
         }
 
