@@ -44,20 +44,23 @@
                                 </dd>
                             </div>
                         }
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                New
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                <ul class="govuk-list govuk-list--bullet">
-                                    @foreach (var newEl in Model.NewNetworkElements!)
-                                    {
-                                        <li>@newEl</li>
-                                    }
-                                </ul>
-                            </dd>
-                        </div>
-                    </dl>
+                        @if (Model.NewNetworkElements != null && Model.NewNetworkElements.Count > 0)
+                            {
+                                <div class="govuk-summary-list__row">
+                                    <dt class="govuk-summary-list__key">
+                                        New
+                                    </dt>
+                                    <dd class="govuk-summary-list__value">
+                                        <ul class="govuk-list govuk-list--bullet">
+                                            @foreach (var newEl in Model.NewNetworkElements!)
+                                            {
+                                                <li>@newEl</li>
+                                            }
+                                        </ul>
+                                    </dd>
+                                </div>
+                            }
+                        </dl>
                 </div>
             </div>
 
@@ -92,19 +95,23 @@
                                 </dd>
                             </div>
                         }
-                        <div class="govuk-summary-list__row">
-                            <dt class="govuk-summary-list__key">
-                                New
-                            </dt>
-                            <dd class="govuk-summary-list__value">
-                                <ul class="govuk-list govuk-list--bullet">
-                                    @foreach (var newName in Model.NewNetworkEcNames!)
-                                    {
-                                        <li>@newName</li>
-                                    }
-                                </ul>
-                            </dd>
-                        </div>
+                        @if(Model.NewNetworkEcNames != null)
+                        {
+                            <div class="govuk-summary-list__row">
+                                <dt class="govuk-summary-list__key">
+                                    New
+                                </dt>
+                                <dd class="govuk-summary-list__value">
+                                    <ul class="govuk-list govuk-list--bullet">
+                                        @foreach (var newName in Model.NewNetworkEcNames!)
+                                        {
+                                            <li>@newName</li>
+                                        }
+                                    </ul>
+                                </dd>
+                            </div>
+                        }
+                        
                     </dl>
                 </div>
 

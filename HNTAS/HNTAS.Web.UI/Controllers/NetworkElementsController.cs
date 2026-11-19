@@ -87,9 +87,17 @@ namespace HNTAS.Web.UI.Controllers
                 {
                     ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"Number of new {option.Label?.ToLower()} must be 0 or more");
                 }
-                if (option.Id == HeatNetworkElementType.EnergyCentre && option.NewCount.HasValue && option.NewCount.Value == 0)
+                if (model.MainEnergyCentreStatus == NullableOfMainEnergyCentreStatus.New.ToString() && option.Id == HeatNetworkElementType.EnergyCentre && option.NewCount.HasValue && option.NewCount.Value == 0)
                 {
-                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"You mentioned previously that you have a main energy centre. You need to provide atleast one energy centre");
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"You mentioned previously that you have a main energy centre. You need to provide atleast 1 energy centre");
+                }
+                if (option.Id == HeatNetworkElementType.EnergyCentre && string.IsNullOrEmpty(model.MainEnergyCentreStatus) && option.NewCount.HasValue && option.NewCount.Value == 0)
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"You mentioned previously that you have a main energy centre. You need to provide atleast 1 energy centre");
+                }
+                if (model.MainEnergyCentreStatus == NullableOfMainEnergyCentreStatus.Existing.ToString() && option.Id == HeatNetworkElementType.EnergyCentre && option.ExistingCount.HasValue && option.ExistingCount.Value == 0)
+                {
+                    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].ExistingCount", $"You mentioned previously that you have a main energy centre. You need to provide atleast 1 energy centre");
                 }
                 if (!option.NewCount.HasValue)
                 {
@@ -343,31 +351,31 @@ namespace HNTAS.Web.UI.Controllers
                 if (option.ExistingCount.HasValue && option.ExistingCount.Value > 0)
                 {
                     model.ExistingNetworkElements ??= new List<string>();
-                    model.ExistingNetworkElements.Add($"{option.ExistingCount.Value} existing {option.Label?.ToLower()}");
+                    model.ExistingNetworkElements.Add($"{option.ExistingCount.Value} {option.Label?.ToLower()}");
                 }
                 if (option.NewCount.HasValue && option.NewCount.Value > 0)
                 {
                     model.NewNetworkElements ??= new List<string>();
                     if (option.Id == HeatNetworkElementType.EnergyCentre)
-                        model.NewNetworkElements.Add($"{option.NewCount.Value} main {option.Label?.ToLower()}");
+                        model.NewNetworkElements.Add($"{option.NewCount.Value} {option.Label?.ToLower()}");
                     else
-                        model.NewNetworkElements.Add($"{option.NewCount.Value} new {option.Label?.ToLower()}");
+                        model.NewNetworkElements.Add($"{option.NewCount.Value} {option.Label?.ToLower()}");
                 }
             }
 
             foreach (var ec in networkEcNames!.ExistingEcNameOptions)
             {
                 model.ExistingNetworkEcNames ??= new List<string>();
-                model.ExistingNetworkEcNames.Add($"Existing {ec.EcName!}");
+                model.ExistingNetworkEcNames.Add($"{ec.EcName!}");
             }
 
             foreach (var ec in networkEcNames!.NewEcNameOptions)
             {
                 model.NewNetworkEcNames ??= new List<string>();
                 if (ec.IsMainEc)
-                    model.NewNetworkEcNames.Add($"Main {ec.EcName!}");
+                    model.NewNetworkEcNames.Add($"{ec.EcName!}");
                 else
-                    model.NewNetworkEcNames.Add($"New {ec.EcName!}");
+                    model.NewNetworkEcNames.Add($"{ec.EcName!}");
             }
             
             ViewBag.SupplyToNewBuildings = supplyToNewBuilding != null && supplyToNewBuilding!.IsExistingEcSupply == "yes";
@@ -377,7 +385,7 @@ namespace HNTAS.Web.UI.Controllers
                 foreach (var ecName in selectedEcNames)
                 {
                     model.ExistingEcSupplyingNewBuilding ??= new List<string>();
-                    model.ExistingEcSupplyingNewBuilding.Add($"Existing {ecName}");
+                    model.ExistingEcSupplyingNewBuilding.Add($"{ecName}");
                 }
             }            
 
@@ -571,7 +579,7 @@ namespace HNTAS.Web.UI.Controllers
                 var label = elementOption != null ? elementOption.Label : newElementGroup.ElementDisplayType.ToString();
                 label = label.ToSentenceCase();
                 model.NewNetworkElements ??= new List<string>();
-                model.NewNetworkElements.Add($"{newElementGroup.Count} new {label?.ToLower()}");
+                model.NewNetworkElements.Add($"{newElementGroup.Count} {label?.ToLower()}");
             }
 
             foreach (var existingElementGroup in existingElementGroupsGrouped!)
@@ -580,7 +588,7 @@ namespace HNTAS.Web.UI.Controllers
                 var label = elementOption != null ? elementOption.Label : existingElementGroup.ElementDisplayType.ToString();
                 label = label.ToSentenceCase();
                 model.ExistingNetworkElements ??= new List<string>();
-                model.ExistingNetworkElements.Add($"{existingElementGroup.Count} existing {label?.ToLower()}");
+                model.ExistingNetworkElements.Add($"{existingElementGroup.Count} {label?.ToLower()}");
             }
 
             
