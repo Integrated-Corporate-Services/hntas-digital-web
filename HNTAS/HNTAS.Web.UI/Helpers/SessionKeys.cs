@@ -49,6 +49,7 @@
 
         public const string HnId = "HnIdkey";
         public const string HnName = "HnNameKey";
+        public const string HnAdditionalDesc = "HnAdditionalDescKey";
 
 
         // Session for adding DDH and contributor

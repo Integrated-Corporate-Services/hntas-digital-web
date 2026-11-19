@@ -194,6 +194,7 @@ namespace HNTAS.Web.UI.Controllers
         {
             this.ShowBackButton(nameof(InviteLeadByEmail));
             ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+            ViewBag.InvitedEmail = _sessionHelper.GetFromSession<InviteLeadViewModel>(HttpContext, SessionKeys.NewLeadInviteEmailViewModelSessionKey)?.EmailAddress;
             var model = _sessionHelper.GetFromSession<NewLeadDetailsViewModel>(HttpContext, SessionKeys.NewLeadDetailsViewModelSessionKey) ?? new NewLeadDetailsViewModel();
             return View(model);
         }
@@ -202,10 +203,12 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NewLeadDetails(NewLeadDetailsViewModel model)
         {
-            this.ShowBackButton(nameof(InviteLeadByEmail) );
+            this.ShowBackButton(nameof(InviteLeadByEmail));
 
             if (!ModelState.IsValid)
             {
+                ViewBag.OrganisationName = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationName);
+                ViewBag.InvitedEmail = _sessionHelper.GetFromSession<InviteLeadViewModel>(HttpContext, SessionKeys.NewLeadInviteEmailViewModelSessionKey)?.EmailAddress;
                 return View(model);
             }
 
@@ -245,6 +248,14 @@ namespace HNTAS.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveSameOrganisation(SameOrganisationViewModel model)
         {
+
+            if (model.WorksForSameOrganisation == null)
+            {
+                ModelState.AddModelError(
+                   nameof(model.WorksForSameOrganisation),
+                   $"Select whether you and the network manager work for the same organisation");
+            }
+
             if (model.WorksForSameOrganisation == false && string.IsNullOrWhiteSpace(model.OrganisationName))
             {
                 ModelState.AddModelError(

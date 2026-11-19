@@ -109,7 +109,8 @@ namespace HNTAS.Web.UI.Controllers
                 UHNID = response?.HnId,
                 Phase = response?.Phase!,
                 Coordinates = latlong,
-                NetworkType = networkType
+                NetworkType = networkType,
+                AdditionalDescription = response!.AdditionalDescription
             };
 
             var buildType = response.NetworkBuildStatus;
@@ -129,6 +130,7 @@ namespace HNTAS.Web.UI.Controllers
 
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, model.UHNID);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, model.Name);
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnAdditionalDesc, model.AdditionalDescription);
 
             return model;
         }
@@ -174,6 +176,7 @@ namespace HNTAS.Web.UI.Controllers
             };
             ViewBag.HNId = hnId;
             ViewBag.HNName = hnName;
+            ViewBag.HNAdditionalDescription = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnAdditionalDesc);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnId, hnId);
             _sessionHelper.SaveToSession(HttpContext, SessionKeys.HnName, hnName);
 

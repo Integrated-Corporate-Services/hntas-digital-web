@@ -16,5 +16,6 @@ namespace HNTAS.Web.UI.Models.HeatNetwork
         public NetworkConnectionsViewModel NetworkConnections { get; set; } = new();
         public string? EnergyCentreType { get; set; }
         public string? NetworkBuildStatus { get; set; }
+        public string? AdditionalDescription { get; set; }
     }
 }
