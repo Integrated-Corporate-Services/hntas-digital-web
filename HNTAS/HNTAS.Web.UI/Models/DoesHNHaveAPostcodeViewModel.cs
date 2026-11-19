@@ -9,7 +9,12 @@ namespace HNTAS.Web.UI.Models
 
         [RegularExpression(@"^[A-Za-z]{1,2}\d[A-Za-z\d]?\s*\d[A-Za-z]{2}$",
             ErrorMessage = "Enter a valid UK postcode")]
-        public string? Postcode { get; set; }
+        public string? Postcode {
+            get => _postcode;
+            set => _postcode = value?.Trim();
+        }
+
+        private string? _postcode;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
