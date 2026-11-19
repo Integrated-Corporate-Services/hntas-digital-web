@@ -5,51 +5,95 @@
 
 @{
     ViewData["Title"] = "Energy centre – Certify your heat networks with the Heat Network Technical Assurance Scheme (HNTAS)";
-    var fieldOrder = new[] { nameof(Model.EnergyCentreOption) };
     var elementId = Html.GenerateIdFromName(nameof(Model.EnergyCentreOption)).ToLowerInvariant();
-    string controllerName = Convert.ToString(ViewBag.ControllerName) ?? string.Empty;
-
-    var pageData = new QuestionWithRadiobuttonsModel
-    {
-        Controller = controllerName,
-        Action = ViewBag.PostMethod,
-        FieldOrder = fieldOrder,
-        Questions = new List<Question>
-        {
-            new Question
-            {
-                QId = elementId,
-                QText = "Does this heat network have a main energy centre?",
-                QDescText = null,
-                QHintText = null,
-                HeadingLevel= QuestionHeadingLevel.H2,
-                Options = EnergyCentreOptionsHelper.GetOptions(elementId),
-                SeletedOption = Model.EnergyCentreOption
-            }
-        }
-    };
+    var options = EnergyCentreOptionsHelper.GetOptions(elementId);
+    var firstOption = options.FirstOrDefault();
+    var hasRadioError = ViewData.ModelState[nameof(Model.EnergyCentreOption)]?.Errors.Count > 0;
+    var hasMainEnergyCentreNameError = ViewData.ModelState[nameof(Model.MainEnergyCentreName)]?.Errors.Count > 0;
+    var showMainEnergyCentreName = firstOption != null && Model.EnergyCentreOption == firstOption.OptValue;
 }
-
-
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <span class="govuk-caption-l">Add a heat network</span>
-        <h1 class="govuk-heading-l">Energy centre</h1>
+        <form asp-controller="@ViewBag.ControllerName" asp-action="@ViewBag.PostMethod" method="post" novalidate>
+            @Html.AntiForgeryToken()
 
-        <p class="govuk-body">A main energy centre is the primary heat source for multiple buildings.</p>
+            <span class="govuk-caption-l">Add a heat network</span>
+            <h1 class="govuk-heading-l">Energy centre</h1>
 
-        <details class="govuk-details" data-module="govuk-details">
-            <summary class="govuk-details__summary">
-                <span class="govuk-details__summary-text">
-                    Help with the energy centre
-                </span>
-            </summary>
-            <div class="govuk-details__text">
-                The energy centre is a plant room that contains heat generation equipment and/or equipment connecting to an energy source. An energy centre may have an independent location or be situated within a communal building.
+            <p class="govuk-body">A main energy centre is the primary heat source for multiple buildings.</p>
+
+            <details class="govuk-details" data-module="govuk-details">
+                <summary class="govuk-details__summary">
+                    <span class="govuk-details__summary-text">
+                        Help with the energy centre
+                    </span>
+                </summary>
+                <div class="govuk-details__text">
+                    The energy centre is a plant room that contains heat generation equipment and/or equipment connecting to an energy source. An energy centre may have an independent location or be situated within a communal building.
+                </div>
+            </details>
+
+            <div class="govuk-form-group @(hasRadioError ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="@(hasRadioError ? $"{elementId}-error" : null)">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                        <h2 class="govuk-fieldset__heading">Does this heat network have a main energy centre?</h2>
+                    </legend>
+
+                    @if (hasRadioError)
+                    {
+                        <p id="@elementId-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.EnergyCentreOption)]?.Errors[0].ErrorMessage
+                        </p>
+                    }
+
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        @for (int i = 0; i < options.Count; i++)
+                        {
+                            var option = options[i];
+                            var conditionalId = i == 0 ? "conditional-main-energy-centre-name" : null;
+
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input"
+                                       id="@option.OptId"
+                                       name="@nameof(Model.EnergyCentreOption)"
+                                       type="radio"
+                                       value="@option.OptValue"
+                                       data-aria-controls="@conditionalId"
+                                       @(Model.EnergyCentreOption == option.OptValue ? "checked" : "")>
+                                <label class="govuk-label govuk-radios__label" for="@option.OptId">@option.OptText</label>
+                            </div>
+
+                            @if (i == 0)
+                            {
+                                <div class="govuk-radios__conditional @(showMainEnergyCentreName ? "" : "govuk-radios__conditional--hidden")" id="conditional-main-energy-centre-name">
+                                    <div class="govuk-form-group @(hasMainEnergyCentreNameError ? "govuk-form-group--error" : "")">
+                                        <label class="govuk-label" for="main-energy-centre-name">
+                                            Provide the main energy centre name
+                                        </label>
+
+                                        @if (hasMainEnergyCentreNameError)
+                                        {
+                                            <p id="main-energy-centre-name-error" class="govuk-error-message">
+                                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.MainEnergyCentreName)]?.Errors[0].ErrorMessage
+                                            </p>
+                                        }
+
+                                        <input class="govuk-input govuk-!-width-one-half @(hasMainEnergyCentreNameError ? "govuk-input--error" : "")"
+                                               id="mainenergycentrename"
+                                               name="@nameof(Model.MainEnergyCentreName)"
+                                               type="text"
+                                               value="@Model.MainEnergyCentreName"
+                                               aria-describedby="@(hasMainEnergyCentreNameError ? "main-energy-centre-name-error" : null)" />
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </fieldset>
             </div>
-        </details>
 
-        @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
+            <button class="govuk-button" data-module="govuk-button" type="submit">Continue</button>
+        </form>
     </div>
 </div>

@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **SuppliesSixOrMoreUnits** | **bool** |  | [optional] 
 **NetworkBuildStatus** | **NullableOfNetworkBuildStatus** |  | [optional] 
 **EnergyCentreType** | **NullableOfEnergyCentreType** |  | [optional] 
+**MainEnergyCentreName** | **string** |  | [optional] 
+**MainEnergyCentreStatus** | **NullableOfMainEnergyCentreStatus** |  | [optional] 
 **Name** | **string** |  | [optional] 
 **AdditionalDescription** | **string** |  | [optional] 
 **HasAddressAndPostcode** | **bool** |  | [optional] 

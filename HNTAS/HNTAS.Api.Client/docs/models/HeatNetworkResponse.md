@@ -10,6 +10,8 @@ Name | Type | Description | Notes
 **OrgId** | **string** |  | [optional] 
 **SuppliesSixOrMoreUnits** | **bool** |  | [optional] 
 **NetworkBuildStatus** | **NullableOfNetworkBuildStatus** |  | [optional] 
+**MainEnergyCentreName** | **string** |  | [optional] 
+**MainEnergyCentreStatus** | **NullableOfMainEnergyCentreStatus** |  | [optional] 
 **NoOfResponsibleCommunalBuilding** | **int** |  | [optional] 
 **NoOfResponsibleDistrictNetwork** | **int** |  | [optional] 
 **HasAddressAndPostcode** | **bool** |  | [optional] 
