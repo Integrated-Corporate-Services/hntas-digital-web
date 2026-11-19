@@ -86,7 +86,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("Unable to retrieve user information. Please try again later", _controller.TempData["ErrorMessage"]);
+            Assert.Equal("Something went wrong. Please try again later", _controller.TempData["ErrorMessage"]);
             Assert.IsType<DashboardModel>(viewResult.Model);
             var model = (DashboardModel)viewResult.Model;
         }
@@ -118,7 +118,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal("Your account is not associated with any organisation. Please contact support.", _controller.TempData["ErrorMessage"]);
+            Assert.Equal("Something went wrong. Please try again later", _controller.TempData["ErrorMessage"]);
             Assert.IsType<DashboardModel>(viewResult.Model);
         }
 
@@ -160,7 +160,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             // Arrange
             _controller.Url = SetUpBackLink("Dashboard", "UserAccount").Object; // Assign mock to controller.Url
-            var errorMessage = "Some error occured.";
+            var errorMessage = "Something went wrong. Please try again later";
             _sessionHelperMock.Setup(s => s.GetFromSession<string>(It.IsAny<HttpContext>(), SessionKeys.UserModel_Id_SessionKey))
                              .Returns("user123");
             _userServiceMock.Setup(s => s.GetUserDetails("user123"))
