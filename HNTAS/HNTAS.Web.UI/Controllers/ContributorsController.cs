@@ -452,7 +452,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError(
                    nameof(model.WorksForSameOrganisation),
-                   $"Select yes whether you and the {role} work for the same organisation");
+                   $"Select whether you and the {role} work for the same organisation");
             }
 
             if (model.WorksForSameOrganisation == false &&
@@ -471,8 +471,7 @@ namespace HNTAS.Web.UI.Controllers
 
                 ViewBag.Role = role;
 
-                var backAction = newContributorDetails.InviteForFirstTime ? nameof(NewContributorDetails) : nameof(NewContributorAlreadyExists);
-
+                var backAction = newContributorDetails.InviteForFirstTime ? nameof(HeatNetworkPhase) : nameof(NewContributorAlreadyExists);
                 this.ShowBackButton(backAction);
                 return View(nameof(SameOrganisation), model);
             }
