@@ -596,13 +596,13 @@ namespace HNTAS.Web.UI.Controllers
                 this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");
                 ViewBag.ChangeAction = "HeatNetworkEcNewNetwork";
             }
-            else if((connectionsModel?.NewCommunalBuildings ?? 0) > 0)
-            {
-                this.ShowBackButton("CommunalBuildingResponsibility", "HeatNetworkRegistration");
-            }
             else if ((connectionsModel?.NewOtherDistrictNetworks ?? 0) > 0)
             {
                 this.ShowBackButton("DistrictNetworksResponsibility", "HeatNetworkRegistration");
+            }
+            else if((connectionsModel?.NewCommunalBuildings ?? 0) > 0)
+            {
+                this.ShowBackButton("CommunalBuildingResponsibility", "HeatNetworkRegistration");
             }
             else
             {
@@ -710,8 +710,9 @@ namespace HNTAS.Web.UI.Controllers
             if (!ModelState.IsValid)
             {                
                 return View("HeatNetworkRegistration/DoesHNHaveAPostcode", model);
-            }            
-            if ((bool)!model.HasPostcode!)
+            }
+
+            if (model.HasPostcode == false)
             {
                 model.Postcode = null;
                 _sessionHelper.SaveToSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey, model);

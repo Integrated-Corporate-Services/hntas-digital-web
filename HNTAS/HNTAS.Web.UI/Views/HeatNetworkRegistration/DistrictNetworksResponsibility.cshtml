@@ -42,6 +42,7 @@
                            id="@fieldName.ToLower()"
                            name="@fieldName"
                            type="text"
+                           value="@Model.ResponsibleDistrictNetworks"
                            inputmode="numeric"
                            aria-describedby="district-networks-hint @(ViewData.ModelState[nameof(Model.ResponsibleDistrictNetworks)]?.Errors.Count > 0 ? "ResponsibleDistrictNetworks-error" : "")" />
                 </div>
