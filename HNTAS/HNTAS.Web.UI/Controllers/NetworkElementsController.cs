@@ -450,11 +450,11 @@ namespace HNTAS.Web.UI.Controllers
                         Count = option.NewCount.Value,
                         ElementDisplayType = option.Id,
                         ElementType = elementType
-                    };
-                    elementGroupList.Add(elementGroup);
+                    };                    
 
                     if (option.Id == HeatNetworkElementType.EnergyCentre && networkEcNames != null && networkEcNames.NewEcNameOptions.Any(a => a.IsMainEc))
                     {
+                        elementGroup.Count = elementGroup.Count + 1;
                         var mainEcName = networkEcNames.NewEcNameOptions.FirstOrDefault(a => a.IsMainEc)?.EcName;
                         var mainEcElement = new Element
                         {
@@ -467,6 +467,7 @@ namespace HNTAS.Web.UI.Controllers
                         elementList.Add(mainEcElement);
                         instanceCounter++;
                     }
+                    elementGroupList.Add(elementGroup);
                     for (int cnt = 0; cnt < option.NewCount.Value; cnt++)
                     {
                         var el = new Element

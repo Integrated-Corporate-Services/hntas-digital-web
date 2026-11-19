@@ -305,8 +305,15 @@ namespace HNTAS.Web.UI.Tests.Controllers
             // Arrange
             var model = new NetworkSupplyTypeModel
             {
-                EnergyCentreOption = NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString()
+                EnergyCentreOption = NullableOfEnergyCentreType.SuppliesMultipleBuildings.ToString(),
+                MainEnergyCentreName = "Main EC"
             };
+
+            _sessionHelperMock
+                .Setup(x => x.GetFromSession<NetworkStatusModel>(
+                    It.IsAny<HttpContext>(),
+                    SessionKeys.NetworkStatusModelKey))
+                .Returns(new NetworkStatusModel { BuildStatus = NetworkBuildStatus.New.ToString() });
 
             // Act
             var result = _controller.SaveEcNewNetwork(model);
