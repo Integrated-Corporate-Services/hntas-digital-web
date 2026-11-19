@@ -89,8 +89,8 @@
     var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
     var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
     {
-        Id = nameof(Model.ConfirmedDeclaration),
-        Name = nameof(Model.ConfirmedDeclaration).ToLower(),
+        Id = nameof(Model.ConfirmedDeclaration).ToLower(),
+        Name = nameof(Model.ConfirmedDeclaration),
         Label = "I confirm that I am authorised to give this person access to this organisation with this role on behalf of my organisation.",
         HasError = hasDeclarationErrors,
         ErrorMessage = hasDeclarationErrors ? ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors[0].ErrorMessage : null,
