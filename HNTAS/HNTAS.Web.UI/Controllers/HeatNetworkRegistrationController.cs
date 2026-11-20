@@ -150,6 +150,16 @@ namespace HNTAS.Web.UI.Controllers
                 this.ShowBackButton("HeatNetworkStatus", "HeatNetworkRegistration");
                 return View( "HeatNetworkEcNewNetwork", model);
             }
+            if (model.EnergyCentreOption == "SuppliesMultipleBuildings" && string.IsNullOrWhiteSpace(model.MainEnergyCentreName))
+            {
+                ModelState.AddModelError(nameof(model.MainEnergyCentreName), "Provide the main energy centre name");
+                this.ShowBackButton("HeatNetworkStatus", "HeatNetworkRegistration");
+                return View("HeatNetworkEcNewNetwork", model);
+            }
+            else if (model.EnergyCentreOption != "SuppliesMultipleBuildings")
+            {
+                model.MainEnergyCentreName = null;
+            }
 
             var energyCentreOption = model?.EnergyCentreOption;
 
@@ -183,12 +193,14 @@ namespace HNTAS.Web.UI.Controllers
             bool isSingleCommunalOnly = energyCentreOption == NullableOfEnergyCentreType.SuppliesOneCommunalBuildingOnly.ToString();
             bool isSingleCommunalWithSeparateDistrict = energyCentreOption == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString();
 
-            if (isSingleCommunalOnly || isSingleCommunalWithSeparateDistrict)
-            {
-                var buildStatusModel = _sessionHelper.GetFromSession<NetworkStatusModel>(
+            var buildStatusModel = _sessionHelper.GetFromSession<NetworkStatusModel>(
                     HttpContext,
                     SessionKeys.NetworkStatusModelKey
                 );
+
+            if (isSingleCommunalOnly || isSingleCommunalWithSeparateDistrict)
+            {
+                
 
                 var buildStatus = buildStatusModel?.BuildStatus;
 
@@ -208,8 +220,42 @@ namespace HNTAS.Web.UI.Controllers
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.NetworkConnectionsModelKey, connection);
 
                 return RedirectToAction("HeatNetworkConnectionSummary");
+            }            
+            
+            if (model!.EnergyCentreOption == "SuppliesMultipleBuildings" && buildStatusModel!.BuildStatus == NetworkBuildStatus.NewAndExisting.ToString())
+            {
+                return RedirectToAction("MainEcStatus");
             }
 
+            _sessionHelper.ClearFromSession(HttpContext, SessionKeys.MainEnergyCentreStatusModelKey);
+            return RedirectToAction("HeatNetworkConnections");
+        }        
+
+        [HttpGet]
+        public IActionResult MainEcStatus()
+        {
+            this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");
+            var sessionModel = _sessionHelper.GetFromSession<MainEnergyCentreStatusModel>(HttpContext, SessionKeys.MainEnergyCentreStatusModelKey);
+            var model = sessionModel ?? new MainEnergyCentreStatusModel();
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
+
+            return View("HeatNetworkRegistration/MainEcStatus", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MainEcStatus(MainEnergyCentreStatusModel model)
+        {
+            ViewBag.ControllerName = nameof(HeatNetworkRegistrationController).Replace("Controller", string.Empty);
+
+            if (!ModelState.IsValid)
+            {
+                this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");
+                return View("HeatNetworkRegistration/MainEcStatus", model);
+            }
+
+            _sessionHelper.SaveToSession(HttpContext, SessionKeys.MainEnergyCentreStatusModelKey, model);
+                  
             return RedirectToAction("HeatNetworkConnections");
         }
 
@@ -238,24 +284,22 @@ namespace HNTAS.Web.UI.Controllers
 
         [HttpGet]
         public IActionResult HeatNetworkConnections()
-        {
-            // Configure back button navigation for GDS standards
-            this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");
-
+        {            
             ViewBag.ControllerName = nameof(HeatNetworkRegistrationController)
                 .Replace("Controller", string.Empty);
-
-            // Retrieve previous steps from session
+            
             var statusModel = _sessionHelper.GetFromSession<NetworkStatusModel>(
                 HttpContext,
                 SessionKeys.NetworkStatusModelKey
             );
-
-            if(statusModel?.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
-            {
-                //override back button
-                this.ShowBackButton("HeatNetworkEcNewAndExistingNetwork", "HeatNetworkRegistration");
-            }
+            var mainEcStatusSessionModel = _sessionHelper.GetFromSession<MainEnergyCentreStatusModel>(HttpContext, SessionKeys.MainEnergyCentreStatusModelKey);
+                        
+            if (mainEcStatusSessionModel != null)
+                this.ShowBackButton("MainEcStatus", "HeatNetworkRegistration");
+            else if (statusModel?.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())                
+                this.ShowBackButton("HeatNetworkEcNewAndExistingNetwork", "HeatNetworkRegistration");            
+            else
+                this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");            
 
             var supplyTypeModel = _sessionHelper.GetFromSession<NetworkSupplyTypeModel>(
                 HttpContext,
@@ -352,8 +396,15 @@ namespace HNTAS.Web.UI.Controllers
             // 3. Handle model validation failure
             if (!ModelState.IsValid)
             {
-                TempData["ErrorSummary"] = "CustomErrorSummary";
-                this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");
+                TempData["ErrorSummary"] = "CustomErrorSummary";                
+                var mainEcStatusSessionModel = _sessionHelper.GetFromSession<MainEnergyCentreStatusModel>(HttpContext, SessionKeys.MainEnergyCentreStatusModelKey);
+
+                if (mainEcStatusSessionModel != null)
+                    this.ShowBackButton("MainEcStatus", "HeatNetworkRegistration");
+                else if (statusModel?.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString())
+                    this.ShowBackButton("HeatNetworkEcNewAndExistingNetwork", "HeatNetworkRegistration");
+                else
+                    this.ShowBackButton("HeatNetworkEcNewNetwork", "HeatNetworkRegistration");
                 return View("TellUsAboutHeatNetworkConnections", model);
             }
 
@@ -423,7 +474,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError(
                     nameof(model.ResponsibleCommunalNetworks),
-                    $"The communal building input number cannot be greater than the numbered entered on the connection screen."
+                    $"You can't exceed the number of new communal building connections you previously provided: {maxAllowed}"
                 );
             }
 
@@ -501,13 +552,20 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError(
                     nameof(model.ResponsibleDistrictNetworks),
-                    $"The connected district networks input number cannot be greater than the numbered entered on the connection screen."
+                    $"You can't exceed the number of new other district connections you previously provided: {maxAllowed}"
                 );
             }
 
             if (!ModelState.IsValid)
             {
-                this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+                if (connectionsModel?.NewCommunalBuildings > 0)
+                {
+                    this.ShowBackButton("CommunalBuildingResponsibility", "HeatNetworkRegistration");
+                }
+                else
+                {
+                    this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+                }
                 return View("DistrictNetworksResponsibility", model);
             }
 
@@ -951,6 +1009,7 @@ namespace HNTAS.Web.UI.Controllers
             HeatNetworkLocationModel heatNetworkLocationModel = _sessionHelper.GetFromSession<HeatNetworkLocationModel>(HttpContext, SessionKeys.HeatNetworkLocationModelKey);
             ECDetailsModel ecDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);
             HeatNetworkPhaseModel heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey);
+            MainEnergyCentreStatusModel mainEnergyCentreStatusModel = _sessionHelper.GetFromSession<MainEnergyCentreStatusModel>(HttpContext, SessionKeys.MainEnergyCentreStatusModelKey);
 
             var isCommunalHn = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.IsCommualNetworkKey);
             var hasOwnEc = _sessionHelper.GetFromSession<bool>(HttpContext, SessionKeys.HasOwnEnergyCentreKey);
@@ -977,7 +1036,10 @@ namespace HNTAS.Web.UI.Controllers
                 NewDistrictBuildingResponsibility = districtNetworksResponsibilityViewModel?.ResponsibleDistrictNetworks ?? 0,
                 CurrentState = networkStatusModel.BuildStatus == NullableOfNetworkBuildStatus.NewAndExisting.ToString() ? "New and existing" : networkStatusModel.BuildStatus == NullableOfNetworkBuildStatus.New.ToString() ? "New build" : "Both existing and new build",
                 EnergyCentreOptionText = EnergyCentreOptionsHelper.GetOptions("EnergyCentreOption").FirstOrDefault(option => option.OptValue == networkSupplyTypeModel.EnergyCentreOption)?.OptText ?? string.Empty,
-                EnergyCentreOptionValue = networkSupplyTypeModel.EnergyCentreOption ?? string.Empty
+                EnergyCentreOptionValue = networkSupplyTypeModel.EnergyCentreOption ?? string.Empty,
+                MainEnergyCentreName = networkSupplyTypeModel.MainEnergyCentreName!,
+                MainEnergyCentreStatusOptionText = mainEnergyCentreStatusModel?.MainEnergyCentreStatus ?? string.Empty,
+                MainEnergyCentreStatusOptionValue = mainEnergyCentreStatusModel?.MainEnergyCentreStatus ?? string.Empty
             };
 
             var hnId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.HnId);
@@ -1013,6 +1075,7 @@ namespace HNTAS.Web.UI.Controllers
             ECDetailsModel ecDetailsModel = _sessionHelper.GetFromSession<ECDetailsModel>(HttpContext, SessionKeys.ECDetailsModelSessionKey);
             HeatNetworkPhaseModel heatNetworkPhaseModel = _sessionHelper.GetFromSession<HeatNetworkPhaseModel>(HttpContext, SessionKeys.HeatNetworkPhaseModelKey);
             DoesHNHaveAPostcodeViewModel doesHNHaveAPostcodeViewModel = _sessionHelper.GetFromSession<DoesHNHaveAPostcodeViewModel>(HttpContext, SessionKeys.DoesHNHaveAPostcodeViewModelKey);
+            MainEnergyCentreStatusModel mainEnergyCentreStatusModel = _sessionHelper.GetFromSession<MainEnergyCentreStatusModel>(HttpContext, SessionKeys.MainEnergyCentreStatusModelKey);
 
             ModelState.Clear();
 
@@ -1102,6 +1165,15 @@ namespace HNTAS.Web.UI.Controllers
             
             ViewBag.RegistrationSource = RegistrationSource.HNTAS;
 
+            NullableOfMainEnergyCentreStatus? mainEnergyCentreStatus = null;
+            if (!string.IsNullOrEmpty(viewModel?.MainEnergyCentreStatusOptionText))
+            {
+                mainEnergyCentreStatus = (NullableOfMainEnergyCentreStatus)Enum.Parse(typeof(NullableOfMainEnergyCentreStatus), viewModel?.MainEnergyCentreStatusOptionText);
+            }
+            else if(!string.IsNullOrEmpty(viewModel?.MainEnergyCentreName))
+            {
+                mainEnergyCentreStatus = NullableOfMainEnergyCentreStatus.New;
+            }
             var model = new HeatNetwork
             {
                 OrgId = _sessionHelper.GetFromSession<string>(HttpContext, SessionKeys.OrganisationId),
@@ -1123,7 +1195,9 @@ namespace HNTAS.Web.UI.Controllers
                 CreatedAt = DateTime.UtcNow,
                 CreatedBy = userId,
                 RegistrationSource = RegistrationSource.HNTAS,
-                Phase = viewModel?.HeatNetworkPhaseModel?.HeatNetworkPhase
+                Phase = viewModel?.HeatNetworkPhaseModel?.HeatNetworkPhase,
+                MainEnergyCentreName = viewModel?.MainEnergyCentreName,
+                MainEnergyCentreStatus = mainEnergyCentreStatus
             };
 
             HeatNetworkResponse heatNetworkResponse;

@@ -25,7 +25,7 @@
         <div class="govuk-grid-column-full">
         <form asp-action="NetworkDetails" asp-controller="HeatNetwork" method="get">
                 @Html.AntiForgeryToken()
-                <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
                 <h1 class="govuk-heading-l">
                     Network overview
                 </h1>
@@ -167,15 +167,17 @@
                                     <li>@element</li>
                                 }
                             </ul>
-                            }                            
-
-                        <h3 class="govuk-heading-s">New elements</h3>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var element in Model.NewNetworkElements!)
-                            {
-                                <li>@element</li>
                             }
-                        </ul>
+                        @if (Model.NewNetworkElements != null)
+                        {
+                            <h3 class="govuk-heading-s">New elements</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.NewNetworkElements!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
+                        }                            
                     </dd>
                 </div>
 
@@ -195,14 +197,17 @@
                             </ul>
                             }
                             
-
-                        <h3 class="govuk-heading-s">New EC</h3>
-                        <ul class="govuk-list govuk-list--bullet">
-                            @foreach (var element in Model.NewNetworkEcNames!)
-                            {
-                                <li>@element</li>
-                            }
-                        </ul>
+                        @if (Model.NewNetworkEcNames != null)
+                        {
+                            <h3 class="govuk-heading-s">New EC</h3>
+                            <ul class="govuk-list govuk-list--bullet">
+                                @foreach (var element in Model.NewNetworkEcNames!)
+                                {
+                                    <li>@element</li>
+                                }
+                            </ul>
+                        }
+                            
                     </dd>
                 </div>
 

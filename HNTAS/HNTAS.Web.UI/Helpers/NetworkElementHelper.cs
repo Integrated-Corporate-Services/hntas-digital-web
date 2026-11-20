@@ -157,17 +157,52 @@ namespace HNTAS.Web.UI.Helpers
             }
         }
 
-        public static NetworkEcNameViewModel GetNetworkEcName(NetworkElementOption elementOption)
+        public static NetworkEcNameViewModel GetNetworkEcName(NetworkElementOption elementOption, string? mainEnergyCentreName, string? mainEnergyCentreStatus)
         {
             var existingEcNameModel = new NetworkEcNameViewModel();
+            var newIndex = 0;
+            var existingIndex = 0;
+            //if (!string.IsNullOrEmpty(mainEnergyCentreName))
+            //{
+            //    if (mainEnergyCentreStatus == NullableOfMainEnergyCentreStatus.Existing.ToString())
+            //    {
+            //        existingIndex++;
+            //        existingEcNameModel.ExistingEcNameOptions.Add(new EcNameOption { EcName = mainEnergyCentreName, Label = $"{existingIndex}. Main energy centre", IsMainEc = true });                    
+            //    }
+            //    else
+            //    {
+            //        newIndex++;
+            //        existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { EcName = mainEnergyCentreName, Label = $"{newIndex}. Main energy centre", IsMainEc = true });                    
+            //    }
+            //}
             for(int i = 0; i < elementOption.ExistingCount; i++)
             {                
-                existingEcNameModel.ExistingEcNameOptions.Add(new EcNameOption { Label = $"Existing energy centre {i + 1}" });
+                existingIndex++;
+                existingEcNameModel.ExistingEcNameOptions.Add(new EcNameOption { Label = $"{existingIndex}. Existing energy centre" });
             }
 
             for(int i = 0; i < elementOption.NewCount; i++)
             {                
-                existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { Label = $"New energy centre {i + 1}" });
+                newIndex++;
+                existingEcNameModel.NewEcNameOptions.Add(new EcNameOption { Label = $"{newIndex}. New energy centre" });
+            }
+
+            if (!string.IsNullOrEmpty(mainEnergyCentreName) && mainEnergyCentreStatus == NullableOfMainEnergyCentreStatus.Existing.ToString())
+            {                
+                if (existingEcNameModel.ExistingEcNameOptions.Count > 0)
+                {
+                    existingEcNameModel.ExistingEcNameOptions[0].EcName = mainEnergyCentreName;
+                    existingEcNameModel.ExistingEcNameOptions[0].IsMainEc = true;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(mainEnergyCentreName) && mainEnergyCentreStatus == NullableOfMainEnergyCentreStatus.New.ToString())
+            {
+                if (existingEcNameModel.NewEcNameOptions.Count > 0)
+                {
+                    existingEcNameModel.NewEcNameOptions[0].EcName = mainEnergyCentreName;
+                    existingEcNameModel.NewEcNameOptions[0].IsMainEc = true;
+                }
             }
 
             return existingEcNameModel;

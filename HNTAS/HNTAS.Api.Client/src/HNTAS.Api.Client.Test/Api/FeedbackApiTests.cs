@@ -39,6 +39,26 @@ using HNTAS.Api.Client.Model;
 namespace HNTAS.Api.Client.Test.Api
 {
     /// <summary>
+<<<<<<<< HEAD:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/JwksApiTests.cs
+    ///  Class for testing JwksApi
+    /// </summary>
+    public sealed class JwksApiTests : ApiTestsBase
+    {
+        private readonly IJwksApi _instance;
+
+        public JwksApiTests(): base(Array.Empty<string>())
+        {
+            _instance = _host.Services.GetRequiredService<IJwksApi>();
+        }
+
+        /// <summary>
+        /// Test WellKnownJwksJsonGet
+        /// </summary>
+        [Fact (Skip = "not implemented")]
+        public async Task WellKnownJwksJsonGetAsyncTest()
+        {
+            await _instance.WellKnownJwksJsonGetAsync();
+========
     ///  Class for testing FeedbackApi
     /// </summary>
     public sealed class FeedbackApiTests : ApiTestsBase
@@ -58,6 +78,7 @@ namespace HNTAS.Api.Client.Test.Api
         {
             CreateFeedbackRequest createFeedbackRequest = default!;
             await _instance.ApiFeedbackPostAsync(createFeedbackRequest);
+>>>>>>>> test:HNTAS/HNTAS.Api.Client/src/HNTAS.Api.Client.Test/Api/FeedbackApiTests.cs
         }
     }
 }

@@ -40,6 +40,26 @@
                                         : Url.Action("HeatNetworkEcNewAndExistingNetwork", controllerName),
                         ChangeLinkText = "Change"
                     },
+                    !string.IsNullOrEmpty(Model.MainEnergyCentreName)
+                    ? new ReviewItem
+                    {
+                        Key = "Main energy centre name",
+                        Value = Model.MainEnergyCentreName,
+                        ChangeLink = Model.NetworkStatusModel.BuildStatus == NullableOfNetworkBuildStatus.New.ToString()
+                                        ? Url.Action("HeatNetworkEcNewNetwork", controllerName)
+                                        : Url.Action("HeatNetworkEcNewAndExistingNetwork", controllerName),
+                        ChangeLinkText = "Change"
+                    }
+                    : null,
+                    !string.IsNullOrEmpty(Model.MainEnergyCentreStatusOptionText)
+                    ? new ReviewItem
+                    {
+                        Key = "Main energy centre status",
+                        Value = Model.MainEnergyCentreStatusOptionText,
+                        ChangeLink = Url.Action("MainEcStatus", controllerName),
+                        ChangeLinkText = "Change"
+                    }
+                    : null,
                     new ReviewItem
                     {
                         Key = "Network type",
@@ -88,6 +108,22 @@
         }
     };
 
+    var connectionLinesIndex = 3;
+    var newCommunalBuildingResponsibilityIndex = 4;
+    var districtNetworksResponsibilityIndex = 5;
+    if (!string.IsNullOrEmpty(Model.MainEnergyCentreName) && !string.IsNullOrEmpty(Model.MainEnergyCentreStatusOptionText))
+    {
+        connectionLinesIndex = 5;
+        newCommunalBuildingResponsibilityIndex = 6;
+        districtNetworksResponsibilityIndex = 7;
+    }
+    else if (!string.IsNullOrEmpty(Model.MainEnergyCentreName) && string.IsNullOrEmpty(Model.MainEnergyCentreStatusOptionText))
+    {
+        connectionLinesIndex = 4;
+        newCommunalBuildingResponsibilityIndex = 5;
+        districtNetworksResponsibilityIndex = 6;
+    }
+
     @if (Model.NetworkConnectionsModel != null)
     {
         var connectionLines = new List<string>();
@@ -118,8 +154,8 @@
             || Model.EnergyCentreOptionValue == NullableOfEnergyCentreType.SingleCommunalBuildingSeparateDistrictNetwork.ToString()
                 ? Model.NetworkStatusModel.BuildStatus == NullableOfNetworkBuildStatus.New.ToString() ? Url.Action("HeatNetworkEcNewNetwork", controllerName) : Url.Action("HeatNetworkEcNewAndExistingNetwork", controllerName)
                 : Url.Action("HeatNetworkConnections", controllerName);
-
-            viewModel.Sections[0].Items.Insert(3, new ReviewItem
+            
+            viewModel.Sections[0].Items.Insert(connectionLinesIndex, new ReviewItem
             {
                 Key = "Connections",
                 Value = string.Join("<br />", connectionLines),
@@ -142,7 +178,7 @@
 }
 
 @if (Model.NewCommunalBuildingResponsibility > 0){
-    viewModel.Sections[0].Items.Insert(4, new ReviewItem
+    viewModel.Sections[0].Items.Insert(newCommunalBuildingResponsibilityIndex, new ReviewItem
     {
         Key = "New communal building networks responsibility",
         Value = Model.NewCommunalBuildingResponsibility.ToString(),
@@ -153,7 +189,7 @@
 
 @if (Model.NewDistrictBuildingResponsibility > 0)
 {
-    viewModel.Sections[0].Items.Insert(5, new ReviewItem
+    viewModel.Sections[0].Items.Insert(districtNetworksResponsibilityIndex, new ReviewItem
     {
         Key = "New connected district networks responsibility",
         Value = Model.NewDistrictBuildingResponsibility.ToString(),
