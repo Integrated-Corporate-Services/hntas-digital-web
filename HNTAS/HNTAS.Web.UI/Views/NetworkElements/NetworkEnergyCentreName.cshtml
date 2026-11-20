@@ -11,10 +11,8 @@
 
         <form class="form" asp-action="NetworkEnergyCentreName" method="post">
 
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
-            <h1 class="govuk-heading-l">Provide a name for each energy centre</h1>
-
-            <p class="govuk-hint">Enter the reference for each energy centre.</p>
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+            <h1 class="govuk-heading-l">Provide a name for each energy centre</h1>            
 
             @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString() && Model.ExistingEcNameOptions.Count > 0)
             {

@@ -25,7 +25,7 @@
         <div class="govuk-grid-column-full">
         <form asp-action="NetworkDetails" asp-controller="HeatNetwork" method="get">
                 @Html.AntiForgeryToken()
-                <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
                 <h1 class="govuk-heading-l">
                     Network overview
                 </h1>
