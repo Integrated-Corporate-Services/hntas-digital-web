@@ -7,7 +7,7 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName</span>
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
         <h1 class="govuk-heading-l">Heat network element summary</h1>
         <div class="govuk-hint">
             You have told us you have the following elements on your network:
@@ -196,11 +196,12 @@
 
             @{
                 var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
+                var networkLabel = $"{@ViewBag.HnId} {@ViewBag.HnName}{(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription)? ", " + ViewBag.HNAdditionalDescription : "")}";
                 var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
                 {
                     Id = nameof(Model.ConfirmedDeclaration),
                     Name = nameof(Model.ConfirmedDeclaration).ToLower(),
-                    Label = $"I confirm that the summary above is correct for HNName, desc",
+                    Label = $"I confirm that the summary above is correct for {networkLabel}",
                     HasError = hasDeclarationErrors,
                     ErrorMessage = hasDeclarationErrors ? ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors[0].ErrorMessage : null,
                     Value = Model.ConfirmedDeclaration
