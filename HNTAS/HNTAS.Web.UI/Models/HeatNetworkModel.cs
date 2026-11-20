@@ -49,7 +49,7 @@ namespace HNTAS.Web.UI.Models
 
     public class HeatNetworkPhaseModel
     {
-        [Required(ErrorMessage = "Select the phase that best describes your network")]
+        [Required(ErrorMessage = "Select the phase the majority of your network currently in")]
         public string HeatNetworkPhase { get; set; }
     }   
 
