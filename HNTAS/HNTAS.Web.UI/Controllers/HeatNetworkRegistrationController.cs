@@ -474,7 +474,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError(
                     nameof(model.ResponsibleCommunalNetworks),
-                    $"The communal building input number cannot be greater than the numbered entered on the connection screen."
+                    $"You can't exceed the number of new communal building connections you previously provided: {maxAllowed}"
                 );
             }
 
@@ -552,7 +552,7 @@ namespace HNTAS.Web.UI.Controllers
             {
                 ModelState.AddModelError(
                     nameof(model.ResponsibleDistrictNetworks),
-                    $"The connected district networks input number cannot be greater than the numbered entered on the connection screen."
+                    $"You can't exceed the number of new other district connections you previously provided: {maxAllowed}"
                 );
             }
 
