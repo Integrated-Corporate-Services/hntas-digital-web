@@ -137,6 +137,7 @@ docs/models/NotificationHistoryResponse.md
 docs/models/NotificationStats.md
 docs/models/NullableOfEnergyCentreType.md
 docs/models/NullableOfHeatNetworkType.md
+docs/models/NullableOfMainEnergyCentreStatus.md
 docs/models/NullableOfMilestone.md
 docs/models/NullableOfNetworkBuildStatus.md
 docs/models/NullableOfNetworkDetailsStatus.md
@@ -193,6 +194,7 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
+src/HNTAS.Api.Client.Test/Model/NullableOfMainEnergyCentreStatusTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -352,6 +354,7 @@ src/HNTAS.Api.Client/Model/NotificationHistoryResponse.cs
 src/HNTAS.Api.Client/Model/NotificationStats.cs
 src/HNTAS.Api.Client/Model/NullableOfEnergyCentreType.cs
 src/HNTAS.Api.Client/Model/NullableOfHeatNetworkType.cs
+src/HNTAS.Api.Client/Model/NullableOfMainEnergyCentreStatus.cs
 src/HNTAS.Api.Client/Model/NullableOfMilestone.cs
 src/HNTAS.Api.Client/Model/NullableOfNetworkBuildStatus.cs
 src/HNTAS.Api.Client/Model/NullableOfNetworkDetailsStatus.cs

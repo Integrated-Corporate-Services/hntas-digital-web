@@ -39,6 +39,8 @@ namespace HNTAS.Api.Client.Model
         /// <param name="orgId">orgId</param>
         /// <param name="suppliesSixOrMoreUnits">suppliesSixOrMoreUnits</param>
         /// <param name="networkBuildStatus">networkBuildStatus</param>
+        /// <param name="mainEnergyCentreName">mainEnergyCentreName</param>
+        /// <param name="mainEnergyCentreStatus">mainEnergyCentreStatus</param>
         /// <param name="noOfResponsibleCommunalBuilding">noOfResponsibleCommunalBuilding</param>
         /// <param name="noOfResponsibleDistrictNetwork">noOfResponsibleDistrictNetwork</param>
         /// <param name="hasAddressAndPostcode">hasAddressAndPostcode</param>
@@ -63,7 +65,7 @@ namespace HNTAS.Api.Client.Model
         /// <param name="ofgemImportedDate">ofgemImportedDate</param>
         /// <param name="ofgemUserEmailId">ofgemUserEmailId</param>
         [JsonConstructor]
-        public HeatNetworkResponse(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<bool?> suppliesSixOrMoreUnits = default, Option<NullableOfNetworkBuildStatus?> networkBuildStatus = default, Option<int?> noOfResponsibleCommunalBuilding = default, Option<int?> noOfResponsibleDistrictNetwork = default, Option<bool?> hasAddressAndPostcode = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<NullableOfHeatNetworkType?> heatNetworkType = default, Option<NullableOfEnergyCentreType?> energyCentreType = default, Option<bool?> hasOwnEnergyCentre = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> ofgemUserEmailId = default)
+        public HeatNetworkResponse(Option<string?> id = default, Option<string?> uHnId = default, Option<string?> hnId = default, Option<string?> orgId = default, Option<bool?> suppliesSixOrMoreUnits = default, Option<NullableOfNetworkBuildStatus?> networkBuildStatus = default, Option<string?> mainEnergyCentreName = default, Option<NullableOfMainEnergyCentreStatus?> mainEnergyCentreStatus = default, Option<int?> noOfResponsibleCommunalBuilding = default, Option<int?> noOfResponsibleDistrictNetwork = default, Option<bool?> hasAddressAndPostcode = default, Option<ECDetails?> ecDetails = default, Option<RegisteredAddress?> address = default, Option<string?> name = default, Option<string?> additionalDescription = default, Option<string?> pathway = default, Option<RegistrationSource?> registrationSource = default, Option<SoaResponse?> soa = default, Option<string?> createdBy = default, Option<DateTimeOffset?> createdAt = default, Option<string?> phase = default, Option<NullableOfHeatNetworkType?> heatNetworkType = default, Option<NullableOfEnergyCentreType?> energyCentreType = default, Option<bool?> hasOwnEnergyCentre = default, Option<HeatNetworkConnections?> heatNetworkConnections = default, Option<NetworkElementsResponse?> networkElements = default, Option<MeteringAndMonitoringStrategyResponse?> meteringAndMonitoringStrategy = default, Option<AssessmentPlanResponse?> assessmentPlan = default, Option<DesignConstructionLogResponse?> designConstructionLog = default, Option<DateTimeOffset?> ofgemImportedDate = default, Option<string?> ofgemUserEmailId = default)
         {
             IdOption = id;
             UHnIdOption = uHnId;
@@ -71,6 +73,8 @@ namespace HNTAS.Api.Client.Model
             OrgIdOption = orgId;
             SuppliesSixOrMoreUnitsOption = suppliesSixOrMoreUnits;
             NetworkBuildStatusOption = networkBuildStatus;
+            MainEnergyCentreNameOption = mainEnergyCentreName;
+            MainEnergyCentreStatusOption = mainEnergyCentreStatus;
             NoOfResponsibleCommunalBuildingOption = noOfResponsibleCommunalBuilding;
             NoOfResponsibleDistrictNetworkOption = noOfResponsibleDistrictNetwork;
             HasAddressAndPostcodeOption = hasAddressAndPostcode;
@@ -111,6 +115,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("networkBuildStatus")]
         public NullableOfNetworkBuildStatus? NetworkBuildStatus { get { return this.NetworkBuildStatusOption; } set { this.NetworkBuildStatusOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of MainEnergyCentreStatus
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<NullableOfMainEnergyCentreStatus?> MainEnergyCentreStatusOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets MainEnergyCentreStatus
+        /// </summary>
+        [JsonPropertyName("mainEnergyCentreStatus")]
+        public NullableOfMainEnergyCentreStatus? MainEnergyCentreStatus { get { return this.MainEnergyCentreStatusOption; } set { this.MainEnergyCentreStatusOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of RegistrationSource
@@ -215,6 +232,19 @@ namespace HNTAS.Api.Client.Model
         /// </summary>
         [JsonPropertyName("suppliesSixOrMoreUnits")]
         public bool? SuppliesSixOrMoreUnits { get { return this.SuppliesSixOrMoreUnitsOption; } set { this.SuppliesSixOrMoreUnitsOption = new(value); } }
+
+        /// <summary>
+        /// Used to track the state of MainEnergyCentreName
+        /// </summary>
+        [JsonIgnore]
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Never)]
+        public Option<string?> MainEnergyCentreNameOption { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets MainEnergyCentreName
+        /// </summary>
+        [JsonPropertyName("mainEnergyCentreName")]
+        public string? MainEnergyCentreName { get { return this.MainEnergyCentreNameOption; } set { this.MainEnergyCentreNameOption = new(value); } }
 
         /// <summary>
         /// Used to track the state of NoOfResponsibleCommunalBuilding
@@ -490,6 +520,8 @@ namespace HNTAS.Api.Client.Model
             sb.Append("  OrgId: ").Append(OrgId).Append("\n");
             sb.Append("  SuppliesSixOrMoreUnits: ").Append(SuppliesSixOrMoreUnits).Append("\n");
             sb.Append("  NetworkBuildStatus: ").Append(NetworkBuildStatus).Append("\n");
+            sb.Append("  MainEnergyCentreName: ").Append(MainEnergyCentreName).Append("\n");
+            sb.Append("  MainEnergyCentreStatus: ").Append(MainEnergyCentreStatus).Append("\n");
             sb.Append("  NoOfResponsibleCommunalBuilding: ").Append(NoOfResponsibleCommunalBuilding).Append("\n");
             sb.Append("  NoOfResponsibleDistrictNetwork: ").Append(NoOfResponsibleDistrictNetwork).Append("\n");
             sb.Append("  HasAddressAndPostcode: ").Append(HasAddressAndPostcode).Append("\n");
@@ -566,6 +598,8 @@ namespace HNTAS.Api.Client.Model
             Option<string?> orgId = default;
             Option<bool?> suppliesSixOrMoreUnits = default;
             Option<NullableOfNetworkBuildStatus?> networkBuildStatus = default;
+            Option<string?> mainEnergyCentreName = default;
+            Option<NullableOfMainEnergyCentreStatus?> mainEnergyCentreStatus = default;
             Option<int?> noOfResponsibleCommunalBuilding = default;
             Option<int?> noOfResponsibleDistrictNetwork = default;
             Option<bool?> hasAddressAndPostcode = default;
@@ -624,6 +658,14 @@ namespace HNTAS.Api.Client.Model
                             string? networkBuildStatusRawValue = utf8JsonReader.GetString();
                             if (networkBuildStatusRawValue != null)
                                 networkBuildStatus = new Option<NullableOfNetworkBuildStatus?>(NullableOfNetworkBuildStatusValueConverter.FromStringOrDefault(networkBuildStatusRawValue));
+                            break;
+                        case "mainEnergyCentreName":
+                            mainEnergyCentreName = new Option<string?>(utf8JsonReader.GetString());
+                            break;
+                        case "mainEnergyCentreStatus":
+                            string? mainEnergyCentreStatusRawValue = utf8JsonReader.GetString();
+                            if (mainEnergyCentreStatusRawValue != null)
+                                mainEnergyCentreStatus = new Option<NullableOfMainEnergyCentreStatus?>(NullableOfMainEnergyCentreStatusValueConverter.FromStringOrDefault(mainEnergyCentreStatusRawValue));
                             break;
                         case "noOfResponsibleCommunalBuilding":
                             noOfResponsibleCommunalBuilding = new Option<int?>(utf8JsonReader.TokenType == JsonTokenType.Null ? (int?)null : utf8JsonReader.GetInt32());
@@ -736,7 +778,7 @@ namespace HNTAS.Api.Client.Model
             if (hasOwnEnergyCentre.IsSet && hasOwnEnergyCentre.Value == null)
                 throw new ArgumentNullException(nameof(hasOwnEnergyCentre), "Property is not nullable for class HeatNetworkResponse.");
 
-            return new HeatNetworkResponse(id, uHnId, hnId, orgId, suppliesSixOrMoreUnits, networkBuildStatus, noOfResponsibleCommunalBuilding, noOfResponsibleDistrictNetwork, hasAddressAndPostcode, ecDetails, address, name, additionalDescription, pathway, registrationSource, soa, createdBy, createdAt, phase, heatNetworkType, energyCentreType, hasOwnEnergyCentre, heatNetworkConnections, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemImportedDate, ofgemUserEmailId);
+            return new HeatNetworkResponse(id, uHnId, hnId, orgId, suppliesSixOrMoreUnits, networkBuildStatus, mainEnergyCentreName, mainEnergyCentreStatus, noOfResponsibleCommunalBuilding, noOfResponsibleDistrictNetwork, hasAddressAndPostcode, ecDetails, address, name, additionalDescription, pathway, registrationSource, soa, createdBy, createdAt, phase, heatNetworkType, energyCentreType, hasOwnEnergyCentre, heatNetworkConnections, networkElements, meteringAndMonitoringStrategy, assessmentPlan, designConstructionLog, ofgemImportedDate, ofgemUserEmailId);
         }
 
         /// <summary>
@@ -804,6 +846,20 @@ namespace HNTAS.Api.Client.Model
                 }
                 else
                     writer.WriteNull("networkBuildStatus");
+            if (heatNetworkResponse.MainEnergyCentreNameOption.IsSet)
+                if (heatNetworkResponse.MainEnergyCentreNameOption.Value != null)
+                    writer.WriteString("mainEnergyCentreName", heatNetworkResponse.MainEnergyCentreName);
+                else
+                    writer.WriteNull("mainEnergyCentreName");
+
+            if (heatNetworkResponse.MainEnergyCentreStatusOption.IsSet)
+                if (heatNetworkResponse.MainEnergyCentreStatusOption!.Value != null)
+                {
+                    var mainEnergyCentreStatusRawValue = NullableOfMainEnergyCentreStatusValueConverter.ToJsonValue(heatNetworkResponse.MainEnergyCentreStatusOption.Value!.Value);
+                    writer.WriteString("mainEnergyCentreStatus", mainEnergyCentreStatusRawValue);
+                }
+                else
+                    writer.WriteNull("mainEnergyCentreStatus");
             if (heatNetworkResponse.NoOfResponsibleCommunalBuildingOption.IsSet)
                 if (heatNetworkResponse.NoOfResponsibleCommunalBuildingOption.Value != null)
                     writer.WriteNumber("noOfResponsibleCommunalBuilding", heatNetworkResponse.NoOfResponsibleCommunalBuildingOption.Value!.Value);

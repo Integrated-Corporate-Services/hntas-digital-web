@@ -35,7 +35,14 @@
                 }
                 @if (!string.IsNullOrEmpty(q.QDescText))
                 {
-                    <p class="govuk-body">@Html.Raw(q.QDescText)</p>
+                    if (q.QDescText.TrimStart().StartsWith("<p", StringComparison.OrdinalIgnoreCase))
+                    {
+                        @Html.Raw(q.QDescText)
+                    }
+                    else
+                    {
+                        <p class="govuk-body">@q.QDescText</p>
+                    }
                 }
                 @if (!string.IsNullOrEmpty(q.QHintText))
                 {
