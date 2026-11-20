@@ -90,11 +90,7 @@ namespace HNTAS.Web.UI.Controllers
                 if (model.MainEnergyCentreStatus == NullableOfMainEnergyCentreStatus.New.ToString() && option.Id == HeatNetworkElementType.EnergyCentre && option.NewCount.HasValue && option.NewCount.Value == 0)
                 {
                     ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"You told us your main energy centre is new, so provide at least one new energy centre");
-                }
-                //if (option.Id == HeatNetworkElementType.EnergyCentre && string.IsNullOrEmpty(model.MainEnergyCentreStatus) && option.NewCount.HasValue && option.NewCount.Value == 0)
-                //{
-                //    ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].NewCount", $"You mentioned previously that you have a main energy centre. You need to provide atleast 1 energy centre");
-                //}
+                }                
                 if (model.MainEnergyCentreStatus == NullableOfMainEnergyCentreStatus.Existing.ToString() && option.Id == HeatNetworkElementType.EnergyCentre && option.ExistingCount.HasValue && option.ExistingCount.Value == 0)
                 {
                     ModelState.AddModelError($"ElementOptions[{model.ElementOptions.IndexOf(option)}].ExistingCount", $"You told us your main energy centre is existing, so provide at least one existing energy centre");
@@ -113,7 +109,7 @@ namespace HNTAS.Web.UI.Controllers
             var hasNewElements = model.ElementOptions.Any(x => x.NewCount.HasValue && x.NewCount.Value > 0);
             if (!hasNewElements)
             {
-                ModelState.AddModelError(string.Empty, "You need to provide atleast 1 new element");
+                ModelState.AddModelError($"ElementOptions[0].NewCount", "Please provide atleast 1 new element");
                 return View(model);
             }            
 
@@ -450,21 +446,7 @@ namespace HNTAS.Web.UI.Controllers
             {                
                 var elementType = NetworkElementHelper.GetNetworkElementIdByType(option.Id.ToString()!);
                 if (option.ExistingCount.HasValue && option.ExistingCount.Value > 0)
-                {
-                    //if (option.Id == HeatNetworkElementType.EnergyCentre && networkEcNames != null && networkEcNames.ExistingEcNameOptions.Any(a => a.IsMainEc))
-                    //{
-                    //    var mainEcName = networkEcNames.ExistingEcNameOptions.FirstOrDefault(a => a.IsMainEc)?.EcName;
-                    //    var mainEcElement = new Element
-                    //    {
-                    //        BuildType = NetworkBuildStatus.Existing,
-                    //        ElementType = elementType,
-                    //        ElementId = (instanceCounter).ToString("D5"),
-                    //        ElementName = mainEcName,
-                    //        IsMainEnergyCentre = true
-                    //    };
-                    //    elementList.Add(mainEcElement);
-                    //    instanceCounter++;
-                    //}
+                {                    
                     for (int cnt = 0; cnt < option.ExistingCount.Value; cnt++)
                     {
                         var el = new Element
@@ -485,23 +467,8 @@ namespace HNTAS.Web.UI.Controllers
                         Count = option.NewCount.Value,
                         ElementDisplayType = option.Id,
                         ElementType = elementType
-                    };                    
-
-                    //if (option.Id == HeatNetworkElementType.EnergyCentre && networkEcNames != null && networkEcNames.NewEcNameOptions.Any(a => a.IsMainEc))
-                    //{
-                    //    elementGroup.Count = elementGroup.Count + 1;
-                    //    var mainEcName = networkEcNames.NewEcNameOptions.FirstOrDefault(a => a.IsMainEc)?.EcName;
-                    //    var mainEcElement = new Element
-                    //    {
-                    //        BuildType = NetworkBuildStatus.New,
-                    //        ElementType = elementType,
-                    //        ElementId = (instanceCounter).ToString("D5"),
-                    //        ElementName = mainEcName,
-                    //        IsMainEnergyCentre = true
-                    //    };
-                    //    elementList.Add(mainEcElement);
-                    //    instanceCounter++;
-                    //}
+                    };
+                    
                     elementGroupList.Add(elementGroup);
                     for (int cnt = 0; cnt < option.NewCount.Value; cnt++)
                     {
@@ -538,6 +505,7 @@ namespace HNTAS.Web.UI.Controllers
                 var existingElement = existingElements[i];
                 var existingEcName = existingElementsWithEcNames[i];
                 existingElement.ElementName = existingEcName.EcName;
+                existingElement.IsMainEnergyCentre = existingEcName.IsMainEc;
                 existingElement.IsSupplyNewBuildings = selectedEcNames != null && selectedEcNames.Contains(existingEcName.EcName);
             }
 
