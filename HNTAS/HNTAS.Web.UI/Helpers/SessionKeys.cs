@@ -30,6 +30,7 @@
         public const string HowManyDwellingsIncludedModelKey = "HowManyDwellingsIncluded";
         public const string EligibilityHowManyDwellingsIncludedModelKey = "EligibilityHowManyDwellingsIncludedModel";
         public const string NetworkStatusModelKey = "NetworkStatusModelKey";
+        public const string MainEnergyCentreStatusModelKey = "MainEnergyCentreStatusModelKey";
 
         // Session keys for heat network registration
         public const string HeatNetworkOrganisationModelKey = "HeatNetworkOrganisationModelKey";

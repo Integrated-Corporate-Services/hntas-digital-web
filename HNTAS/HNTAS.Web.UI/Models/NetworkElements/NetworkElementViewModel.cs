@@ -6,6 +6,8 @@ namespace HNTAS.Web.UI.Models.NetworkElements
     public class NetworkElementViewModel
     {
         public List<NetworkElementOption> ElementOptions { get; set; } = new();
+        public string? MainEnergyCentreName { get; set; }
+        public string? MainEnergyCentreStatus { get; set; }
     }
 
     public class NetworkElementOption
