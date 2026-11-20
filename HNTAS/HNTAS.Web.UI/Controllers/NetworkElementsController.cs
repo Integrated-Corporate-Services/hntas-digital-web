@@ -109,7 +109,7 @@ namespace HNTAS.Web.UI.Controllers
             var hasNewElements = model.ElementOptions.Any(x => x.NewCount.HasValue && x.NewCount.Value > 0);
             if (!hasNewElements)
             {
-                ModelState.AddModelError($"ElementOptions[0].NewCount", "Please provide atleast 1 new element");
+                ModelState.AddModelError($"ElementOptions[0].NewCount", "Please provide at least one new element");
                 return View(model);
             }            
 
