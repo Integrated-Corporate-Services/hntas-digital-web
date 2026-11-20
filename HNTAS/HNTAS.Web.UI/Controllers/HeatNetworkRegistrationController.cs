@@ -558,7 +558,14 @@ namespace HNTAS.Web.UI.Controllers
 
             if (!ModelState.IsValid)
             {
-                this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+                if (connectionsModel?.NewCommunalBuildings > 0)
+                {
+                    this.ShowBackButton("CommunalBuildingResponsibility", "HeatNetworkRegistration");
+                }
+                else
+                {
+                    this.ShowBackButton("HeatNetworkConnections", "HeatNetworkRegistration");
+                }
                 return View("DistrictNetworksResponsibility", model);
             }
 
