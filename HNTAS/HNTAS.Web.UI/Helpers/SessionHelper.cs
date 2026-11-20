@@ -74,6 +74,7 @@ namespace HNTAS.Web.UI.Helpers
             ClearFromSession(context, SessionKeys.HeatNetworkPhaseModelKey);
             ClearFromSession(context, SessionKeys.PathwayModelKey);
             ClearFromSession(context, SessionKeys.CheckYourAnswersHeatNetworkModelKey);
+            ClearFromSession(context, SessionKeys.MainEnergyCentreStatusModelKey);
         }
 
         public void ClearAllContributoFlowRelatedSessionData(HttpContext context) 

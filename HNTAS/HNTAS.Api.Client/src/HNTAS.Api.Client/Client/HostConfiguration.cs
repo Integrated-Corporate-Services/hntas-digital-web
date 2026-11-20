@@ -167,6 +167,8 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new NullableOfEnergyCentreTypeNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfHeatNetworkTypeJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfHeatNetworkTypeNullableJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfMainEnergyCentreStatusJsonConverter());
+            _jsonOptions.Converters.Add(new NullableOfMainEnergyCentreStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfMilestoneJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfMilestoneNullableJsonConverter());
             _jsonOptions.Converters.Add(new NullableOfNetworkBuildStatusJsonConverter());
