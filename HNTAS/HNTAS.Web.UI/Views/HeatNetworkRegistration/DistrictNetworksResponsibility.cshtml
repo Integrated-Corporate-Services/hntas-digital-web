@@ -25,6 +25,12 @@
                         Within HNTAS, responsibility means you are designing, constructing or operating new district networks beyond the connection point from this network.
                     </p>
 
+                
+
+                    <label class="govuk-label" for="ResponsibleDistrictNetworks">
+                        Number of new district networks
+                    </label>
+
                     @* Field Validation Error Message *@
                     @if (ViewData.ModelState[nameof(Model.ResponsibleDistrictNetworks)]?.Errors.Count > 0)
                     {
@@ -33,10 +39,6 @@
                             @ViewData.ModelState[nameof(Model.ResponsibleDistrictNetworks)]!.Errors[0].ErrorMessage
                         </p>
                     }
-
-                    <label class="govuk-label" for="ResponsibleDistrictNetworks">
-                        Number of new district networks
-                    </label>
 
                     <input class="govuk-input govuk-input--width-5 @(ViewData.ModelState[nameof(Model.ResponsibleDistrictNetworks)]?.Errors.Count > 0 ? "govuk-input--error" : "")"
                            id="@fieldName.ToLower()"
