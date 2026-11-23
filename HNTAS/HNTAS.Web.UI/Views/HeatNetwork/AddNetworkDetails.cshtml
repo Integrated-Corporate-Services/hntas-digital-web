@@ -31,7 +31,7 @@
                             Energy centre grid coordinates
                         </dt>
                         <dd class="govuk-summary-list__value">
-                            @Model.Coordinates
+                            @(Model.Coordinates != "0,0" ? Model.Coordinates : "Not provided")
                         </dd>
                     </div>
                     <div class="govuk-summary-list__row">

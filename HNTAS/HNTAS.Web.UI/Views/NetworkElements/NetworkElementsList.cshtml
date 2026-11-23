@@ -78,7 +78,7 @@
                                     @if (hasNewCountError)
                                     {
                                         var errorMsg = ViewData.ModelState[$"ElementOptions[0].NewCount"]?.Errors.FirstOrDefault()?.ErrorMessage;
-                                        if (errorMsg != "Please provide atleast 1 new element")
+                                        if (errorMsg != "Provide at least one new element")
                                         {
                                             <span class="govuk-visually-hidden">Error:</span>
                                             @Html.ValidationMessageFor(m => m.ElementOptions[i].NewCount)
@@ -97,6 +97,7 @@
 
             @Html.HiddenFor(m => m.MainEnergyCentreName)
             @Html.HiddenFor(m => m.MainEnergyCentreStatus)
+            @Html.HiddenFor(m => m.EnergyCentreType)
             <button type="submit" class="govuk-button">
                 Continue
             </button>
