@@ -8,7 +8,10 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <form class="form" asp-action="EnergyCentresSupply" method="post">
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+            @{
+                string? additionalDescription = ViewBag.HNAdditionalDescription as string;
+            }
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
           <div class="govuk-form-group @(hasExistingCountError ? "govuk-form-group--error" : "")">
           <fieldset class="govuk-fieldset" aria-describedby="existing-ec-selection-hint">  
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">                         

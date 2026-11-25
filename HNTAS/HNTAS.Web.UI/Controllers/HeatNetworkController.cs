@@ -74,6 +74,13 @@ namespace HNTAS.Web.UI.Controllers
             return View("AddNetworkDetails", model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddNetworkDetails()
+        {            
+            return RedirectToAction("NetworkDetails");
+        }
+
         private async Task<HNDetailsViewModel> GetNetworkDetails(string hnid)
         {
             var registrationSource = _sessionHelper.GetFromSession<RegistrationSource>(HttpContext, SessionKeys.RegistrationSourceKey);
