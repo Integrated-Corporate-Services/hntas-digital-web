@@ -199,7 +199,7 @@
 
             @{
                 var hasDeclarationErrors = ViewData.ModelState.ContainsKey(nameof(Model.ConfirmedDeclaration)) && ViewData.ModelState[nameof(Model.ConfirmedDeclaration)].Errors.Any();
-                var networkLabel = $"{@ViewBag.HnId} {@ViewBag.HnName}{(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")}";
+                var networkLabel = $"{@ViewBag.HnName}{(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")}";
                 var confirmDeclarationComponentData = new ConfirmDeclarationCheckboxModel
                 {
                     Id = nameof(Model.ConfirmedDeclaration).ToLower(),
