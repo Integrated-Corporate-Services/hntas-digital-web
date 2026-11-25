@@ -8,7 +8,10 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <span class="govuk-caption-xl">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+            @{
+                string? additionalDescription = ViewBag.HNAdditionalDescription as string;
+            }
+            <span class="govuk-caption-xl">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
             <h1 class="govuk-heading-xl">
                 @ViewBag.Heading
             </h1>

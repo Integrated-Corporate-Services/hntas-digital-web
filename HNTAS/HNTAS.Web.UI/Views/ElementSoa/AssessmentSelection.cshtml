@@ -36,7 +36,10 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+        @{
+            string? additionalDescription = ViewBag.HNAdditionalDescription as string;
+        }
+        <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
         @* <h1 class="govuk-heading-l">
             Which step of the assessment will they carry out for the @titlePart?
         </h1> *@

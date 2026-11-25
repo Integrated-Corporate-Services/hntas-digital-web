@@ -2,6 +2,16 @@
 {
     public static class StringExtensions
     {
+        public static string TruncateWithEllipsis(this string? input, int maxLength = 36)
+        {
+            if (string.IsNullOrEmpty(input) || input.Length <= maxLength)
+            {
+                return input ?? string.Empty;
+            }
+
+            return input.Substring(0, maxLength) + "...";
+        }
+
         public static string ToSentenceCase(this string input)
         {
             if (string.IsNullOrWhiteSpace(input)) return input;
