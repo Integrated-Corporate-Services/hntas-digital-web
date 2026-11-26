@@ -1,5 +1,6 @@
 ﻿@using HNTAS.Web.UI.Models.Common
 @using HNTAS.Web.UI.Models.HeatNetwork
+@using HNTAS.Api.Client.Model
 @model NetworkDetailsViewModel
 
 @{
@@ -23,12 +24,12 @@
                 switch (detail.UiStatus)
                     {
                         case StatusConstants.ReadyToStart:
-                            statusClass = "govuk-tag govuk-tag--light-blue";
+                            statusClass = "govuk-tag govuk-tag--blue";
                             linkClass = "govuk-task-list__item--with-link";
                             break;                        
                         case StatusConstants.InProgress:
                         case StatusConstants.Incomplete:
-                            statusClass = "govuk-tag govuk-tag--blue";
+                            statusClass = "govuk-tag govuk-tag--turquoise";
                             linkClass = "govuk-task-list__item--with-link";
                             break;
                         case StatusConstants.Completed:
@@ -39,7 +40,6 @@
                         default:
                             statusClass = "govuk-task-list__status--cannot-start-yet";
                             linkClass = "";
-                            //fontColor = "color: #484849;";
                             skipSpan = true;
                         break;
                     }
