@@ -14,9 +14,8 @@
         {
             new Question
             {
-                QId = elementId,
-                //QText = $"You have been invited to join {TempData["HNName"]} heat network",
-                QText = $"Do you accept the invitation to join the {ViewBag.PartHeading}?",
+                QId = elementId,                
+                QText = $"Do you accept the invitation to join {ViewBag.PartHeading}?",
                 QDescText = null,
                 QHintText = null,
                 Options = new List<Option>
