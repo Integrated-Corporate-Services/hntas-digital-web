@@ -7,8 +7,10 @@
     <div class="govuk-grid-column-full">
 
         <form class="form" asp-action="EcPlantOptions" method="post" novalidate>
-
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+            @{
+                string? additionalDescription = ViewBag.HNAdditionalDescription as string;
+            }
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
             <h1 class="govuk-heading-l">Tell us about your energy centre plant</h1>
             <p class="govuk-body">
                 Provide the number of energy centre generators and heat sources. At feasibility these can be best estimates. You'll be able to update these as your design develops.                

@@ -21,34 +21,37 @@
         </ol>
     </nav>
 }
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
         <form asp-action="NetworkDetails" asp-controller="HeatNetwork" method="get">
-                @Html.AntiForgeryToken()
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
-                <h1 class="govuk-heading-l">
-                    Network overview
-                </h1>
+            @Html.AntiForgeryToken()
+            @{
+                string? additionalDescription = ViewBag.HNAdditionalDescription as string;
+            }
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
+            <h1 class="govuk-heading-l">
+                Network overview
+            </h1>
 
-                <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
                         Main energy centre address and postcode
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.Address
-                        </dd>
-                    </div>
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Address
+                    </dd>
+                </div>
 
-                    <div class="govuk-summary-list__row">
-                        <dt class="govuk-summary-list__key">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
                         Energy centre grid coordinates
-                        </dt>
-                        <dd class="govuk-summary-list__value">
-                            @Model.Coordinates
-                        </dd>
-                    </div> 
-                    
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        @Model.Coordinates
+                    </dd>
+                </div>
+
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
                         Connections
@@ -151,7 +154,7 @@
                     <dd class="govuk-summary-list__value">
                         @Model.Phase
                     </dd>
-                </div>                    
+                </div>
 
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
@@ -159,7 +162,7 @@
                     </dt>
                     <dd class="govuk-summary-list__value">
                         @if (Model.ExistingNetworkElements != null && Model.ExistingNetworkElements.Count > 0)
-                            {
+                        {
                             <h3 class="govuk-heading-s">Existing elements</h3>
                             <ul class="govuk-list govuk-list--bullet">
                                 @foreach (var element in Model.ExistingNetworkElements!)
@@ -167,7 +170,7 @@
                                     <li>@element</li>
                                 }
                             </ul>
-                            }
+                        }
                         @if (Model.NewNetworkElements != null)
                         {
                             <h3 class="govuk-heading-s">New elements</h3>
@@ -177,42 +180,46 @@
                                     <li>@element</li>
                                 }
                             </ul>
-                        }                            
-                    </dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Energy centres
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        @if (Model.ExistingNetworkEcNames != null && Model.ExistingNetworkEcNames.Count > 0)
-                            {
-                            <h3 class="govuk-heading-s">Existing EC</h3>
-                            <ul class="govuk-list govuk-list--bullet">
-                                @foreach (var element in Model.ExistingNetworkEcNames!)
-                                {
-                                    <li>@element</li>
-                                }
-                            </ul>
-                            }
-                            
-                        @if (Model.NewNetworkEcNames != null)
-                        {
-                            <h3 class="govuk-heading-s">New EC</h3>
-                            <ul class="govuk-list govuk-list--bullet">
-                                @foreach (var element in Model.NewNetworkEcNames!)
-                                {
-                                    <li>@element</li>
-                                }
-                            </ul>
                         }
-                            
                     </dd>
                 </div>
 
+                @if ((Model.ExistingNetworkEcNames != null && Model.ExistingNetworkEcNames.Count > 0) || (Model.NewNetworkEcNames != null && Model.NewNetworkEcNames.Count > 0))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Energy centres
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            @if (Model.ExistingNetworkEcNames != null && Model.ExistingNetworkEcNames.Count > 0)
+                            {
+                                <h3 class="govuk-heading-s">Existing EC</h3>
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @foreach (var element in Model.ExistingNetworkEcNames!)
+                                    {
+                                        <li>@element</li>
+                                    }
+                                </ul>
+                            }
+
+                            @if (Model.NewNetworkEcNames != null)
+                            {
+                                <h3 class="govuk-heading-s">New EC</h3>
+                                <ul class="govuk-list govuk-list--bullet">
+                                    @foreach (var element in Model.NewNetworkEcNames!)
+                                    {
+                                        <li>@element</li>
+                                    }
+                                </ul>
+                            }
+
+                        </dd>
+                    </div>
+                }
+
+                    
                 @if (ViewBag.SupplyToNewBuildings == true)
-                    {
+                {
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">
                             Existing energy centre supplying new buildings
@@ -226,13 +233,13 @@
                             </ul>
                         </dd>
                     </div>
-                    }                    
-                    
-                </dl>
-                <button type="submit" class="govuk-button" data-module="govuk-button">
-                    Continue
-                </button>
-            </form>
-        </div>
-    
+                }
+
+            </dl>
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Continue
+            </button>
+        </form>
     </div>
+
+</div>

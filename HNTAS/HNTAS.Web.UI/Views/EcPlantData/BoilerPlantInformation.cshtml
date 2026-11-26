@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "Boilers";
     var boilerPlantInformationListCount = Model.BoilerPlantInformationList?.Count ?? 0;
+    string? additionalDescription = ViewBag.HNAdditionalDescription as string;
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
         <form class="form" asp-action="BoilerPlantInformation" method="post" novalidate>
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
             <h1 class="govuk-heading-l">Boilers</h1>
 
             @for (int i = 0; i < boilerPlantInformationListCount; i++)

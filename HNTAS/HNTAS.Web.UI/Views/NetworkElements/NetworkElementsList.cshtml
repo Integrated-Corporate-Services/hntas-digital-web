@@ -9,7 +9,10 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">        
         <form asp-action="NetworkElementsList" method="post" novalidate>        
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+            @{
+                string? additionalDescription = ViewBag.HNAdditionalDescription as string;
+            }
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
 
             <h1 class="govuk-heading-l">Tell us about the heat network elements</h1>
             @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())
@@ -78,7 +81,7 @@
                                     @if (hasNewCountError)
                                     {
                                         var errorMsg = ViewData.ModelState[$"ElementOptions[0].NewCount"]?.Errors.FirstOrDefault()?.ErrorMessage;
-                                        if (errorMsg != "Please provide atleast 1 new element")
+                                        if (errorMsg != "Provide at least one new element")
                                         {
                                             <span class="govuk-visually-hidden">Error:</span>
                                             @Html.ValidationMessageFor(m => m.ElementOptions[i].NewCount)
@@ -97,6 +100,7 @@
 
             @Html.HiddenFor(m => m.MainEnergyCentreName)
             @Html.HiddenFor(m => m.MainEnergyCentreStatus)
+            @Html.HiddenFor(m => m.EnergyCentreType)
             <button type="submit" class="govuk-button">
                 Continue
             </button>
