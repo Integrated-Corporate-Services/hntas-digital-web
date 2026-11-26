@@ -11,14 +11,30 @@
     QuestionWithRadiobuttonsModel pageData;
 
     string notificationHtml = string.Empty;
+    string existingNetworkMessageHtml = string.Empty;
 
-    if (!string.IsNullOrEmpty(ViewBag.NotificationMessage as string))
+
+    if (ViewBag.NotificationMessages is List<string> messages && messages.Any())
     {
         notificationHtml = $@"
-            <div class=""govuk-inset-text"">
-                {ViewBag.NotificationMessage}
-            </div>";
+                        <div class=""govuk-inset-text"">
+                            {string.Join("", messages.Select(x => $"<p>{x}</p>"))}
+                        </div>";
     }
+
+    if (ViewBag.ExistingNetworkMessage is string existingNetworkMessage &&
+    !string.IsNullOrEmpty(existingNetworkMessage))
+    {
+        existingNetworkMessageHtml = $@"
+                <div class=""govuk-warning-text"">
+                    <span class=""govuk-warning-text__icon"" aria-hidden=""true"">!</span>
+                    <strong class=""govuk-warning-text__text"">
+                        <span class=""govuk-visually-hidden"">Warning</span>
+                        {existingNetworkMessage}
+                    </strong>
+                </div>";
+    }
+
 
     if (ViewBag.RegistrationSource == RegistrationSource.OFGEM)
     {
@@ -102,6 +118,7 @@
                 <li>go to your dashboard to manage your heat networks and include others to support you</li>
             </ul>
             @Html.Raw(notificationHtml)
+            @Html.Raw(existingNetworkMessageHtml)
             @await Html.PartialAsync("_QuestionWithRadiobuttons", pageData)
         </div>
     </div>
