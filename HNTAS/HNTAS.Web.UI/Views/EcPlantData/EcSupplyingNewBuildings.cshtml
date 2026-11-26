@@ -31,7 +31,10 @@
 </style>
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+        @{
+            string? additionalDescription = ViewBag.HNAdditionalDescription as string;
+        }
+        <span class="govuk-caption-l">@ViewBag.HNId @ViewBag.HNName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
         <h1 class="govuk-heading-l">
             List of energy centres supplying new buildings
         </h1>
@@ -40,28 +43,33 @@
             @foreach (var element in Model)
             {
                 var statusClass = "govuk-tag--blue";
+                var skipSpan = false;
                 if (element.EnergyCentrePlantData != null)
                 {
                     switch (element.EnergyCentrePlantData!.EnergyCentreStatus.ToString())
                     {
-                        case StatusConstants.ReadyToStart:
-                            statusClass = "govuk-tag--light-blue";
-                            break;
-                        case StatusConstants.CannotStartYet:
-                        case StatusConstants.InProgress:
-                        case StatusConstants.Incomplete:
+                        case nameof(NullableOfNetworkDetailsStatus.ReadyToStart):
+                            statusClass = "govuk-tag--blue";
+                            break;                        
+                        case nameof(NullableOfNetworkDetailsStatus.InProgress):
+                        case nameof(NullableOfNetworkDetailsStatus.Incomplete):
                             statusClass = "govuk-tag--blue";
                             break;
-                        case StatusConstants.Complete:
-                            statusClass = "govuk-tag--green";
+                        case nameof(NullableOfNetworkDetailsStatus.Complete):
+                            skipSpan = true;
+                            statusClass = "";
                             break;
                         default:
-                            statusClass = "govuk-tag--grey";
+                            statusClass = "govuk-tag--blue";
                             break;
                     }
                 }
-                
-                
+
+                var status = StatusConstants.ReadyToStart;
+                if (element.EnergyCentrePlantData != null && element.EnergyCentrePlantData!.EnergyCentreStatus.ToString() == StatusConstants.Complete)
+                {
+                    status = StatusConstants.Completed;
+                }
 
                 <li class="govuk-task-list__item govuk-task-list__item--with-link">
                     <div class="govuk-task-list__name-and-hint">                        
@@ -73,15 +81,28 @@
                             </button>
                         </form>
                     </div>
-                    <div class="govuk-task-list__status" id="@element.ElementId">
-                        <span class="govuk-tag @statusClass">
-                            @(element.EnergyCentrePlantData != null ? element.EnergyCentrePlantData!.EnergyCentreStatus : "Incomplete")
-                        </span>
-                    </div>
+                    
+                    @if (!skipSpan)
+                    {
+                        <div class="govuk-task-list__status" id="@element.ElementId">
+                            <span class="govuk-tag @statusClass">
+                                @status
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="govuk-task-list__status" id="@element.ElementId">
+                            @status
+                        </div>
+                    }
                 </li>
             }
 
         </ul>
+        <button type="button" onclick="location.href='@Url.Action("NetworkDetails", "HeatNetwork")'" class="govuk-button" data-module="govuk-button">
+                    Continue
+        </button>
     </div>
 
 </div>

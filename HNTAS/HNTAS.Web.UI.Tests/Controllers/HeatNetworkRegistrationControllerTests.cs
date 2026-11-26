@@ -1198,11 +1198,14 @@ namespace HNTAS.Web.UI.Tests.Controllers
         {
             _sessionHelperMock.Setup(x => x.GetFromSession<string>(
                 It.IsAny<HttpContext>(), SessionKeys.HnId)).Returns("hn-123");
+
             _sessionHelperMock.Setup(x => x.GetFromSession<string>(
                 It.IsAny<HttpContext>(), SessionKeys.HnName)).Returns("Test Network");
+
             _sessionHelperMock.Setup(x => x.GetFromSession<HeatNetworkSuccessRedirection>(
                 It.IsAny<HttpContext>(), SessionKeys.HeatNetworkSuccessRedirectionSessionKey))
                 .Returns(new HeatNetworkSuccessRedirection { NextAction = "Dashboard" });
+
             _heatNetworkServiceMock.Setup(x => x.GetAsync("hn-123"))
                 .ReturnsAsync(new HeatNetworkResponse
                 {
@@ -1213,9 +1216,17 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var result = await _controller.HeatNetworkSuccessRedirection();
 
             var viewResult = Assert.IsType<ViewResult>(result);
+
             Assert.Equal("HeatNetworkRegistration/HeatNetworkSuccessRedirection", viewResult.ViewName);
             Assert.IsType<HeatNetworkSuccessRedirection>(viewResult.Model);
-            Assert.Contains("2 new communal buildings and 1 other new district networks", (string)_controller.ViewBag.NotificationMessage);
+
+            var messages = Assert.IsType<List<string>>(_controller.ViewBag.NotificationMessages);
+
+            Assert.Equal(2, messages.Count);
+
+            Assert.Contains("2 new communal buildings",messages[0]);
+
+            Assert.Contains("1 other new district network",messages[1]);
         }
 
         [Fact]
@@ -1227,8 +1238,11 @@ namespace HNTAS.Web.UI.Tests.Controllers
             var result = await _controller.HeatNetworkSuccessRedirection();
 
             var viewResult = Assert.IsType<ViewResult>(result);
+
             Assert.IsType<HeatNetworkSuccessRedirection>(viewResult.Model);
-            Assert.Empty((string)_controller.ViewBag.NotificationMessage);
+
+            var messages = Assert.IsType<List<string>>(_controller.ViewBag.NotificationMessages);
+            Assert.Empty(messages);
         }
 
         [Fact]

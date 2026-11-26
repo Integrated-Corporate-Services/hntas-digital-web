@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Model;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
 using HNTAS.Web.UI.Models.CompaniesHouse;
@@ -67,6 +68,7 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.IsExistingNetworksFeatureEnabled = isExistingNetworksFeatureEnabled;
             ViewBag.IsAssessorFeatureEnabled = _configuration.GetValue<bool>("AssessorFeature:Enabled");
             UserDetailsResponse user;
+            int networkLeadsCount = 0;
 
             try
             {
@@ -81,9 +83,26 @@ namespace HNTAS.Web.UI.Controllers
                 }
 
                 user = await RetrieveUserDetails(userId);
+
+                if (user?.Roles?.Contains(UserRole.ResponsibleParty) == true)
+                {
+                    try
+                    {
+                        var networkLeads = await _userService.GetNetworkLeads(userId);
+                        networkLeadsCount = networkLeads?.Count ?? 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex,
+                            "Unable to retrieve network leads for the dashboard.");
+                    }
+                }
+
+                user = await RetrieveUserDetails(userId);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to load dashboard.");
                 TempData["ErrorMessage"] = "Something went wrong. Please try again later";
                 return View(new DashboardModel());
             }
@@ -116,6 +135,8 @@ namespace HNTAS.Web.UI.Controllers
                 user.Id!,
                 RegistrationSource2.HNTAS, 1, 1);
 
+           
+
             var dashboardModel = new DashboardModel
             {
                 OrganisationName = user.Organisation?.Name,
@@ -124,7 +145,8 @@ namespace HNTAS.Web.UI.Controllers
                 HasHntasNetworks = hntasNetworks.TotalCount > 0,
                 HasOfgemNetworks = ofgemNetworks.TotalCount > 0,
                 HasMultipleContributingOrganisations = user.ContributingOrganisations?.Count > 1,
-                InvitedRoles = user.InvitedRoles
+                InvitedRoles = user.InvitedRoles,
+                NetworkLeadsCount = networkLeadsCount
             };
 
             ViewBag.UserId = user.Id;

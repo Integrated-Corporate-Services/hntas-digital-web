@@ -1245,29 +1245,33 @@ namespace HNTAS.Web.UI.Controllers
 
             HeatNetworkResponse heatnetwork = await _heatNetworkService.GetAsync(ViewBag.HNId);
 
-            string notificationMessage = string.Empty;
-
             var communalResCount = heatnetwork.NoOfResponsibleCommunalBuilding ?? 0;
             var districtResCount = heatnetwork.NoOfResponsibleDistrictNetwork ?? 0;
 
+            var notificationMessages = new List<string>();
+            string? existingNetworkMessage = null;
+
+
+            if (communalResCount > 0)
+            {
+                notificationMessages.Add(
+                    $"You told us your network has {communalResCount} new communal building{(communalResCount == 1 ? string.Empty : "s")} that you are responsible for. You need to register each of these separately.");
+            }
+
+            if (districtResCount > 0)
+            {
+
+                notificationMessages.Add(
+                    $"You told us you have {districtResCount} other new district network{(districtResCount == 1 ? string.Empty : "s")} that you are responsible for. You need to register each of these separately.");
+            }
+
             if (heatnetwork.NetworkBuildStatus == NullableOfNetworkBuildStatus.NewAndExisting)
             {
-                notificationMessage = "You told us you have existing network connections. Those parts of the network already supplying customers must also be registered separately with <a href=\"https://www.ofgem.gov.uk/energy-regulation/low-carbon/heat-networks\" class=\"govuk-link\" target=\"_blank\">Ofgem</a>.";
+                existingNetworkMessage = "You told us you have existing network connections. Those parts of the network already supplying customers must also be registered separately with <a href=\"https://www.ofgem.gov.uk/energy-regulation/low-carbon/heat-networks\" class=\"govuk-link\" target=\"_blank\">Ofgem (opens in a new tab)</a>.";
             }
-            else if (communalResCount > 0 && districtResCount > 0)
-            {
-                notificationMessage = $"You told us your network has {communalResCount} new communal buildings and {districtResCount} other new district networks. You need to register these separately. We added these to your heat network list for you to complete.";
-            }
-            else if (communalResCount > 0)
-            {
-                notificationMessage = $"You told us your network has {communalResCount} new communal buildings. You need to register these separately. We added these to your heat network list for you to complete.";
-            }
-            else if (districtResCount > 0)
-            {
-                notificationMessage = $"You told us you have {districtResCount} other new district networks. You need to register these separately. We added these to your heat network list for you to complete.";
-            }
-          
-            ViewBag.NotificationMessage = notificationMessage;
+
+            ViewBag.NotificationMessages = notificationMessages;
+            ViewBag.ExistingNetworkMessage = existingNetworkMessage;
             var model = _sessionHelper.GetFromSession<HeatNetworkSuccessRedirection>(HttpContext, SessionKeys.HeatNetworkSuccessRedirectionSessionKey) ?? new HeatNetworkSuccessRedirection();
             return View("HeatNetworkRegistration/HeatNetworkSuccessRedirection", model);
         }
