@@ -61,7 +61,7 @@
         @if (userIsRP)
         {
             <!-- Network Managers -->
-            @if (Model.HasHntasNetworks)
+            @if (Model.HasHntasNetworks || Model.NetworkLeadsCount > 0)
             {
                 <div class="dashboard-grid__item">
                     <div class="dashboard-card">
