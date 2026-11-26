@@ -84,11 +84,23 @@ namespace HNTAS.Web.UI.Controllers
 
                 user = await RetrieveUserDetails(userId);
 
-                var networkLeads = await _userService.GetNetworkLeads(userId);
-                networkLeadsCount = networkLeads?.Count ?? 0;
+                if (user?.Roles?.Contains(UserRole.ResponsibleParty) == true)
+                {
+                    try
+                    {
+                        var networkLeads = await _userService.GetNetworkLeads(userId);
+                        networkLeadsCount = networkLeads?.Count ?? 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogWarning(ex,
+                            "Unable to retrieve network leads for the dashboard.");
+                    }
+                }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to load dashboard.");
                 TempData["ErrorMessage"] = "Something went wrong. Please try again later";
                 return View(new DashboardModel());
             }
