@@ -9,7 +9,10 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">        
         <form asp-action="NetworkElementsList" method="post" novalidate>        
-            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(ViewBag.HNAdditionalDescription) ? ", " + ViewBag.HNAdditionalDescription : "")</span>
+            @{
+                string? additionalDescription = ViewBag.HNAdditionalDescription as string;
+            }
+            <span class="govuk-caption-l">@ViewBag.HnId @ViewBag.HnName@(!string.IsNullOrEmpty(additionalDescription) ? ", " + additionalDescription.TruncateWithEllipsis() : "")</span>
 
             <h1 class="govuk-heading-l">Tell us about the heat network elements</h1>
             @if (ViewBag.NetworkBuildStatus == NetworkBuildStatus.NewAndExisting.ToString())
@@ -44,10 +47,12 @@
                         var item = Model.ElementOptions[i];
                         @* var hasExistingCountError = ViewData.ModelState[$"ElementOptions[{i}].ExistingCount"]?.Errors.Count > 0; *@
                         var hasNewCountError = ViewData.ModelState[$"ElementOptions[{i}].NewCount"]?.Errors.Count > 0;
-                        var showErrorBorder = false;
+                        var showErrorBorderNew = false;
+                        var showErrorBorderExisting = false;
                         <input type="hidden" name="@($"ElementOptions[{i}].Id")" value="@item.Id" />
                         <input type="hidden" name="@($"ElementOptions[{i}].Hint")" value="@item.Hint" />
                         <input type="hidden" name="@($"ElementOptions[{i}].Label")" value="@item.Label" />
+                        <input type="hidden" name="@($"ElementOptions[{i}].LabelSingular")" value="@item.LabelSingular" />
                         <tr class="govuk-table__row">
                             <th scope="row" class="govuk-table__header">
                                 @item.Label
@@ -63,12 +68,18 @@
                                     <p id="@($"existing-{item.Id}-error")" class="govuk-error-message">
                                         @if (hasExistingCountError)
                                         {
-                                            <span class="govuk-visually-hidden">Error:</span>
-                                            @Html.ValidationMessageFor(m => m.ElementOptions[i].ExistingCount)
+                                            
+                                            var errorMsg = ViewData.ModelState[$"ElementOptions[0].ExistingCount"]?.Errors.FirstOrDefault()?.ErrorMessage;
+                                            if (errorMsg != "Provide at least one energy centre")
+                                            {
+                                                <span class="govuk-visually-hidden">Error:</span>
+                                                @Html.ValidationMessageFor(m => m.ElementOptions[i].ExistingCount)
+                                                showErrorBorderExisting = true;
+                                            } 
                                         }
                                     </p>
 
-                                    <input class="govuk-input govuk-input--width-3 @(hasExistingCountError ? "govuk-input--error" : "")" id="@($"elementoptions[{i}].existingcount")" name="@($"elementoptions[{i}].existingcount")"  type="number" value="@item.ExistingCount">
+                                    <input class="govuk-input govuk-input--width-3 @(hasExistingCountError && showErrorBorderExisting ? "govuk-input--error" : "")" id="@($"elementoptions[{i}].existingcount")" name="@($"elementoptions[{i}].existingcount")"  type="number" value="@item.ExistingCount">
                                 </td>
                                 }
                                 
@@ -82,12 +93,12 @@
                                         {
                                             <span class="govuk-visually-hidden">Error:</span>
                                             @Html.ValidationMessageFor(m => m.ElementOptions[i].NewCount)
-                                            showErrorBorder = true;
+                                            showErrorBorderNew = true;
                                         } 
                                         
                                     }
                                 </p>
-                                <input class="govuk-input govuk-input--width-3 @(hasNewCountError && showErrorBorder ? "govuk-input--error" : "")" id="@($"elementoptions[{i}].newcount")" name="@($"elementoptions[{i}].newcount")" type="number" value="@item.NewCount">
+                                <input class="govuk-input govuk-input--width-3 @(hasNewCountError && showErrorBorderNew ? "govuk-input--error" : "")" id="@($"elementoptions[{i}].newcount")" name="@($"elementoptions[{i}].newcount")" type="number" value="@item.NewCount">
                             </td>
                         </tr>
                     }                  

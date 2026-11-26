@@ -121,7 +121,7 @@
                                     @if (log.Timestamp.HasValue)
                                     {
                                         <time class="local-time" datetime="@log.Timestamp.Value.ToString("o")">
-                                            @log.Timestamp.Value.ToString("dd/MM/yyyy HH:mm")
+                                            @log.Timestamp.Value.ToString("dd/MM/yyyy")
                                         </time>
                                     }
                                     else
@@ -236,11 +236,9 @@
                 // Format to dd/MM/yyyy HH:mm in local timezone
                 const day = String(utcDate.getDate()).padStart(2, '0');
                 const month = String(utcDate.getMonth() + 1).padStart(2, '0');
-                const year = utcDate.getFullYear();
-                const hours = String(utcDate.getHours()).padStart(2, '0');
-                const minutes = String(utcDate.getMinutes()).padStart(2, '0');
+                const year = utcDate.getFullYear();                
 
-                timeElement.textContent = `${day}/${month}/${year} ${hours}:${minutes}`;
+                timeElement.textContent = `${day}/${month}/${year}`;
             });
         });
     </script>
