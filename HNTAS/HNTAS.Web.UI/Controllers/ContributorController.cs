@@ -73,12 +73,12 @@ namespace HNTAS.Web.UI.Controllers
                 var invitedRole = invitation.Roles?.FirstOrDefault();               
                 if (invitedRole == Api.Client.Model.ContributorRole.NetworkManager)
                 {
-                    ViewBag.PartHeading = invitedOrgName;
+                    ViewBag.PartHeading = $"{invitedOrgName}";
                 }
                 else
                 {
                     var hnName = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
-                    ViewBag.PartHeading = $"{hnName} heat network";
+                    ViewBag.PartHeading = $"the {hnName} heat network";
                 }
 
                 //TempData["HNName"] = inviterUser?.HeatNetworks?.FirstOrDefault(x => x.HnId == invitation.InvitedHnId)?.Name;
