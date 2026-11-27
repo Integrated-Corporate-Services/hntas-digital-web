@@ -158,38 +158,38 @@ public class HomeControllerTests
             Times.Once);
     }
 
-    //[Fact]
-    //public async Task Index_Redirects_WhenUserHasOrganisation()
-    //{
-    //    // Arrange
-    //    var controller = CreateController(CreateUser());
-    //    var userResponse = new UserResponse() { Id = "user-123", OrgId = "org123" };
-    //    _userServiceMock.Setup(s => s.GetUserByOneLoginId(It.IsAny<string>())).ReturnsAsync(userResponse);
-    //    _userServiceMock.Setup(s => s.IsSuperUser(It.IsAny<string>())).ReturnsAsync(false);
-    //    _configurationMock.Setup(c => c.GetSection("SuperUserLogin:Enabled").Value).Returns("false");
+    [Fact]
+    public async Task Index_Redirects_WhenUserHasOrganisation()
+    {
+        // Arrange
+        var controller = CreateController(CreateUser());
+        var userResponse = new UserResponse() { Id = "user-123", OrgId = "org123" };
+        _userServiceMock.Setup(s => s.GetUserByOneLoginId(It.IsAny<string>())).ReturnsAsync(userResponse);
+        _userServiceMock.Setup(s => s.IsSuperUser(It.IsAny<string>())).ReturnsAsync(false);
+        _configurationMock.Setup(c => c.GetSection("SuperUserLogin:Enabled").Value).Returns("false");
 
-    //    // Act
-    //    var result = await controller.Index();
+        // Act
+        var result = await controller.Index();
 
-    //    // Assert
-    //    var redirect = Assert.IsType<RedirectToActionResult>(result);
-    //    Assert.Equal("UserAccount", redirect.ActionName);
-    //    Assert.Equal("Dashboard", redirect.ControllerName);
+        // Assert
+        var redirect = Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("UserAccount", redirect.ActionName);
+        Assert.Equal("Dashboard", redirect.ControllerName);
 
-    //    // Verify the session helper was called with the correct user id
-    //    _sessionHelperMock.Verify(x =>
-    //        x.SaveToSession<string>(
-    //            It.IsAny<HttpContext>(),
-    //            SessionKeys.UserModel_Id_SessionKey,
-    //            "user-123"),
-    //        Times.Once);
+        // Verify the session helper was called with the correct user id
+        _sessionHelperMock.Verify(x =>
+            x.SaveToSession<string>(
+                It.IsAny<HttpContext>(),
+                SessionKeys.UserModel_Id_SessionKey,
+                "user-123"),
+            Times.Once);
 
-    //    // Verify organisation details were saved
-    //    if (userResponse.OrgId != null)
-    //    {
-    //        var Redirect = Assert.IsType<RedirectToActionResult>(result);
-    //    }
-    //}
+        // Verify organisation details were saved
+        if (userResponse.OrgId != null)
+        {
+            var Redirect = Assert.IsType<RedirectToActionResult>(result);
+        }
+    }
 
     [Fact]
     public void Error_WhenCodeIs404_ReturnsNotFoundView()
