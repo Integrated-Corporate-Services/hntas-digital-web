@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Model;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
@@ -38,6 +39,9 @@ public class HomeController : Controller
         var isSuperUserEnabled = _configuration.GetValue<bool>("SuperUserLogin:Enabled");
 
         var isSuperUser = isSuperUserEnabled && await _iUserService.IsSuperUser(email);
+
+        
+
 
         if (isSuperUser)
         {

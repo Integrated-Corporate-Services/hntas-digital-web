@@ -1,4 +1,5 @@
 ﻿using HNTAS.Api.Client.Model;
+using HNTAS.Web.UI.Models.Cache;
 using HNTAS.Web.UI.Services.Core;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
@@ -20,19 +21,25 @@ namespace HNTAS.Web.UI.Authorization
 
         public async Task<List<UserRole>> GetRolesAsync(string oneLoginId)
         {
-            string cacheKey = $"roles:{oneLoginId}";
+            string cacheKey = $"user:{oneLoginId}";
 
-            var cachedRoles = await _cache.GetStringAsync(cacheKey);
+            var cachedUser = await _cache.GetStringAsync(cacheKey);
 
-            if (!string.IsNullOrEmpty(cachedRoles))
+            if (!string.IsNullOrEmpty(cachedUser))
             {
-                return JsonSerializer.Deserialize<List<UserRole>>(cachedRoles)
-                       ?? new List<UserRole>();
+                var cachedUserModel = JsonSerializer.Deserialize<UserCacheModel>(cachedUser);
+
+                return cachedUserModel?.Roles ?? [];
             }
 
             var response = await _userService.GetUserByOneLoginId(oneLoginId);
 
-            var roles = response.Roles ?? new List<UserRole>();
+            var userCache = new UserCacheModel
+            {
+                UserId = response.Id,
+                OneLoginId = oneLoginId,
+                Roles = response.Roles ?? []
+            };
 
             var durationMinutes = _configuration.GetValue<int>(
                 "CacheSettings:RoleCacheDurationMinutes",
@@ -46,15 +53,15 @@ namespace HNTAS.Web.UI.Authorization
 
             await _cache.SetStringAsync(
                 cacheKey,
-                JsonSerializer.Serialize(roles),
+                JsonSerializer.Serialize(userCache),
                 options);
 
-            return roles;
+            return userCache.Roles;
         }
 
         public void ClearRoleCache(string oneLoginId)
         {
-            _cache.Remove($"roles:{oneLoginId}");
+            _cache.Remove($"user:{oneLoginId}");
         }
     }
 }
