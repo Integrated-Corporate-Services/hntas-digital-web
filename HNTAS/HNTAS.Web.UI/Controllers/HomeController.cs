@@ -144,6 +144,21 @@ public class HomeController : Controller
             {
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
 
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("RedisTest")))
+                {
+                    HttpContext.Session.SetString(
+                        "RedisTest",
+                        $"{Environment.MachineName}-{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}");
+                }
+
+                _logger.LogInformation(
+                "Task={Task}, SessionId={SessionId}, User={UserId}, RedisTest={RedisTest}, RedisHost={RedisHost}",
+                Environment.MachineName,
+                HttpContext.Session.Id,
+                existingUser.OneLoginId,
+                HttpContext.Session.GetString("RedisTest"),
+                Environment.GetEnvironmentVariable("REDIS_HOST"));
+
                 if (existingUser.OrgId == null && existingUser.Roles.Count() == 0)
                 {
                     return RedirectToAction("StartRegistration", "Organisation");
