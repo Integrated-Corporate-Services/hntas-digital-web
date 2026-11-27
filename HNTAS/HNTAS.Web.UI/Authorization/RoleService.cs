@@ -61,7 +61,7 @@ namespace HNTAS.Web.UI.Authorization
 
         public void ClearRoleCache(string oneLoginId)
         {
-            _cache.Remove($"roles:{oneLoginId}");
+            _cache.Remove($"user:{oneLoginId}");
         }
     }
 }
