@@ -1,4 +1,5 @@
-﻿using HNTAS.Api.Client.Model;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using HNTAS.Api.Client.Model;
 using HNTAS.Web.UI.Extensions;
 using HNTAS.Web.UI.Helpers;
 using HNTAS.Web.UI.Models;
@@ -38,6 +39,9 @@ public class HomeController : Controller
         var isSuperUserEnabled = _configuration.GetValue<bool>("SuperUserLogin:Enabled");
 
         var isSuperUser = isSuperUserEnabled && await _iUserService.IsSuperUser(email);
+
+        
+
 
         if (isSuperUser)
         {
@@ -139,6 +143,21 @@ public class HomeController : Controller
             else if (existingUser != null)
             {
                 _sessionHelper.SaveToSession(HttpContext, SessionKeys.UserModel_Id_SessionKey, existingUser.Id);
+
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("RedisTest")))
+                {
+                    HttpContext.Session.SetString(
+                        "RedisTest",
+                        $"{Environment.MachineName}-{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}");
+                }
+
+                _logger.LogInformation(
+                "Task={Task}, SessionId={SessionId}, User={UserId}, RedisTest={RedisTest}, RedisHost={RedisHost}",
+                Environment.MachineName,
+                HttpContext.Session.Id,
+                existingUser.OneLoginId,
+                HttpContext.Session.GetString("RedisTest"),
+                Environment.GetEnvironmentVariable("REDIS_HOST"));
 
                 if (existingUser.OrgId == null && existingUser.Roles.Count() == 0)
                 {
