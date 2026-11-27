@@ -12,7 +12,6 @@ tags:
 - name: AssignedAssessor
 - name: Audit
 - name: CarbonCalculator
-- name: ChpOperationalModes
 - name: CountriesAndTerritories
 - name: Import
 - name: Feedback
@@ -706,33 +705,6 @@ paths:
       - Bearer: []
       tags:
       - CarbonCalculator
-  /api/ChpOperationalModes:
-    get:
-      responses:
-        "200":
-          content:
-            text/plain:
-              schema:
-                items:
-                  $ref: "#/components/schemas/CHPOperationalMode"
-                type: array
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/CHPOperationalMode"
-                type: array
-            text/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/CHPOperationalMode"
-                type: array
-          description: OK
-        "500":
-          description: Internal Server Error
-      security:
-      - Bearer: []
-      tags:
-      - ChpOperationalModes
   /api/CountriesAndTerritories:
     get:
       responses:
@@ -2276,38 +2248,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ProblemDetails"
           description: Not Found
-      security:
-      - Bearer: []
-      tags:
-      - SOA
-    put:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-          text/json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-          application/*+json:
-            schema:
-              $ref: "#/components/schemas/UpdateSoaStatusRequest"
-        required: true
-      responses:
-        "204":
-          description: No Content
-        "400":
-          content:
-            text/plain:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-            text/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetails"
-          description: Bad Request
       security:
       - Bearer: []
       tags:
@@ -4384,24 +4324,6 @@ components:
           format: int32
           nullable: true
           type: integer
-      type: object
-    CHPOperationalMode:
-      example:
-        operationalMode: operationalMode
-        chpId: 0
-        ident: ident
-        id: id
-      properties:
-        id:
-          nullable: true
-          type: string
-        chpId:
-          format: int32
-          type: integer
-        ident:
-          type: string
-        operationalMode:
-          type: string
       type: object
     CombinedHeatAndPowerSystem:
       example:
@@ -11006,22 +10928,6 @@ components:
           format: int32
           nullable: true
           type: integer
-      type: object
-    UpdateSoaStatusRequest:
-      example:
-        hnId: hnId
-        updatedBy: updatedBy
-        hnName: hnName
-        status: NotStarted
-      properties:
-        hnId:
-          type: string
-        hnName:
-          type: string
-        updatedBy:
-          type: string
-        status:
-          $ref: "#/components/schemas/SoaStatus"
       type: object
     UpdateUserDetailsRequest:
       example:

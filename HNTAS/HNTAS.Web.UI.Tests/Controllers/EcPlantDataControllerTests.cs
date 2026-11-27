@@ -58,12 +58,7 @@ namespace HNTAS.Web.UI.Tests.Controllers
             [
                 new FuelType { FuelId = 1, Type = "Gas" },
                 new FuelType { FuelId = 2, Type = "Electricity" }
-            ]);
-
-            _energyCentrePlantDataServiceMock.Setup(x => x.GetChpOperationalModes()).ReturnsAsync(
-            [
-                new CHPOperationalMode { ChpId = 1, OperationalMode = "Mode 1" }
-            ]);
+            ]);            
 
             _energyCentrePlantDataServiceMock.Setup(x => x.GetHeatRecoverySources()).ReturnsAsync(
             [

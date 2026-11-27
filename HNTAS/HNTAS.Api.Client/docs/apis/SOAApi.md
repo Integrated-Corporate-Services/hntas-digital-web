@@ -8,7 +8,6 @@ All URIs are relative to *https://localhost:7117*
 | [**ApiSOASoaAssignAssessorPatch**](SOAApi.md#apisoasoaassignassessorpatch) | **PATCH** /api/SOA/soa-assign-assessor |  |
 | [**ApiSOAUpdateSoaStatusForExistingNetworkPatch**](SOAApi.md#apisoaupdatesoastatusforexistingnetworkpatch) | **PATCH** /api/SOA/update-soa-status-for-existing-network |  |
 | [**ApiSOAUpdateSoaStatusPatch**](SOAApi.md#apisoaupdatesoastatuspatch) | **PATCH** /api/SOA/update-soa-status |  |
-| [**ApiSOAUpdateSoaStatusPut**](SOAApi.md#apisoaupdatesoastatusput) | **PUT** /api/SOA/update-soa-status |  |
 
 <a id="apisoasoaassignassessorforexistingnetworkpatch"></a>
 # **ApiSOASoaAssignAssessorForExistingNetworkPatch**
@@ -151,41 +150,6 @@ void (empty response body)
 | **200** | OK |  -  |
 | **400** | Bad Request |  -  |
 | **404** | Not Found |  -  |
-
-[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
-
-<a id="apisoaupdatesoastatusput"></a>
-# **ApiSOAUpdateSoaStatusPut**
-> void ApiSOAUpdateSoaStatusPut (UpdateSoaStatusRequest updateSoaStatusRequest)
-
-
-
-
-### Parameters
-
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| **updateSoaStatusRequest** | [**UpdateSoaStatusRequest**](UpdateSoaStatusRequest.md) |  |  |
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-[Bearer](../README.md#Bearer)
-
-### HTTP request headers
-
- - **Content-Type**: application/json, text/json, application/*+json
- - **Accept**: text/plain, application/json, text/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **204** | No Content |  -  |
-| **400** | Bad Request |  -  |
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 

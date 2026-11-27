@@ -160,14 +160,8 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
-            var fuelTypesTask = _energyCentrePlantDataService.GetFuelTypes();
-            var operationalModesTask = _energyCentrePlantDataService.GetChpOperationalModes();
-            await Task.WhenAll(fuelTypesTask, operationalModesTask);
-            var fuelTypes = fuelTypesTask.Result;
-            var operationalModes = operationalModesTask.Result;
-
-            ViewBag.FuelTypes = fuelTypes;
-            ViewBag.OperationalModes = operationalModes;
+            var fuelTypes = await _energyCentrePlantDataService.GetFuelTypes();
+            ViewBag.FuelTypes = fuelTypes;            
 
             var plantOptionsModel = _sessionHelper.GetFromSession<EcPlantOptionsViewModel>(HttpContext, SessionKeys.EcPlantOptionsViewModelSessionKey);
 
@@ -204,11 +198,10 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.SelectedElementId = TempData.Peek("EcElementId")?.ToString();
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
 
-            var fuelTypesTask = _energyCentrePlantDataService.GetFuelTypes();
-            var operationalModesTask = _energyCentrePlantDataService.GetChpOperationalModes();
-            await Task.WhenAll(fuelTypesTask, operationalModesTask);            
-            ViewBag.FuelTypes = fuelTypesTask.Result;
-            ViewBag.OperationalModes = operationalModesTask.Result;
+            var fuelTypes = await _energyCentrePlantDataService.GetFuelTypes();
+            
+                      
+            ViewBag.FuelTypes = fuelTypes;           
 
             foreach (var chpInfo in model.ChpInformationList)
             {
@@ -485,11 +478,10 @@ namespace HNTAS.Web.UI.Controllers
             var boilerPlantInformationModel = _sessionHelper.GetFromSession<BoilerPlantInformationViewModel>(HttpContext, SessionKeys.BoilerPlantInformationViewModelSessionKey);
 
             var fuelTypesTask = _energyCentrePlantDataService.GetFuelTypes();
-            var operationalModesTask = _energyCentrePlantDataService.GetChpOperationalModes();
+            
             var heatRecoverySourcesTask = _energyCentrePlantDataService.GetHeatRecoverySources();
-            await Task.WhenAll(fuelTypesTask, operationalModesTask, heatRecoverySourcesTask);
-            var fuelTypes = fuelTypesTask.Result;
-            var operationalModes = operationalModesTask.Result;
+            await Task.WhenAll(fuelTypesTask, heatRecoverySourcesTask);
+            var fuelTypes = fuelTypesTask.Result;            
             var heatRecoverySources = heatRecoverySourcesTask.Result;
 
             var model = new EcPlantSummaryViewModel();
@@ -656,13 +648,11 @@ namespace HNTAS.Web.UI.Controllers
             ViewBag.SelectedElementName = TempData.Peek("EcElementName")?.ToString();
             
             var heatNetworkDataTask = _heatNetworkService.GetAsync(hnId?.ToUpper()!);
-            var fuelTypesTask = _energyCentrePlantDataService.GetFuelTypes();
-            var operationalModesTask = _energyCentrePlantDataService.GetChpOperationalModes();
+            var fuelTypesTask = _energyCentrePlantDataService.GetFuelTypes();            
             var heatRecoverySourcesTask = _energyCentrePlantDataService.GetHeatRecoverySources();
-            await Task.WhenAll(heatNetworkDataTask, fuelTypesTask, operationalModesTask, heatRecoverySourcesTask);
+            await Task.WhenAll(heatNetworkDataTask, fuelTypesTask, heatRecoverySourcesTask);
             var heatNetworkData = heatNetworkDataTask.Result;
-            var fuelTypes = fuelTypesTask.Result;
-            var operationalModes = operationalModesTask.Result;
+            var fuelTypes = fuelTypesTask.Result;            
             var heatRecoverySources = heatRecoverySourcesTask.Result;
 
             var ecPlantData = heatNetworkData?.NetworkElements?.Elements?.FirstOrDefault(e => e.ElementId == TempData.Peek("EcElementId")?.ToString())?.EnergyCentrePlantData;
