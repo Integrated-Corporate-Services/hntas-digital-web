@@ -159,8 +159,7 @@ builder.Services.AddSingleton(new JsonSerializerOptions
         new UserNetworkDetailsResponseJsonConverter(),
         new PagedResultOfManagedUserResponseJsonConverter(),
         new InvitationJsonConverter(),
-        new FuelTypeJsonConverter(),
-        new CHPOperationalModeJsonConverter(),
+        new FuelTypeJsonConverter(),        
         new HeatRecoveryJsonConverter(),
         new BoilerInputJsonConverter(),
         new CombinedHeatAndPowerSystemJsonConverter(),
@@ -305,13 +304,6 @@ builder.Services.AddHttpClient<IFeedbackApi, FeedbackApi>(client =>
 
 builder.Services.AddSingleton<FuelTypesApiEvents>();
 builder.Services.AddHttpClient<IFuelTypesApi, FuelTypesApi>(client =>
-{
-    client.BaseAddress = new Uri(coreApiBaseUrl);
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
-});
-
-builder.Services.AddSingleton<ChpOperationalModesApiEvents>();
-builder.Services.AddHttpClient<IChpOperationalModesApi, ChpOperationalModesApi>(client =>
 {
     client.BaseAddress = new Uri(coreApiBaseUrl);
     client.DefaultRequestHeaders.Add("Accept", "application/json");

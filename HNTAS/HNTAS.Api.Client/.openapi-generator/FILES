@@ -10,7 +10,6 @@ docs/apis/AssessorApi.md
 docs/apis/AssignedAssessorApi.md
 docs/apis/AuditApi.md
 docs/apis/CarbonCalculatorApi.md
-docs/apis/ChpOperationalModesApi.md
 docs/apis/CountriesAndTerritoriesApi.md
 docs/apis/FeedbackApi.md
 docs/apis/FuelTypesApi.md
@@ -44,7 +43,6 @@ docs/models/Background.md
 docs/models/BoilerInput.md
 docs/models/BoilerPlant.md
 docs/models/CCKpiValueRequest.md
-docs/models/CHPOperationalMode.md
 docs/models/CarbonCalculatorConfigRequest.md
 docs/models/CarbonCalculatorConfigResponse.md
 docs/models/CarbonCalculatorRequest.md
@@ -174,7 +172,6 @@ docs/models/SoaStages.md
 docs/models/SoaStatus.md
 docs/models/SoaStatusWithCount.md
 docs/models/SoaStatusWithCountExistingNetwork.md
-docs/models/UpdateSoaStatusRequest.md
 docs/models/UpdateUserDetailsRequest.md
 docs/models/UpdateUserOrgIdRequest.md
 docs/models/UpdateUserOrganisationRequest.md
@@ -194,7 +191,6 @@ docs/scripts/git_push.ps1
 docs/scripts/git_push.sh
 src/HNTAS.Api.Client.Test/Api/DependencyInjectionTests.cs
 src/HNTAS.Api.Client.Test/HNTAS.Api.Client.Test.csproj
-src/HNTAS.Api.Client.Test/Model/NullableOfMainEnergyCentreStatusTests.cs
 src/HNTAS.Api.Client.Test/README.md
 src/HNTAS.Api.Client/Api/ArmsApi.cs
 src/HNTAS.Api.Client/Api/ArmsDashboardApi.cs
@@ -203,7 +199,6 @@ src/HNTAS.Api.Client/Api/AssessorApi.cs
 src/HNTAS.Api.Client/Api/AssignedAssessorApi.cs
 src/HNTAS.Api.Client/Api/AuditApi.cs
 src/HNTAS.Api.Client/Api/CarbonCalculatorApi.cs
-src/HNTAS.Api.Client/Api/ChpOperationalModesApi.cs
 src/HNTAS.Api.Client/Api/CountriesAndTerritoriesApi.cs
 src/HNTAS.Api.Client/Api/FeedbackApi.cs
 src/HNTAS.Api.Client/Api/FuelTypesApi.cs
@@ -261,7 +256,6 @@ src/HNTAS.Api.Client/Model/Background.cs
 src/HNTAS.Api.Client/Model/BoilerInput.cs
 src/HNTAS.Api.Client/Model/BoilerPlant.cs
 src/HNTAS.Api.Client/Model/CCKpiValueRequest.cs
-src/HNTAS.Api.Client/Model/CHPOperationalMode.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorConfigRequest.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorConfigResponse.cs
 src/HNTAS.Api.Client/Model/CarbonCalculatorRequest.cs
@@ -391,7 +385,6 @@ src/HNTAS.Api.Client/Model/SoaStages.cs
 src/HNTAS.Api.Client/Model/SoaStatus.cs
 src/HNTAS.Api.Client/Model/SoaStatusWithCount.cs
 src/HNTAS.Api.Client/Model/SoaStatusWithCountExistingNetwork.cs
-src/HNTAS.Api.Client/Model/UpdateSoaStatusRequest.cs
 src/HNTAS.Api.Client/Model/UpdateUserDetailsRequest.cs
 src/HNTAS.Api.Client/Model/UpdateUserOrgIdRequest.cs
 src/HNTAS.Api.Client/Model/UpdateUserOrganisationRequest.cs

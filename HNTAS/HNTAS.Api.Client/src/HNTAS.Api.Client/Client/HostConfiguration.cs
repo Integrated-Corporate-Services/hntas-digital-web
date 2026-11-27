@@ -63,7 +63,6 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new BoilerInputJsonConverter());
             _jsonOptions.Converters.Add(new BoilerPlantJsonConverter());
             _jsonOptions.Converters.Add(new CCKpiValueRequestJsonConverter());
-            _jsonOptions.Converters.Add(new CHPOperationalModeJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorConfigRequestJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorConfigResponseJsonConverter());
             _jsonOptions.Converters.Add(new CarbonCalculatorRequestJsonConverter());
@@ -218,7 +217,6 @@ namespace HNTAS.Api.Client.Client
             _jsonOptions.Converters.Add(new SoaStatusNullableJsonConverter());
             _jsonOptions.Converters.Add(new SoaStatusWithCountJsonConverter());
             _jsonOptions.Converters.Add(new SoaStatusWithCountExistingNetworkJsonConverter());
-            _jsonOptions.Converters.Add(new UpdateSoaStatusRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateUserDetailsRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateUserOrgIdRequestJsonConverter());
             _jsonOptions.Converters.Add(new UpdateUserOrganisationRequestJsonConverter());
@@ -246,7 +244,6 @@ namespace HNTAS.Api.Client.Client
             _services.AddSingleton<AssignedAssessorApiEvents>();
             _services.AddSingleton<AuditApiEvents>();
             _services.AddSingleton<CarbonCalculatorApiEvents>();
-            _services.AddSingleton<ChpOperationalModesApiEvents>();
             _services.AddSingleton<CountriesAndTerritoriesApiEvents>();
             _services.AddSingleton<FeedbackApiEvents>();
             _services.AddSingleton<FuelTypesApiEvents>();
@@ -284,7 +281,6 @@ namespace HNTAS.Api.Client.Client
             builders.Add(_services.AddHttpClient<IAssignedAssessorApi, AssignedAssessorApi>(client));
             builders.Add(_services.AddHttpClient<IAuditApi, AuditApi>(client));
             builders.Add(_services.AddHttpClient<ICarbonCalculatorApi, CarbonCalculatorApi>(client));
-            builders.Add(_services.AddHttpClient<IChpOperationalModesApi, ChpOperationalModesApi>(client));
             builders.Add(_services.AddHttpClient<ICountriesAndTerritoriesApi, CountriesAndTerritoriesApi>(client));
             builders.Add(_services.AddHttpClient<IFeedbackApi, FeedbackApi>(client));
             builders.Add(_services.AddHttpClient<IFuelTypesApi, FuelTypesApi>(client));

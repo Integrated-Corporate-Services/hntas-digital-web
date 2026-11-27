@@ -91,9 +91,6 @@ namespace HNTAS.Api.Client.Test.Api
             var carbonCalculatorApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
 
-            var chpOperationalModesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<IChpOperationalModesApi>();
-            Assert.True(chpOperationalModesApi.HttpClient.BaseAddress != null);
-
             var countriesAndTerritoriesApi = _hostUsingConfigureWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
 
@@ -160,9 +157,6 @@ namespace HNTAS.Api.Client.Test.Api
 
             var carbonCalculatorApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
-
-            var chpOperationalModesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<IChpOperationalModesApi>();
-            Assert.True(chpOperationalModesApi.HttpClient.BaseAddress != null);
 
             var countriesAndTerritoriesApi = _hostUsingConfigureWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
@@ -231,9 +225,6 @@ namespace HNTAS.Api.Client.Test.Api
             var carbonCalculatorApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
             
-            var chpOperationalModesApi = _hostUsingAddWithAClient.Services.GetRequiredService<IChpOperationalModesApi>();
-            Assert.True(chpOperationalModesApi.HttpClient.BaseAddress != null);
-            
             var countriesAndTerritoriesApi = _hostUsingAddWithAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
             
@@ -300,9 +291,6 @@ namespace HNTAS.Api.Client.Test.Api
 
             var carbonCalculatorApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICarbonCalculatorApi>();
             Assert.True(carbonCalculatorApi.HttpClient.BaseAddress != null);
-
-            var chpOperationalModesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<IChpOperationalModesApi>();
-            Assert.True(chpOperationalModesApi.HttpClient.BaseAddress != null);
 
             var countriesAndTerritoriesApi = _hostUsingAddWithoutAClient.Services.GetRequiredService<ICountriesAndTerritoriesApi>();
             Assert.True(countriesAndTerritoriesApi.HttpClient.BaseAddress != null);
